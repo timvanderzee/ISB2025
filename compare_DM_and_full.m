@@ -5,7 +5,7 @@ load('protocol.mat')
 
 ls = {'-','--'};
 
-for j = 1:2
+for j = 2:2
     
     if j == 1
         model = eval('@ripping_model_func_exp');

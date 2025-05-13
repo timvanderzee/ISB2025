@@ -18,7 +18,7 @@ function[Fmodel, Ts, y, Y, Lmodel] = stretch_shorten_multiple(model, data, parms
         F = nan(1,length(x));
         for j = 1:length(x)
             if ~contains(func2str(model), 'implicit') % explicit
-                [~,F(j)] = model(t(j), x(j,:)', parms, Ca);
+                [~,F(j),n(j,:),xi(j,:)] = model(t(j), x(j,:)', parms, Ca);
             else % implicit
                 [~,F(j)] = model(t(j), x(j,:)', zeros(size(x(j,:)')), parms, Ca); % note: force does not depend on xdot
             end
