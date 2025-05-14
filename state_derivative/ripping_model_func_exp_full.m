@@ -12,13 +12,18 @@ function[Xd, F] = ripping_model_func_exp_full(t, x, parms, Ca)
     n = x(2:(parms.nbins+1)); 
     R = x(parms.nbins+2);
     DRX = x(parms.nbins+3);
-    lce = x(parms.nbins+5);
+    lce = x(parms.nbins+4);
 
+    % safety
+    n(n<0) = 0;
+    
     % compute moments
     % displacement from start
     xi = parms.xi0 + (lce - parms.lce0);
 %     iRel = ((xi(:) < 2) & (xi(:) > -1)) | (abs(n(:)) > 1e-16);
+    
     iRel = 1:length(parms.xi0);
+%     iRel = abs(n(:)) > 1e-16;
     
     % compute moments
     Q = nan(1,3);
@@ -29,7 +34,6 @@ function[Xd, F] = ripping_model_func_exp_full(t, x, parms, Ca)
     % only select relevant portion
     parms.xi = xi(iRel);
     ns = n(iRel);
-    
     
     %% thin filament activation
     if parms.max
@@ -58,8 +62,17 @@ function[Xd, F] = ripping_model_func_exp_full(t, x, parms, Ca)
     % attachment and detachment at each strain
     beta = parms.f_func(parms.xi, parms.f, parms.w);
     phi1 = -parms.f_func(parms.xi, parms.f, parms.w) .* Q(1);
-    phi2 = -(parms.g_func(parms.xi, parms.k11, -parms.k12) + parms.g_func(parms.xi, parms.k21, parms.k22)) .* ns';
+    phi2_rd = -(parms.g_func(parms.xi, parms.k11, -parms.k12) + parms.g_func(parms.xi, parms.k21, parms.k22)) .* ns';
 
+    if parms.forcible_detachment
+        phi2_fd = -(parms.k_func(parms.xi, parms.k, parms.dLcrit)) .* ns' + parms.f_func(parms.xi, parms.b, parms.w) * R;
+    else
+        phi2_fd = zeros(size(parms.xi));
+    end
+    
+    % add both types of detachment
+    phi2 = phi2_rd + phi2_fd;
+    
     % change in cross-bridge attachment
     ndot = DRX * (Non * beta + phi1) + phi2;
 
@@ -67,7 +80,7 @@ function[Xd, F] = ripping_model_func_exp_full(t, x, parms, Ca)
     nd = zeros(size(parms.xi0'));
     nd(iRel,1) = ndot';
     
-    Rd = 0;
+    Rd = trapz(parms.xi, -phi2_fd);
 
     %% cross-bridge dynamics
     % first determine contraction velocity
@@ -101,7 +114,7 @@ function[Xd, F] = ripping_model_func_exp_full(t, x, parms, Ca)
     Dd = J1 - J2 - Q0dot;
         
     %% combined state derivative vector
-    Xd = [Nond; nd; Rd; Dd; parms.vmtc; Ld];
+    Xd = [Nond; nd; Rd; Dd; Ld; parms.vmtc];
 
     % remove length if needed
     Xd = Xd(1:length(x));

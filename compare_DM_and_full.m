@@ -3,22 +3,24 @@ clear all; clc; close all
 load('parms.mat')
 load('protocol.mat')
 
-nbins = linspace(10,500,10);
+nbins = linspace(3,500,10);
 
 for j = 1:(length(nbins)+1)
     
     if j == 1
         model = eval('@ripping_model_func_exp');
-        parms.xss = zeros(1,8);
-        ls = '-';
+        parms.xss = zeros(1,7);
     else
-        parms.nbins = round(nbins(j-1));
-        parms.xi0 = linspace(-30,30,parms.nbins);
-        
         model = eval('@ripping_model_func_exp_full');
-        parms.xss = zeros(1, parms.nbins + 5);
-        ls = '--';
-       
+        parms.xi0 = linspace(-15,15,500);
+        parms.nbins = length(parms.xi0);
+        
+        parms.xss = zeros(1,parms.nbins + 5);
+        
+        parms.f_func = @(xi, f, w) f/sqrt((2*pi*w^2)) * exp(-xi.^2./(2*w^2));
+        parms.g_func = @(xi, k1, k2) k1 * exp(k2 * xi);
+        parms.k_func = @(xi, k, xc) k * (xi > xc);
+
     end
     
     parms.xss(end-2) = 0.0909;

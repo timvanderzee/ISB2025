@@ -27,12 +27,9 @@ function[Fmodel, Ts, y, Y, Lmodel] = stretch_shorten_multiple(model, data, parms
         lmtc = x(:,end);
 
         % get the force and SRS
-        y(i) = get_force(t, Ts, F, lmtc, parms);    
-    end
-    
-    if ~isfield(data, 'texp')
-        data.texp(:,i) = (0:.001:(sum(Ts(1,:))))' - sum(Ts(1,1:4));
-        Y.texp = data.texp;
+        y(i) = get_force(t, Ts, F, lmtc, parms);
+%         y(i).x = x;
+%         y(i).t = t;
     end
     
     for i = 1:length(pCais)
