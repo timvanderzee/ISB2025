@@ -1,4 +1,4 @@
-function[Xd, F] = ripping_model_func_exp_full(t, x, parms, Ca)
+function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM

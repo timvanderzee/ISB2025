@@ -25,7 +25,7 @@ for j = 1:(length(nbins)+1)
     
     parms.xss(end-2) = 0.0909;
     parms.xss(1) = 0;
-
+    
     % simulate multiple pCas
     tic
     [Fmodel,~,~,Y] = stretch_shorten_multiple(model, XData, parms);
@@ -48,17 +48,17 @@ for i = 1:length(Data)
 end
 
 for j = length(nbins):-1:1
-
-figure(1)
-subplot(131)
-plot(Data(j+1).tmodel, Data(j+1).Fmodel,'linewidth',2,'color',pcolors(j,:)); hold on
-
-subplot(132)
-bar(nbins(j), pt(j+1),'facecolor',pcolors(j,:),'barwidth',mean(diff(nbins)),'edgecolor','none'); hold on
-
-h=subplot(133);
-bar(nbins(j), eps(j+1),'facecolor',pcolors(j,:),'barwidth',mean(diff(nbins)),'edgecolor','none'); hold on
-set(h,'YScale','log');
+    
+    figure(1)
+    subplot(131)
+    plot(Data(j+1).tmodel, Data(j+1).Fmodel,'linewidth',2,'color',pcolors(j,:)); hold on
+    
+    subplot(132)
+    bar(nbins(j), pt(j+1),'facecolor',pcolors(j,:),'barwidth',mean(diff(nbins)),'edgecolor','none'); hold on
+    
+    h=subplot(133);
+    bar(nbins(j), eps(j+1),'facecolor',pcolors(j,:),'barwidth',mean(diff(nbins)),'edgecolor','none'); hold on
+    set(h,'YScale','log');
 end
 
 
