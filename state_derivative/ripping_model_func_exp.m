@@ -1,4 +1,4 @@
-function[Xd, F] = ripping_model_func_exp(t, x, parms, Ca)
+function[Xd, F, n, xi] = ripping_model_func_exp(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM
@@ -18,6 +18,9 @@ function[Xd, F] = ripping_model_func_exp(t, x, parms, Ca)
     Q(1) = max(Q(1),eps);
     Q(2) = max(Q(2), -Q(1));
     Q(3) = max(Q(3),eps.^2);
+    
+    xi = parms.xi;
+    n = n_func(Q, parms.xi);
 
     %% thin filament activation
     if parms.max

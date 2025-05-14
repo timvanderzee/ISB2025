@@ -3,16 +3,26 @@ clear all; clc; close all
 load('parms.mat')
 load('protocol.mat')
 
-nbins = linspace(3,500,10);
+nbins = linspace(30,500,2);
+
+Amps = XData.AMPs;
+v = XData.v;
+tiso = XData.tiso;
+ISI = XData.ISI;
+pCais = XData.pCas;
+
+% assume the same across trials
+[us, Ts] = get_usTs(v(1,:), Amps(1,:), tiso(1,:), ISI(1,:), parms);
+XData.texp = (0:.001:(sum(Ts(1,:))))' - sum(Ts(1,1:4));
 
 for j = 1:(length(nbins)+1)
     
     if j == 1
         model = eval('@ripping_model_func_exp');
-        parms.xss = zeros(1,7);
+        parms.xss = zeros(1,8);
     else
         model = eval('@ripping_model_func_exp_full');
-        parms.xi0 = linspace(-15,15,500);
+        parms.xi0 = linspace(-15,15,nbins(j-1));
         parms.nbins = length(parms.xi0);
         
         parms.xss = zeros(1,parms.nbins + 5);
@@ -32,7 +42,7 @@ for j = 1:(length(nbins)+1)
     pt(j) = toc;
     
     Data(j).Fmodel = Fmodel;
-    Data(j).tmodel = Y.texp;
+    Data(j).tmodel = XData.texp;
 end
 
 %% plot
