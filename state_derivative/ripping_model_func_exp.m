@@ -1,4 +1,4 @@
-function[Xd, F, n, xi] = ripping_model_func_exp(t, x, parms, Ca)
+function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM
@@ -12,15 +12,16 @@ function[Xd, F, n, xi] = ripping_model_func_exp(t, x, parms, Ca)
     Q = x(2:4); 
     R = x(5);
     DRX = x(6);
-
+    lmtc = x(7);
+    
     eps = 1e-6;
 
     Q(1) = max(Q(1),eps);
     Q(2) = max(Q(2), -Q(1));
     Q(3) = max(Q(3),eps.^2);
     
-    xi = parms.xi;
-    n = n_func(Q, parms.xi);
+%     xi = parms.xi;
+%     n = n_func(Q, parms.xi);
 
     %% thin filament activation
     if parms.max
@@ -74,13 +75,11 @@ function[Xd, F, n, xi] = ripping_model_func_exp(t, x, parms, Ca)
 
         % breaking
         phi2s(1,i) = -parms.gaussian.IGef{i}(c1,k1) -parms.gaussian.IGef{i}(c1,k2) - parms.g1 * Q(i); 
-        
-%          phi2s1(1,i) = -parms.gaussian.IGef{i}(c1,k1);
-%          phi2s2(1,i) = -parms.gaussian.IGef{i}(c1,k2);
+       
 
         % ripping
         if parms.forcible_detachment
-            phi2s(2,i) = -parms.k * (parms.gaussian.IG{i}(inf, c1) - parms.gaussian.IG{i}(parms.dLcrit, c1)) + parms.b * C2(i) * R(1);
+            phi2s(2,i) = -parms.k * (Q(i)/2 - parms.gaussian.IG{i}(parms.dLcrit, c1)) + parms.b * C2(i) * R(1);
         else
             phi2s(2,i) = 0;
         end
@@ -139,6 +138,11 @@ function[Xd, F, n, xi] = ripping_model_func_exp(t, x, parms, Ca)
     % gains from super-relaxed, loses to super-relaxed, gains and loses to binding
     Dd = J1 - J2 - Q0dot;
         
+    % total force
+    F_pas = parms.Fpe_func(lmtc, parms);
+    F_act = F * parms.Fscale;
+    Ftot = F_act(:) + F_pas(:);
+    
     %% combined state derivative vector
     Xd = [Nond; Qd; Rd; Dd; parms.vmtc; Ld];
 

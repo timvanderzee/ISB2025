@@ -1,4 +1,4 @@
-function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
+function[Xd, Ftot,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM
@@ -13,6 +13,7 @@ function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
     R = x(parms.nbins+2);
     DRX = x(parms.nbins+3);
     lce = x(parms.nbins+4);
+    lmtc = x(parms.nbins+5);
 
     % safety
     n(n<0) = 0;
@@ -20,20 +21,15 @@ function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
     % compute moments
     % displacement from start
     xi = parms.xi0 + (lce - parms.lce0);
-%     iRel = ((xi(:) < 2) & (xi(:) > -1)) | (abs(n(:)) > 1e-16);
-    
+%     iRel = ((xi(:) < 2) & (xi(:) > -1)) | (abs(n(:)) > 1e-8);
     iRel = 1:length(parms.xi0);
-%     iRel = abs(n(:)) > 1e-16;
-    
-    % compute moments
-    Q = nan(1,3);
-    for i = 1:3
-        Q(i) = trapz(xi, xi.^(i-1) .* n');
-    end
     
     % only select relevant portion
     parms.xi = xi(iRel);
     ns = n(iRel);
+   
+    % compute moments
+    Q = trapz(parms.xi(:), [ns parms.xi(:).*ns]);
     
     %% thin filament activation
     if parms.max
@@ -66,13 +62,11 @@ function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
 
     if parms.forcible_detachment
         phi2_fd = -(parms.k_func(parms.xi, parms.k, parms.dLcrit)) .* ns' + parms.f_func(parms.xi, parms.b, parms.w) * R;
+        phi2 = phi2_rd + phi2_fd;
     else
-        phi2_fd = zeros(size(parms.xi));
+        phi2 = phi2_rd;
     end
-    
-    % add both types of detachment
-    phi2 = phi2_rd + phi2_fd;
-    
+   
     % change in cross-bridge attachment
     ndot = DRX * (Non * beta + phi1) + phi2;
 
@@ -80,13 +74,16 @@ function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
     nd = zeros(size(parms.xi0'));
     nd(iRel,1) = ndot';
     
-    Rd = trapz(parms.xi, -phi2_fd);
+    if parms.forcible_detachment
+        Rd = trapz(parms.xi, -phi2_fd);
+    else
+        Rd = 0;
+    end
 
     %% cross-bridge dynamics
     % first determine contraction velocity
     F = max(Q(2) + parms.ps * Q(1), 0);
-    Q0dot = trapz(parms.xi, ndot);
-    Q1dot = trapz(parms.xi, ndot .* parms.xi);    
+    Qdot = trapz(parms.xi(:), [ndot(:) parms.xi(:).*ndot(:)]);
 
     if ~parms.no_tendon
         % length dependence
@@ -96,7 +93,7 @@ function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
         kse = parms.kse_func(dlse, parms);
 
         % velocity - independent derivative
-        Fdot  = Q1dot + parms.ps * Q0dot;
+        Fdot  = Qdot(2) + parms.ps * Qdot(1);
 
         % velocity from force constraint
         Ld  = (parms.vmtc * kse - Fdot) / (Q(1) + kse);
@@ -111,7 +108,12 @@ function[Xd, F,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
     J2 = parms.J2 * DRX; % Eq (4)
 
     % gains from super-relaxed, loses to super-relaxed, gains and loses to binding
-    Dd = J1 - J2 - Q0dot;
+    Dd = J1 - J2 - Qdot(1);
+    
+    % total force
+    F_pas = parms.Fpe_func(lmtc, parms);
+    F_act = F * parms.Fscale;
+    Ftot = F_act(:) + F_pas(:);
         
     %% combined state derivative vector
     Xd = [Nond; nd; Rd; Dd; Ld; parms.vmtc];
