@@ -13,6 +13,7 @@ function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
     R = x(5);
     DRX = x(6);
     lmtc = x(7);
+    lce = x(8);
     
     eps = 1e-6;
 
@@ -27,6 +28,9 @@ function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
     if parms.max
         Non = 1;
     end
+
+    % get filament overlap %
+    parms.Noverlap = calc_filament_overlap(parms, lce);
     
     % quantities 
     Noff = parms.Noverlap - Non;

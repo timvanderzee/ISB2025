@@ -1,7 +1,8 @@
+%%
 clear all; clc; close all
 
-load('parms.mat')
-load('protocol.mat')
+load('parameters/parms.mat')
+load('protocol/protocol.mat')
 
 parms.forcible_detachment = 0;
 

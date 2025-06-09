@@ -1,4 +1,4 @@
-function[Xd, Ftot,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
+function[Xd,Ftot,n,xi,F_pas,F_act] = ripping_model_func_exp_full(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM
@@ -18,7 +18,7 @@ function[Xd, Ftot,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
     % safety
     n(n<0) = 0;
     
-    % compute moments
+    % compu te moments
     % displacement from start
     xi = parms.xi0 + (lce - parms.lce0);
 %     iRel = ((xi(:) < 2) & (xi(:) > -1)) | (abs(n(:)) > 1e-8);
@@ -36,13 +36,18 @@ function[Xd, Ftot,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
         Non = 1;
     end
     
+    % get filament overlap % 
+    Noverlap = calc_filament_overlap(parms, lce);
+    parms.Noverlap = Noverlap;
+
     % quantities 
-    Noff = parms.Noverlap - Non;
+    Noff = Noverlap - Non;
     Noff(Noff<0) = 0; % could overshoot due to fast dynamics
-    
+
     % thin filament dynamics    
     Jon     = Act * parms.kon * Noff * (1 + parms.koop * (Non/parms.Noverlap)); % Eq (1)
     Joff    = parms.koff * (Non - Q(1)) *     (1 + parms.koop * Noff/parms.Noverlap); % Eq (2)
+
     Nond    = Jon - Joff; % Eq (7)
     
     if parms.max
@@ -120,5 +125,4 @@ function[Xd, Ftot,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
 
     % remove length if needed
     Xd = Xd(1:length(x));
-
 end
