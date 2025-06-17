@@ -1,0 +1,26 @@
+Changes to leg39
+
+custom to weld joint:
+- ground_pelvis
+- hip_r
+- ankl_r
+- subtalar_r
+- mtp_r
+
+remove (because of error):
+- psoas_r
+
+remove markers (because not needed)
+
+muscles to path actuators:
+- glut_max2_r
+- med_gas_r
+- soleus_r
+- tib_ant_r
+- bifemlh_r
+- bifemsh_r
+- rect_fem_r
+- vas_int_r
+
+
+
