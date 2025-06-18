@@ -1,9 +1,6 @@
 clear all; close all; clc
 % addpath(genpath('C:\Users\timvd\Documents\BIOMUS\input'))
 % addpath(genpath('C:\Users\timvd\Documents\BIOMUS\soft\forward_dynamics'))
-
-fs = 120;               % [Hz] bemonsteringsfrequentie van de simulatie
-Ts = 1/fs;              % [s] bemnsteringsperiode                % aantal datapunten in de simulatie
 M = 8;                 % aantal spieren
 
 names = {'bifemlh_r'; 'bifemsh_r'; 'glut_max2_r'; 'rect_fem_r'; 'vas_int_r'; 'med_gas_r'; 'soleus_r'; 'tib_ant_r'};
@@ -13,10 +10,9 @@ k = 1;
 % trial = 15;
 
 [auxdata] = get_muscle_parms(M);
-% [input, s0, t0, tf] = load_data(trial, fs);
 
 %% OpenSim
-cd('C:\Users\u0167448\Documents\GitHub\BIOMUS\input')
+cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\input')
 
 % Import the OpenSim modeling classes
 import org.opensim.modeling.*
@@ -61,6 +57,8 @@ Ncoord        = osimModel.getNumCoordinates();
 stateNames = cell(Nstates,1);
 for i = 1:Nstates
     stateNames(i,1) = cell(osimModel.getStateVariableNames().getitem(i-1));
+    
+    s0(i,1) = getY(osimState).get(i-1);
 end
 
 auxdata.NStates = Nstates;
@@ -95,7 +93,7 @@ t_input = [0; 10];
 modelnames = {'TendonForceOdeVecSRS', 'TendonForceOdeVecSRS_BP'};
 x0 = {0, [0 0 0 0 0 0]};
 x_isom = cell(M,2);
-act = 1;
+act = .05;
 
 for m = 1:M
     figure(1)
@@ -126,18 +124,19 @@ for m = 1:M
         lMtilda = lM./lMo;
         lMtilda_isom(m,j) = lMtilda(end);
     end
+    
+  
 end
 
 return
 
 %% simulate movement
 close all
-
-s0 = [-1.04298e-09 -0.00528183 -0.464606 -0.00116913 0.0557369 -0.0255086 0 0 0 0 0 0];
+% s0 = [-1.04298e-09 -0.00528183 -0.464606 -0.00116913 0.0557369 -0.0255086 0 0 0 0 0 0];
 
 auxdata.ksrs = vec_ksrs(k);
 auxdata.kT = vec_kT(k);
-modelnames = {'compute_state_derivatives', 'compute_state_derivatives_BP'};
+modelnames = {'compute_state_derivatives_pendulum', 'compute_state_derivatives_BP_pendulum'};
 
 input.act = ones(M,1) * act;
 
@@ -152,7 +151,7 @@ for j = 1
     %             end
     
     input.lMtilda_isom = lMtilda_isom(:,j);
-    [tFW,sFW] = ode15s(eval(['@',modelnames{j}]),[0 .1],[s0(:); x0(:)],[], input, osimModel, osimState, auxdata);
+    [tFW,sFW] = ode15s(eval(['@',modelnames{j}]),[0 5],[s0(:); x0(:)],[], input, osimModel, osimState, auxdata);
     
     fse = sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles);
     
@@ -177,34 +176,40 @@ for j = 1
             plot(tFW, DRX(:,m)); hold on
             box off
         end
+        
     end
     
+    figure(3)
+    plot(tFW, sFW(:,1:Nstates)); hold on
+
 end
 
 return
+
+
 %% write things
+s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
+
 % Write model states to an OpenSim STO file
-StatesData.name = ['SCP_Trial' num2str(trial) '_' num2str(k) '_FW_States'];
+StatesData.name = 'Pendulum_FW_States_v3';
 StatesData.nRows = length(tFW);
 StatesData.nColumns = Nstates + 1;
 StatesData.labels = [{'time'}; stateNames]';
 StatesData.inDegrees = false;
-StatesData.data = [tFW,sFW(:,1:Nstates)];
+StatesData.data = [tFW,s(:,1:Nstates)];
 writeOpenSimStatesFile(StatesData)
 
+%%
 % Create data structure for the controls file
-ControlData.name = ['SCP_Trial' num2str(trial) '_' num2str(k) '_FW_Controls'];
+ControlData.name = 'Pendulum_FW_Controls';
 ControlData.nRows = size(tFW);
 ControlData.nColumns = Ncontrols+1; %All the controls + time
 ControlData.inDegrees = false;
 ControlData.labels= [{'time'}; controlNames]';
-
-mass = 2000;
-acc = interp1(input.time, input.platacc, tFW)*9.81;
-controlFX = mass*acc/10000;
-ControlData.data = [tFW,sFW(:,1+Nstates:end), controlFX];
 writeOpenSimControlFile(ControlData)
         
+
+%%
 return
 
 function[auxdata] = get_muscle_parms(M)

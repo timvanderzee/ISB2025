@@ -16,7 +16,7 @@ trial = 15;
 [input, s0, t0, tf] = load_data(trial, fs);
 
 %% OpenSim
-cd('C:\Users\timvd\Documents\BIOMUS\input')
+cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\input')
 
 % Import the OpenSim modeling classes
 import org.opensim.modeling.*
@@ -61,6 +61,7 @@ Ncoord        = osimModel.getNumCoordinates();
 stateNames = cell(Nstates,1);
 for i = 1:Nstates
     stateNames(i,1) = cell(osimModel.getStateVariableNames().getitem(i-1));
+    S0(i,1) = getY(osimState).get(i-1);
 end
 
 auxdata.NStates = Nstates;
@@ -73,6 +74,7 @@ controlNames = cell(Ncontrols,1);
 controls_all = cell(Ncontrols,1);
 lMT = zeros(1,M);
 vMT = zeros(1,M);
+
 for i = 1:Ncontrols
     currentActuator = Actuators.get(i-1);
     if strcmp(currentActuator.getConcreteClassName(), 'PathActuator')
