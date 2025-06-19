@@ -91,8 +91,7 @@ DRX = x(6);
 F = Q(1) + Q(2);
 J1 = (parms.J1 + parms.JF * max(F,0)/max(Ntot,1e-3)) .* (1-DRX);
 J2 = parms.J2 .* DRX;
-
-DRXd = J1 - J2; 
+DRXd = J1 - J2; % this is a mistake!
 
 %% cross-bridge dynamics
 Q0dot = Non * beta(1,1) + phi1(1) + phi2(1);
