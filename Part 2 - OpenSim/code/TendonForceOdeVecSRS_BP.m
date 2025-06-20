@@ -22,7 +22,8 @@ Fsrs = ksrs * a .* FMltilda.*dlM;
 FMce = max(fse./cos_alpha-Fpe-Fsrs, 0);
 
 % Contractile dynamics
-[Qd, vM, Ldd, Nond, DRXd] = contractile_dynamics_BP_v2(a, FMltilda, [FMce x(2) x(3) x(4) x(5) x(6)], vMT, kT, kP, cos_alpha, mparams);
+[Qd, vM, Nond, DRXd] = contractile_dynamics_BP_v3(a, FMltilda, [FMce x(2) x(3) x(4) x(5) x(6)], vMT, kT, kP, cos_alpha, mparams);
+Ldd = 0;
 
 % Tendon velocity and force
 FMo = mparams(1);

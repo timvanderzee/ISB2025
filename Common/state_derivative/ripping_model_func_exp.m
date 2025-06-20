@@ -1,4 +1,11 @@
-function[Xd, Ftot, Ld] = ripping_model_func_exp_v2(t, x, parms, Ca)
+function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
+
+    if nargin < 4
+        Ca = parms.Ca; % expressed in uM
+    end
+
+    % activation from Ca
+    Act = parms.actfunc(Ca, parms);
 
     % retrieve states
     Non = x(1);
@@ -10,22 +17,35 @@ function[Xd, Ftot, Ld] = ripping_model_func_exp_v2(t, x, parms, Ca)
     eps = 1e-6;
 
     Q(1) = max(Q(1),eps);
-    Q(2) = max(Q(2), -Q(1));
+%     Q(2) = max(Q(2), -Q(1));
     Q(3) = max(Q(3),eps.^2);
     
 %     xi = parms.xi;
 %     n = n_func(Q, parms.xi);
 
-    %% thin filament activation    
-    Ntot = max(parms.act * parms.Noverlap, eps);
-    Non = max(Non, eps);
-    Noff = max(Ntot - Non, 0);
-       
+    %% thin filament activation
+    if parms.max
+        Non = 1;
+    end
+    
+    % quantities 
+    Noff = parms.Noverlap - Non;
+    Noff(Noff<0) = 0; % could overshoot due to fast dynamics
+    
     % thin filament dynamics    
-    Jon     = Ca * parms.kon * Noff * (1 + parms.koop * (Non/Ntot)); % Eq (1)
-    Joff    = parms.koff * (Non - Q(1)) *     (1 + parms.koop * Noff/Ntot); % Eq (2)
+    Jon     = Act * parms.kon * Noff * (1 + parms.koop * (Non/parms.Noverlap)); % Eq (1)
+    Joff    = parms.koff * (Non - Q(1)) *     (1 + parms.koop * Noff/parms.Noverlap); % Eq (2)
     Nond    = Jon - Joff; % Eq (7)
     
+    if parms.max
+        Nond = 0;
+    end
+    
+    % in case we don't do thin filament cooperative activation
+    if (parms.kon == 0) && (parms.koff == 0) && (parms.koop == 0)
+        Non = Act;
+    end
+
     %% spatial integrals
     % get gaussian coefficients
     % mean of the distribution
@@ -55,6 +75,7 @@ function[Xd, Ftot, Ld] = ripping_model_func_exp_v2(t, x, parms, Ca)
 
         % breaking
         phi2s(1,i) = -parms.gaussian.IGef{i}(c1,k1) -parms.gaussian.IGef{i}(c1,k2) - parms.g1 * Q(i); 
+       
 
         % ripping
         if parms.forcible_detachment
@@ -94,14 +115,7 @@ function[Xd, Ftot, Ld] = ripping_model_func_exp_v2(t, x, parms, Ca)
         Fdot  = Q1dot + parms.ps * Q0dot;
 
         % velocity from force constraint
-%         Ld  = (parms.vmtc * kse - Fdot) / (Q(1) + kse);
-        
-        ks = kse;
-        kt = 10;
-        kp = 0;
-        cosa = 1;
-        
-        Ld  = (cosa * parms.vmtc * kse * kt - cosa^2 * (Fdot*(ks+kp)) - kt * Fdot) / (ks*kt + cosa^2 * (ks * (Q(1)+kp) + kp*Q(1)) + kt * Q(1));
+        Ld  = (parms.vmtc * kse - Fdot) / (Q(1) + kse);
             
     else
         Ld = parms.c * parms.vmtc;
@@ -117,10 +131,13 @@ function[Xd, Ftot, Ld] = ripping_model_func_exp_v2(t, x, parms, Ca)
     end
 
     %% super-relaxed state dynamics
-    J1 = (parms.J1 + parms.JF * max(F,0)/max(Ntot,1e-3)) .* (1-DRX);
-    J2 = parms.J2 .* DRX;
-    Dd = J1 - J2 - Q0dot; 
-    
+    SRX = min(1,(1 - DRX)); % super-relaxed = total - on - bound
+    J1 = parms.J1 * (1 + parms.JF * F) * SRX; % Eq (3)
+    J2 = parms.J2 * DRX; % Eq (4)
+
+    % gains from super-relaxed, loses to super-relaxed, gains and loses to binding
+    Dd = J1 - J2;
+        
     % total force
     F_pas = parms.Fpe_func(lmtc, parms);
     F_act = F * parms.Fscale;

@@ -12,7 +12,8 @@ k = 1;
 [auxdata] = get_muscle_parms(M);
 
 %% OpenSim
-cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\input')
+% cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\input')
+cd('C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\input')
 
 % Import the OpenSim modeling classes
 import org.opensim.modeling.*
@@ -85,6 +86,8 @@ end
 
 
 %% simulate isometric contraction
+close all; clc
+
 lMtilda_isom = zeros(M,1);
 fse_isom = zeros(M,1);
 
@@ -94,6 +97,8 @@ modelnames = {'TendonForceOdeVecSRS', 'TendonForceOdeVecSRS_BP'};
 x0 = {0, [0 0 0 0 0 0]};
 x_isom = cell(M,2);
 act = .05;
+ls = {'-','--'};
+% act = 1;
 
 for m = 1:M
     figure(1)
@@ -111,7 +116,7 @@ for m = 1:M
         fse_isom(m,j) = fse(end);
         x_isom{m,j} = state(end,:);
         
-        plot(t, fse); hold on
+        plot(t, fse, ls{j}); hold on
         
         FMo = ones(size(fse,1),1)*params(1,m);
         lMo = ones(size(fse,1),1)*params(2,m);
