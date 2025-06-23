@@ -1,4 +1,4 @@
-function[Qd, vM, Nond, DRXd] = contractile_dynamics_BP_v3(a, FMltilda, x, vMT, kT, kP, cos_a, params)
+function[vM, Xdot] = contractile_dynamics_BP_v3(a, FMltilda, x, vMT, kT, kP, cos_a, params)
 
 % v2: with dampening
 lMo = params(2);
@@ -6,7 +6,7 @@ lTs = params(3);
 
 %% define parameters
 gamma = 100; % length scaling
-delta =   1.9207;
+delta = 1.9207;
 
 parms.w = 0.2;
 
@@ -38,8 +38,8 @@ FM = x(1);
 Q0 = x(2);
 Q1 = FM / delta - parms.ps * Q0;
 Q2 = x(3);
-Non = x(5);
-DRX = x(6);
+Non = x(4);
+DRX = x(5);
 
 Q0 = max(Q0, eps);
 Q2 = max(Q2, eps);
@@ -63,8 +63,6 @@ X = [Non Q0 Q1 Q2 DRX];
 
 vM = Ld / gamma .* lMo(:);
 
-Nond = Xd(1);
-Qd = Xd(2:4);
-DRXd = Xd(5);
+Xdot = [Xd(2); Xd(4); Xd(1); Xd(5)];
 
 end

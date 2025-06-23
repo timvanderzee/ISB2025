@@ -1,4 +1,4 @@
-function [dx, FT] = TendonForceOdeVecSRS(t,x,t_input,A,LMT,VMT,mparams, Fvparam, Fpparam, Faparam, lMtilda_isom, ksrs, kT)
+function [dx, FT] = TendonForceOdeVecSRS(t,x,t_input,A,LMT,VMT,mparams, Fvparam, Fpparam, Faparam, lMtilda_isom, ksrs, kT, type)
 
 % Input
 a = interp1(t_input, A, t);
@@ -16,13 +16,17 @@ dlM = (0.5*tanh(1000*(-dlM+5.7*10^(-3)))+ 0.5).*dlM + (0.5*tanh(1000*(dlM-5.7*10
 Fsrs = ksrs * a .* FMltilda.*dlM;
 
 % Parallel force
-Fpe = get_parallel_force(lMtilda, Fpparam);
+[Fpe, kP] = get_parallel_force(lMtilda, Fpparam);
 
 % Contractile element force
 FMce = max(fse./cos_alpha-Fpe-Fsrs, 0);
 
 % Contractile dynamics
-vM = contractile_dynamics(a, FMltilda, FMce, Fvparam, mparams);
+if strcmp(type, 'Hill')
+    [vM, Xd] = contractile_dynamics(a, FMltilda, FMce, Fvparam, mparams);
+elseif strcmp(type, 'Biophysical')
+    [vM, Xd] = contractile_dynamics_BP(a, FMltilda, [FMce x(2) x(3) x(4) x(5)], vMT, kT, kP, cos_alpha, mparams);
+end
 
 % Tendon velocity and force
 FMo = mparams(1);
@@ -34,8 +38,6 @@ lTs = mparams(3);
 dfse = kT.*vT./lTs;
 
 % State derivative
-dx(1,1) = dfse;
-
-
+dx = [dfse(:); Xd(:)];
 
 return
