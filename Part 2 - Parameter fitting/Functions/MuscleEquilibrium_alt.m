@@ -1,4 +1,4 @@
-function [error] = MuscleEquilibrium_alt(Q0, Q1, Q2, dQ0dt, dQ1dt, dQ2dt, f, k11, k12, k21, k22, Non, vMtilda, DRX)
+function [error, dX] = MuscleEquilibrium_alt(Q0, Q1, Q2, dQ0dt, dQ1dt, dQ2dt, f, k11, k12, k21, k22, Non, vMtilda, DRX)
 
 % no tendon
 j = 1;
@@ -49,9 +49,11 @@ Q1dot = DRX .* (beta(1,2) .* (Non-Q0(j,:))) + phi(2,:);
 Q2dot = DRX .* (beta(1,3) .* (Non-Q0(j,:))) + phi(3,:);
 
 error_Q0 = dQ0dt(j,:) - Q0dot;
-error_Q1 = dQ1dt(j,:) - (Q1dot + 1 * vMtilda(j) * gamma * Q0);
-error_Q2 = dQ2dt(j,:) - (Q2dot + 2 * vMtilda(j) * gamma * Q1);
+error_Q1 = dQ1dt(j,:) - (Q1dot + 1 * vMtilda * gamma * Q0);
+error_Q2 = dQ2dt(j,:) - (Q2dot + 2 * vMtilda * gamma * Q1);
 
 error = [error_Q0; error_Q1; error_Q2];
+
+dX = [Q0dot; (Q1dot + 1 * vMtilda * gamma * Q0); (Q2dot + 2 * vMtilda * gamma * Q1)];
 
 end

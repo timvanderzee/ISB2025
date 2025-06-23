@@ -11,50 +11,65 @@ parms.vMtilda = 0;
 parms.d = 0;
 parms.act = 1;
 
-Cas = 10.^(-2:.1:1);
+Cas = 10.^(-1:.1:.5);
 
-for j = 1:2
-    if j == 2
-        
-        parms.f = 1000;
-        parms.k11 = 560;
-        parms.k21 = 120;
-        parms.k22 = 1;
-%         parms.d = 0;
-        
-%         parms.koop = 5;
-    end
-    
-    for i = 1:length(Cas)
+colors = parula(length(Cas));
 
-        parms.Ca = Cas(i);
 
-        [t0,x0] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 .1], y0, yp0);
+parms.f = 1e3;
+parms.k11 = 55.3664;
+parms.k12 = 2;
+parms.k21 =  451.0874;
+parms.k22 =  0.2328;
+%         parms.JF = 500;
+%         parms.koop = 80;
 
-        F0s(i) = x0(end,1) + x0(end,2);
-    end
 
-   subplot(121)
-   semilogx(Cas, F0s,'-'); hold on    
+for i = 1:length(Cas)
+
+    parms.Ca = Cas(i);
+
+    [t0,x0] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 1], y0, yp0);
+
+    F0s(i) = x0(end,1) + x0(end,2);
+    x0s(i,:) = x0(end,:);
+
+    subplot(221)
+    plot(t0,x0(:,1) + x0(:,2), 'color', colors(i,:)); hold on
+
+    subplot(222)
+    plot(Cas(i), F0s(i), 'o', 'color', colors(i,:),'markerfacecolor', colors(i,:)); hold on
 end
 
-xline(1,'k--')
 
-%%
-vs = linspace(10,-10,100);
+subplot(222)
+semilogx(Cas, F0s,'-'); hold on    
 
-F0 = F0s(Cas == 1);
-parms.Ca = 1;
+parms.Ca = 10^0;
+xline(parms.Ca,'k--')
+
+vs = linspace(10,-10,length(Cas));
+
+[min, id] = min(abs(Cas - parms.Ca));
+F0 = F0s(id);
+x0 = x0s(id, :);
+
 
 for i = 1:length(vs)
 
     parms.vMtilda = vs(i);
      
-    [ti,xi] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 .1], y0, yp0);
+    [ti,xi] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 .002], x0(end,:), yp0);
     
     Fi = xi(:,1) + xi(:,2);
+    
+    subplot(223)
+    plot(ti, Fi, 'color', colors(i,:)); hold on
 
     Fss(i,1) = Fi(end);
+    
+    subplot(224)
+    plot(vs(i), Fss(i)/F0, '.', 'color', colors(i,:)); hold on
    
 end
 
@@ -71,7 +86,7 @@ vH = vmax/e2*(sinh((FMvtilda-e4)/e1)-e3); % 0-1
 
 
 figure(1)
-subplot(122)
+subplot(224)
 plot(vs(:), (Fss(:,1) + parms.d*vs(:))/F0); hold on
 % plot(vs(:), (Fss(:,2) + parms.d*vs(:))/F0,'--'); hold on
 plot(vH, FMvtilda,':')
@@ -82,11 +97,12 @@ yline(0,'k--')
 parms.vMtilda = 0;
 % parms.a = 1;
 
+parms.Ca = .1;
 [ti,xi] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 1], y0, yp0);
 
 %% Fit cross-bridge rates using direct collocation
-addpath(genpath('C:\Users\timvd\Documents\casadi-windows-matlabR2016a-v3.5.5'))
-% addpath(genpath('C:\Users\u0167448\Documents\GitHub\casadi-windows-matlabR2016a-v3.5.5'))
+% addpath(genpath('C:\Users\timvd\Documents\casadi-windows-matlabR2016a-v3.5.5'))
+addpath(genpath('C:\Users\u0167448\Documents\GitHub\casadi-windows-matlabR2016a-v3.5.5'))
 import casadi.*;        % Import casadi libraries
 opti = casadi.Opti();   % Initialise opti structure
 
@@ -106,7 +122,10 @@ dQ0dt          = opti.variable(1,N);
 dQ1dt          = opti.variable(1,N); 
 dQ2dt          = opti.variable(1,N); 
 
-vt = [0 -9 -2 2 5];
+% xi
+
+% vt = [0 -9 -2 2 5];
+vt = 0;
 Ft = interp1(vH, FMvtilda, vt);
 
 opti.subject_to(Q0 > 0);
@@ -117,6 +136,10 @@ opti.subject_to(Q1 - Q0 .* p == 0);
 opti.subject_to(Q2 - Q0 .* (p.^2 + q) == 0);
 
 % initial guess states
+opti.subject_to(Q0(1,1) == xi(end,1));
+opti.subject_to(Q1(1,1) == xi(end,2));
+opti.subject_to(Q2(1,1) == xi(end,3));
+
 opti.set_initial(Q0, xi(end,1)*ones(1,N));
 opti.set_initial(Q1, xi(end,2)*ones(1,N));
 opti.set_initial(Q2, xi(end,3)*ones(1,N));
@@ -152,8 +175,8 @@ for i = 1:length(allparms)
 end
 
 optparms = {'k11','k21','k22'};
-lb = [1 1 0];
-ub = [2e3 2e3 5];
+lb = [1 1 0 1];
+ub = [2e3 2e3 5 1e3];
 
 for i = 1:length(optparms)
     eval([optparms{i}, '= opti.variable(1)'])
@@ -162,7 +185,7 @@ for i = 1:length(optparms)
 end
 
 % model constraints
-Ns = floor(linspace(0, N, length(vt)+1));
+Ns = floor(linspace(1, N, length(vt)+1));
 
 % dynamic constraints
 error = [];
@@ -172,36 +195,29 @@ parms.Ca = 1;
 parms.Noverlap = 1;
 
 for i = 1:length(vt)
-
-    if length(y0) > 3
-        [error_thin] = ThinEquilibrium(parms.Ca, Q0(Ns(i)+1:Ns(i+1)), Non(Ns(i)+1:Ns(i+1)), dNondt(Ns(i)+1:Ns(i+1)), parms.kon, parms.koff, koop, parms.Noverlap);
-        
-        F = (Q0(Ns(i)+1:Ns(i+1)) + Q1(Ns(i)+1:Ns(i+1)));
-        
-        [error_thick] = ThickEquilibrium(Q0(Ns(i)+1:Ns(i+1)), F, DRX(Ns(i)+1:Ns(i+1)), dDRXdt(Ns(i)+1:Ns(i+1)), J1, J2, JF, parms.Noverlap);
-
-%         [error1] = MuscleEquilibrium_alt(Q0(Ns(i)+1:Ns(i+1)), Q1(Ns(i)+1:Ns(i+1)), Q2(Ns(i)+1:Ns(i+1)), dQ0dt(Ns(i)+1:Ns(i+1)), dQ1dt(Ns(i)+1:Ns(i+1)), dQ2dt(Ns(i)+1:Ns(i+1)), f, k11, k12, k21, k22,  Non(Ns(i)+1:Ns(i+1)), vt(i), 1);
-        [error1] = MuscleEquilibrium_alt_v2(Q0(Ns(i)+1:Ns(i+1)), p(Ns(i)+1:Ns(i+1)), q(Ns(i)+1:Ns(i+1)), dQ0dt(Ns(i)+1:Ns(i+1)), dQ1dt(Ns(i)+1:Ns(i+1)), dQ2dt(Ns(i)+1:Ns(i+1)), f, k11, k12, k21, k22,  Non(Ns(i)+1:Ns(i+1)), vt(i), DRX(Ns(i)+1:Ns(i+1)));
-       
-        error = [error; error_thin(:); error_thick(:); error1(:)];
-        
-        opti.subject_to((dNondt(Ns(i)+1:Ns(i+1)-1) + dNondt(Ns(i)+2:Ns(i+1)))*dt1/2 + Non(Ns(i)+1:Ns(i+1)-1) == Non(Ns(i)+2:Ns(i+1)));
-        opti.subject_to((dDRXdt(Ns(i)+1:Ns(i+1)-1) + dDRXdt(Ns(i)+2:Ns(i+1)))*dt1/2 + DRX(Ns(i)+1:Ns(i+1)-1) == DRX(Ns(i)+2:Ns(i+1)));
-    else
-        
-%         [error1] = MuscleEquilibrium_alt(Q0(Ns(i)+1:Ns(i+1)), Q1(Ns(i)+1:Ns(i+1)), Q2(Ns(i)+1:Ns(i+1)), dQ0dt(Ns(i)+1:Ns(i+1)), dQ1dt(Ns(i)+1:Ns(i+1)), dQ2dt(Ns(i)+1:Ns(i+1)), f, k11, k12, k21, k22, 1, vt(i), 1);
-        
-        [error1] = MuscleEquilibrium_alt_v2(Q0(Ns(i)+1:Ns(i+1)), p(Ns(i)+1:Ns(i+1)), q(Ns(i)+1:Ns(i+1)), dQ0dt(Ns(i)+1:Ns(i+1)), dQ1dt(Ns(i)+1:Ns(i+1)), dQ2dt(Ns(i)+1:Ns(i+1)), f, k11, k12, k21, k22, 1, vt(i), 1);
-                
-        error = [error; error1(:)];
-    end
-   
     
-    opti.subject_to((dQ0dt(Ns(i)+1:Ns(i+1)-1) + dQ0dt(Ns(i)+2:Ns(i+1)))*dt1/2 + Q0(Ns(i)+1:Ns(i+1)-1) == Q0(Ns(i)+2:Ns(i+1)));
-    opti.subject_to((dQ1dt(Ns(i)+1:Ns(i+1)-1) + dQ1dt(Ns(i)+2:Ns(i+1)))*dt1/2 + Q1(Ns(i)+1:Ns(i+1)-1) == Q1(Ns(i)+2:Ns(i+1)));
-    opti.subject_to((dQ2dt(Ns(i)+1:Ns(i+1)-1) + dQ2dt(Ns(i)+2:Ns(i+1)))*dt1/2 + Q1(Ns(i)+1:Ns(i+1)-1) == Q1(Ns(i)+2:Ns(i+1)));
-   
+    id = Ns(i):Ns(i+1);
+    F = (Q0(id) + Q1(id));
+
+    [error_thin] = ThinEquilibrium(parms.Ca, Q0(id), Non(id), dNondt(id), parms.kon, parms.koff, koop, parms.Noverlap);      
+    [error_thick] = ThickEquilibrium(Q0(id), F, DRX(id), dDRXdt(id), J1, J2, JF, parms.Noverlap);
+    [error1] = MuscleEquilibrium_alt_v2(Q0(id), p(id), q(id), dQ0dt(id), dQ1dt(id), dQ2dt(id), f, k11, k12, k21, k22,  Non(id), vt(i), DRX(id));
+
+    error = [error; error_thin(:); error_thick(:); error1(:)];
 end
+
+opti.subject_to((dNondt(Ns(1)+1:Ns(end)-1) + dNondt(Ns(1)+2:Ns(end)))*dt1/2 + Non(Ns(1)+1:Ns(end)-1) == Non(Ns(1)+2:Ns(end)));
+opti.subject_to((dDRXdt(Ns(1)+1:Ns(end)-1) + dDRXdt(Ns(1)+2:Ns(end)))*dt1/2 + DRX(Ns(1)+1:Ns(end)-1) == DRX(Ns(1)+2:Ns(end)));
+opti.subject_to((dQ0dt(Ns(1)+1:Ns(end)-1) + dQ0dt(Ns(1)+2:Ns(end)))*dt1/2 + Q0(Ns(1)+1:Ns(end)-1) == Q0(Ns(1)+2:Ns(end)));
+opti.subject_to((dQ1dt(Ns(1)+1:Ns(end)-1) + dQ1dt(Ns(1)+2:Ns(end)))*dt1/2 + Q1(Ns(1)+1:Ns(end)-1) == Q1(Ns(1)+2:Ns(end)));
+opti.subject_to((dQ2dt(Ns(1)+1:Ns(end)-1) + dQ2dt(Ns(1)+2:Ns(end)))*dt1/2 + Q2(Ns(1)+1:Ns(end)-1) == Q2(Ns(1)+2:Ns(end)));
+
+% opti.subject_to((dNondt(Ns(i)+1:Ns(i+1)-1) + dNondt(Ns(i)+2:Ns(i+1)))*dt1/2 + Non(Ns(i)+1:Ns(i+1)-1) == Non(Ns(i)+2:Ns(i+1)));
+% opti.subject_to((dDRXdt(Ns(i)+1:Ns(i+1)-1) + dDRXdt(Ns(i)+2:Ns(i+1)))*dt1/2 + DRX(Ns(i)+1:Ns(i+1)-1) == DRX(Ns(i)+2:Ns(i+1)));
+% opti.subject_to((dQ0dt(Ns(i)+1:Ns(i+1)-1) + dQ0dt(Ns(i)+2:Ns(i+1)))*dt1/2 + Q0(Ns(i)+1:Ns(i+1)-1) == Q0(Ns(i)+2:Ns(i+1)));
+% opti.subject_to((dQ1dt(Ns(i)+1:Ns(i+1)-1) + dQ1dt(Ns(i)+2:Ns(i+1)))*dt1/2 + Q1(Ns(i)+1:Ns(i+1)-1) == Q1(Ns(i)+2:Ns(i+1)));
+% opti.subject_to((dQ2dt(Ns(i)+1:Ns(i+1)-1) + dQ2dt(Ns(i)+2:Ns(i+1)))*dt1/2 + Q1(Ns(i)+1:Ns(i+1)-1) == Q1(Ns(i)+2:Ns(i+1)));
+
 
 % error = [error1 error2];
 opti.subject_to(error == 0);
@@ -255,6 +271,8 @@ R.F = sol.value(F);
 R.p = sol.value(p);
 R.q = sol.value(q);
 
+R.t = 0:dt1:(N-1)*dt1;
+
 % parameters
 for i = 1:length(optparms)
     parms.(optparms{i}) = eval(['sol.value(',optparms{i},')']);
@@ -267,6 +285,10 @@ if length(y0)>3
     R.DRX = sol.value(DRX);
 end
 
+figure(1)
+plot(R.t, [R.Q0; R.Q1; R.Q2])
+
+return
 %% Check whether p and q are okay
 % close all
 % subplot(121)
@@ -363,7 +385,7 @@ Fss_rel = Fss / F0;
 
 
 % FMv  = e1*log((e2*vs./vmax+e3)+sqrt((e2*vs./vmax+e3).^2+1))+e4; % extensor
-
+%%
 
 % if ishandle(2), close(2); end
 
