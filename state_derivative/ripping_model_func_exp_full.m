@@ -1,4 +1,4 @@
-function[Xd,Ftot,n,xi,F_pas,F_act] = ripping_model_func_exp_full(t, x, parms, Ca)
+function[Xd,Ftot,F_pas,F_act,n,xi] = ripping_model_func_exp_full(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM
@@ -18,7 +18,7 @@ function[Xd,Ftot,n,xi,F_pas,F_act] = ripping_model_func_exp_full(t, x, parms, Ca
     % safety
     n(n<0) = 0;
     
-    % compu te moments
+    % compute moments
     % displacement from start
     xi = parms.xi0 + (lce - parms.lce0);
 %     iRel = ((xi(:) < 2) & (xi(:) > -1)) | (abs(n(:)) > 1e-8);

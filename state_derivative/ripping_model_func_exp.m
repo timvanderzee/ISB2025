@@ -1,4 +1,4 @@
-function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
+function[Xd, Ftot, F_pas,F_act] = ripping_model_func_exp(t, x, parms, Ca)
 
     if nargin < 4
         Ca = parms.Ca; % expressed in uM
@@ -12,9 +12,9 @@ function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
     Q = x(2:4); 
     R = x(5);
     DRX = x(6);
-    lmtc = x(7);
-    lce = x(8);
-    
+    lce = x(7);
+    lmtc = x(8);
+
     eps = 1e-6;
 
     Q(1) = max(Q(1),eps);
@@ -148,7 +148,7 @@ function[Xd, Ftot] = ripping_model_func_exp(t, x, parms, Ca)
     Ftot = F_act(:) + F_pas(:);
     
     %% combined state derivative vector
-    Xd = [Nond; Qd; Rd; Dd; parms.vmtc; Ld];
+    Xd = [Nond; Qd; Rd; Dd; Ld; parms.vmtc];
 
     % remove length if needed
     Xd = Xd(1:length(x));

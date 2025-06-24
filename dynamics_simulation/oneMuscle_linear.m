@@ -1,4 +1,4 @@
-clear; clc; close all
+% clear; clc; close all
 
 addpath(genpath([pwd,'/..']))
 warning('off')
@@ -16,31 +16,40 @@ parms.forcible_detachment = 0;
 parms.kse = parms.kse*0.5;
 parms.kpe = 0;
 parms.no_tendon = 0;
-parms.xi0 = linspace(-15,15,nbins);
-parms.nbins = nbins;
-parms.xss = zeros(parms.nbins + 5, 1);
+
+
+%%
+
+% model = @ripping_model_func_exp_full;
+% parms.xi0 = linspace(-10,10,nbins);
+% parms.nbins = nbins;
+% parms.xss = zeros(1,parms.nbins + 5);
+
+model = @ripping_model_func_exp;
+parms.xss = zeros(1,8);
+
+
+%%
+
 parms.xss(end-2) = 0.0909;
-parms.xss(end-1) = 0;
-parms.xss(end) = 0;
-
-model = @ripping_model_func_exp_full;
-
-parms.vmtc = 0; 
 x0 = parms.xss;
-
+tic
 [t_sim,x_sim] = ode15s(@(t,x)dAllStates(t,x,model,parms,Ca), [0:0.01:2], ...
-    [0; 0; x0],odeopt);
+    [0, 0, x0],odeopt);
 
 F_sim = nan(height(x_sim),3);
 for i = 1:height(x_sim)
-    [~,F_sim(i,1),~,~,F_sim(i,2),F_sim(i,3)] = ...
+    [~,F_sim(i,1),F_sim(i,2),F_sim(i,3)] = ...
         model(t_sim(i), x_sim(i,3:end)', parms, Ca);
 end
-
-for i = 1:height(x_sim)
-    [~,F_sim(i,1),~,~,F_sim(i,2),F_sim(i,3)] = ...
-        model(t_sim(i), x_sim(i,3:end)', parms, Ca);
-end
+toc
+%%
+% figure
+% for i = 1:height(x_sim)
+%     plot(x_sim (i, 4:nbins+4));
+%     ylim([0 2])
+%     pause(0.2)
+% end
 
 %%
 
@@ -74,13 +83,18 @@ pause(0.05)
 yticks('');
 xlabel('displacement (l_{opt})')
 
-%%
+
+gifFile = 'myAnimation.gif';
+% exportgraphics(sim_fig, gifFile);
+
 for k=1:height(x_sim)
     update_figure(sim_fig, Lce0+x_sim(k,end-1)/half_s_len_norm, ...
         (Lce0+Lse0)+x_sim(k,end)/half_s_len_norm, ...
         (Lce0+Lse0)+x_sim(k,1)/half_s_len_norm)
     xlim([0 Lce0+Lse0*1.5])
     axis equal
+%     exportgraphics(gca, gifFile, "Append",true);
+
     pause(0.01)
 end
 
@@ -98,11 +112,6 @@ end
 function Xd = dAllStates(t, X, model, parms, Ca)
 
 % X(1): mass position, X(2): mass velocity, X(3:end): muscle states
-
-% g = 9.81;
-% l = 1;
-% c = 0; 
-% k = 0.5; 
 
 parms.vmtc = X(2);
 [Xmusd,F_mus] = model(t, X(3:end), parms, Ca);

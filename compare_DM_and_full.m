@@ -1,5 +1,5 @@
 %%
-clear all; clc; close all
+% clear all; clc; close all
 
 load('parameters/parms.mat')
 load('protocol/protocol.mat')
@@ -57,7 +57,7 @@ end
 
 
 %% plot
-close all
+% close all
 figure(1)
 color = get(gca,'colororder');
 pcolors = parula(length(nbins));

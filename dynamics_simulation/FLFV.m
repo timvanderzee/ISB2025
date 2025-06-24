@@ -1,4 +1,4 @@
-clear; clc; close all
+% clear; clc; close all
 
 addpath(genpath([pwd,'/..']))
 
@@ -36,8 +36,11 @@ for cond_itr = 1:2
         model = @ripping_model_func_exp_full;
         parms.xi0 = linspace(-15,15,nbins);
         parms.nbins = nbins;
-
         parms.xss = zeros(1,parms.nbins + 5);
+
+%         model = @ripping_model_func_exp;
+%         parms.xss = zeros(1,8);
+
         parms.xss(end-2) = 0.0909;
 
         parms.xss(end-1) = l0(k);
