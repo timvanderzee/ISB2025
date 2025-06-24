@@ -325,21 +325,35 @@ subplot(313)
 plot(R.t, R.Q2)
 
 figure(2)
-subplot(211)
-plot(R.t, R.F); hold on
-plot(R.t, Fts, '--')
-plot(R.t(id1), R.F(id1),'o')
-plot(R.t(id2), R.F(id2),'x')
-plot(R.t(id3), R.F(id3),'+')
+subplot(311)
+plot(R.t, vts)
+ylabel('Velocity')
 
-subplot(212);
+subplot(312)
+plot(R.t, R.F); hold on
+plot(R.t, Fts, '--'); 
+% plot(R.t(id1), R.F(id1),'o')
+% plot(R.t(id2), R.F(id2),'x')
+% plot(R.t(id3), R.F(id3),'kx', 'markersize',10,'linewidth',2)
+ylabel('Force')
+legend('Biophysical','Hill','location','best')
+legend boxoff
+
+subplot(313);
 plot(R.t, Fdot);
+ylabel('Force-rate')
 
 for i = 1:length(Ns)-1
     xline(toc(Ns(i)+1),'k--')
 end
 
 cost = 100 * sumsqr(R.F(Ns(2:end)-1) - Fts(Ns(2:end)-1)) + 1 * (sumsqr(R.dQ0dt(1))+sumsqr(R.dQ1dt(1))+sumsqr(R.dQ2dt(1)));
+
+for i = 1:3
+    subplot(3,1,i)
+    box off
+    xlabel('Time (s)')
+end
 
 return
 %% Test
