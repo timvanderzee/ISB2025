@@ -1,6 +1,6 @@
 clear all; close all; clc
 cd('C:\Users\u0167448\Documents\GitHub\ISB2025')
-cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - Parameter fitting')
+% cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - Parameter fitting')
 
 % Horslen parameters
 load('parms.mat','parms')
@@ -73,19 +73,19 @@ sol = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 1], X0, xp0);
 t = sol.x;
 x = sol.y;
 [~,xdot] = deval(sol, t);
+% 
+% clear dX
+% for i = 1:length(t)
+%     [~, dX(i,:)] = OdeFun_FV(t(i), x(:,i), zeros(size(x(:,i))), parms);
+% end
 
-clear dX
-for i = 1:length(t)
-    [~, dX(i,:)] = OdeFun_FV(t(i), x(:,i), zeros(size(x(:,i))), parms);
-end
-
-figure(1)
-for i = 1:5
-    nexttile
-    
-    plot(t, xdot(i,:)); hold on
-    plot(t, dX(:,i),'--')
-end
+% figure(1)
+% for i = 1:5
+%     nexttile
+%     
+%     plot(t, xdot(i,:)); hold on
+%     plot(t, dX(:,i),'--')
+% end
 
 
 
@@ -245,7 +245,7 @@ F = (Q0(id) + Q1(id));
 
 error_thin = ThinEquilibrium(parms.Ca, Q0(id), Non(id), dNondt(id), parms.kon, parms.koff, koop, parms.Noverlap);      
 error_thick = ThickEquilibrium(Q0(id), F, DRX(id), dDRXdt(id), J1, J2, JF, parms.Noverlap);
-error1 = MuscleEquilibrium_alt_v2(Q0(id), p(id), q(id), dQ0dt(id), dQ1dt(id), dQ2dt(id), f, k11, k12, k21, k22,  Non(id), vts(id), DRX(id));
+error1 = MuscleEquilibrium(Q0(id), p(id), q(id), dQ0dt(id), dQ1dt(id), dQ2dt(id), f, k11, k12, k21, k22,  Non(id), vts(id), DRX(id));
 
 error = [error; error_thin(:); error_thick(:); error1(:)];
 
@@ -281,7 +281,7 @@ options.ipopt.linear_solver = 'mumps';
 
 % Solve the OCP
 p_opts = struct('expand',true);
-s_opts = struct('max_iter', 200);
+s_opts = struct('max_iter', 500);
 opti.solver('ipopt',p_opts,s_opts);
 
 figure(100); 
