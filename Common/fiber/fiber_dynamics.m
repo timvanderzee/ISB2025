@@ -25,7 +25,12 @@ kP = parms.kpe;
 cos_a = 1;
 
 % force-length
-overlap_func = @(L, parms) 1;
+half_s_len_norm = parms.s/2/parms.h;
+curv_w = 0.5;
+overlap_func = @(L, parms) max(0.00001, ...
+    -(L-half_s_len_norm*curv_w)*(L+half_s_len_norm*curv_w)...
+    /(half_s_len_norm*curv_w)^2);
+
 parms.Noverlap = overlap_func(L, parms);
 
 % simulate biophysical dynamics
