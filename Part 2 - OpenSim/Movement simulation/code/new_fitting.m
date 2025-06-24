@@ -1,5 +1,5 @@
 clear all; close all; clc
-cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Parameter fitting\input')
+cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Movement simulation\input\common')
 
 % Horslen parameters
 load('parms.mat','parms')

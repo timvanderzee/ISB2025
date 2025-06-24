@@ -11,7 +11,7 @@ x = x0;
 xd0 = zeros(size(x0));
 
 for i = 1:length(us)
-    O = us(i);
+    parms.vmtc = us(i);
     T = Ts(i);
 
     if T > 0
