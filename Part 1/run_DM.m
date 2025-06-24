@@ -1,9 +1,6 @@
 clear all; close all; clc
 
-cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 1\parameters')
 load('parms.mat', 'parms')
-
-cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 1\protocol')
 load('protocol.mat', 'XData')
 
 parms.forcible_detachment = 0;
@@ -23,29 +20,35 @@ parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
 
-modelnames = {'fiber_dynamics'};
-j = 1;
-modelname = modelnames{j};
+modelname = 'fiber_dynamics';
 
-parms.xss = zeros(1,7);
+for j = 1:2
 
+    if j == 1
+        parms.xss = zeros(1,7);
 
-parms.xss(end-2) = 0.0909;
+    else
+        nbins = 500;
+        parms.xi0 = linspace(-15,15,nbins);
+        parms.nbins = length(parms.xi0);
+        parms.xss = zeros(1,parms.nbins + 4);
+        parms.xss(end-2) = 0.0909;
+    end
+    
+    model = eval(['@',modelname]);
 
-model = eval(['@',modelname]);
+    tic
+    [t,x] = stretch_shorten(model, Ts, us, parms.xss, parms, Ca);
 
-tic
-[t,x] = stretch_shorten(model, Ts, us, parms.xss, parms, Ca);
+    F = nan(1,length(x));
+    for i = 1:length(x)
+        [~,F(i)] = model(t(i), x(i,:)', parms, Ca);
+    end
 
-F = nan(1,length(x));
-for i = 1:length(x)
-    [~,F(i)] = model(t(i), x(i,:)', parms, Ca);
+    figure(1)
+    plot(t,F, ls{j}); hold on
+    xlim([9.8 10.6])
 end
-
-
-figure(1)
-plot(t,F, ls{j}); hold on
-xlim([9.8 10.6])
 
 %% test overlap and activation effects
 close all

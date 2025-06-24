@@ -2,19 +2,20 @@ function[xdot, Ftot, Ld] = fiber_dynamics(t, x, parms, Ca)
 
 % retrieve states
 Non     = x(1);
-Q0      = x(2);
-Q1      = x(3);
-Q2      = x(4);
-DRX     = x(5);
-lmtc    = x(6);
+Q       = x(2:end-3);
+DRX     = x(end-2);
+lmtc    = x(end-1);
+L       = x(end-0);
+
+% get force
+[Q0, Q1, parms.xi] = force_from_distribution(Q, L, parms);
+
+eps = 1e-6;
+Q0 = max(Q0, eps);
+FXB = Q0 + Q1;
 
 % make sure values are within range
-eps = 1e-6;
 Non = max(Non, eps);
-Q0 = max(Q0,eps);
-% Q1 = max(Q1, -Q0);
-Q2 = max(Q2, eps.^2);
-FXB = max(Q0 * parms.ps + Q1, 0);
 
 % get geometry
 dLS = parms.Lse_func(FXB, parms);
@@ -24,7 +25,8 @@ kP = parms.kpe;
 cos_a = 1;
 
 % simulate biophysical dynamics
-X = [Non Q0 Q1 Q2 DRX];
+X = [Non; Q(:); DRX];
+ 
 [Xd, Ld] = biophysical_dynamics(Ca, X, kS, kP, kT, cos_a, parms);
 
 % total force
