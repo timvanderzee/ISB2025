@@ -16,7 +16,7 @@ auxdata = get_muscle_parms();
 auxdata.NMuscles = M;
 
 %% OpenSim
-cd([mainfolder, '\Part 2 - OpenSim\input\', stype])
+cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\', stype])
 
 % Import the OpenSim modeling classes
 import org.opensim.modeling.*
@@ -115,8 +115,9 @@ return
 %% write things
 s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
 
+cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Movement simulation\output')
 % Write model states to an OpenSim STO file
-StatesData.name = 'Pendulum_FW_States_v3';
+StatesData.name = 'Pendulum_FW_States';
 StatesData.nRows = length(tFW);
 StatesData.nColumns = Nstates + 1;
 StatesData.labels = [{'time'}; stateNames]';
