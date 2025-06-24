@@ -28,8 +28,7 @@ parms.ti = [0 1];
 
 parms.Ca = 1;
 
-[t0, x0] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 1], x0, xp0);
-
+[t0, x0] = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 1], x0, xp0);
 figure(1)
 plot(t0,x0)
 
@@ -68,14 +67,14 @@ parms.vts = vts;
 parms.ti = toc;
 parms.Ca = 1;
 
-sol = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 1], X0, xp0);
+sol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 1], X0, xp0);
 t = sol.x;
 x = sol.y;
 [~,xdot] = deval(sol, t);
 % 
 % clear dX
 % for i = 1:length(t)
-%     [~, dX(i,:)] = OdeFun_FV(t(i), x(:,i), zeros(size(x(:,i))), parms);
+%     [~, dX(i,:)] = fiber_dynamics_implicit_no_tendon(t(i), x(:,i), zeros(size(x(:,i))), parms);
 % end
 
 % figure(1)
@@ -358,7 +357,7 @@ return
 %% Test
 parms.f = R.f;
 parms.Ca = 1;
-[ti,xi] = ode15i(@(t,y,yp) OdeFun_FV(t,y,yp, parms), [0 1], y0, yp0);
+[ti,xi] = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 1], y0, yp0);
 
 figure(2)
 plot(ti, xi(:,1)+xi(:,2))

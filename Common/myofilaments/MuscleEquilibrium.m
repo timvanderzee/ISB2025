@@ -14,8 +14,6 @@ IGef{3} = @(c,k)(c(1,:)*k(1).*exp(c(3,:)*k(2)^2/4-c(2,:)*k(2))).*((c(2,:)-c(3,:)
 % Compute first-order moment
 Q1 = p .* Q0;
 
-
-
 % Compute Qdot
 [Q0dot, Q1dot, Q2dot] = CrossBridge_Dynamics(Q0, p, q, f, w, k1, k2, IGef, Non, DRX);
 

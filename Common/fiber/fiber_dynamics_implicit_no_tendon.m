@@ -1,4 +1,4 @@
-function[error] = OdeFun_FV(t,y,yp, parms)
+function[error] = fiber_dynamics_implicit_no_tendon(t,y,yp, parms)
 
 % Get velocity
 vMtilda = interp1(parms.ti, parms.vts, t);
