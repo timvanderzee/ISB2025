@@ -1,6 +1,6 @@
-function [error, dX] = ThinEquilibrium(Act, Q0, Non, dNondt, kon, koff, koop, Noverlap)
+function [error, dX] = ThinEquilibrium(Ca, Q0, Non, dNondt, kon, koff, koop, Ntot)
 
-    [Jon, Joff] = ThinFilament_Dynamics(Act, Q0, Non, kon, koff, koop, Noverlap);
+    [Jon, Joff] = ThinFilament_Dynamics(Ca, Q0, Non, kon, koff, koop, Ntot);
     
 %     dX = max(Jon,0) - max(Joff,0);
     dX = Jon - Joff;

@@ -24,6 +24,10 @@ kT = 1000;
 kP = parms.kpe;
 cos_a = 1;
 
+% force-length
+overlap_func = @(L, parms) 1;
+parms.Noverlap = overlap_func(L, parms);
+
 % simulate biophysical dynamics
 X = [Non; Q(:); DRX];
  

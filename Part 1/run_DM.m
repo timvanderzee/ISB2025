@@ -22,7 +22,7 @@ parms.Noverlap = 1;
 
 modelname = 'fiber_dynamics';
 
-for j = 1:2
+for j = 1
 
     if j == 1
         parms.xss = zeros(1,7);
