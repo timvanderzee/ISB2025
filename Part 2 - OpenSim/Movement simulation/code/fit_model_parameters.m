@@ -35,11 +35,14 @@ plot(t0,x0)
 X0 = x0(end,:);
 
 
-%%
+%% Design velocity vector
 close all
-vt = [0 2 -2 2 -5 2 0];
+vmax = 5;
 
-toc = linspace(0,1,1000);
+vt = [0 -2 2 -4 4 -6 0 5 -5 0 5]/10 * vmax;
+ts = [.2 .1 .1 .1 .1 .1 .3 .1 .1 .05 .1];
+
+toc = linspace(0,sum(ts),1000);
 N = length(toc);
 dt1 = mean(diff(toc));
 
@@ -47,12 +50,30 @@ dt1 = mean(diff(toc));
 Ns = floor(linspace(0, N, length(vt)+1));
 vts = zeros(1,N);
 
+Ts = [0 cumsum(ts)];
 for i = 1:(length(Ns)-1)
-    vts(Ns(i)+1:Ns(i+1)) = vt(i);
+    id = (toc > Ts(i)) & (toc <= Ts(i+1));
+    vts(id) = vt(i);
 end
 
+idv = [2 3 4 5];
+idF = nan(1, length(idv)+1);
+
+idF(1) = find(toc < Ts(2), 1, 'last');
+for i = 1:length(idv)
+    idF(i+1) = find(toc < (Ts(idv(i)) + .12/abs(vt(idv(i)))), 1, 'last');
+end
+
+idFd = [find(toc > Ts(end-4),1); find(toc > Ts(end-1),1)];
+
+plot(toc, vts); hold on
+plot(toc(idF), vts(idF),'o')
+plot(toc(idFd), vts(idFd),'x')
+
+%% Get initial state
+close all
 Fvparam = [ -0.3183   -8.1492   -0.3741    0.8856];
-vmax = 10;
+
 
 e1 = Fvparam(1);
 e2 = Fvparam(2);
@@ -67,41 +88,12 @@ parms.vts = vts;
 parms.ti = toc;
 parms.Ca = 1;
 
-sol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 1], X0, xp0);
+sol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 Ts(end)], X0, xp0);
 t = sol.x;
 x = sol.y;
 [~,xdot] = deval(sol, t);
-% 
-% clear dX
-% for i = 1:length(t)
-%     [~, dX(i,:)] = fiber_dynamics_implicit_no_tendon(t(i), x(:,i), zeros(size(x(:,i))), parms);
-% end
-
-% figure(1)
-% for i = 1:5
-%     nexttile
-%     
-%     plot(t, xdot(i,:)); hold on
-%     plot(t, dX(:,i),'--')
-% end
-
-
 
 F = x(1,:) + x(2,:);
-
-% 
-Q0 = x(1,:);
-Q1 = x(2,:);
-Q2 = x(3,:);
-Non = x(4,:);
-DRX = x(5,:);
-
-dQ0dt = xdot(1,:);
-dQ1dt = xdot(2,:);
-dQ2dt = xdot(3,:);
-
-dNondt = xdot(4,:);
-dDRXdt = xdot(5,:);
 
 % interpolate back
 Q0i = interp1(t, x(1,:), toc);
@@ -137,25 +129,7 @@ subplot(133)
 plot(vH, FMvtilda); hold on
 plot(vi, F*2, '.')
 
-% Check for errors
-% close all
-% % error_thin = ThinEquilibrium(parms.Ca, Q0, Non, dNondt, parms.kon, parms.koff, parms.koop, parms.Noverlap);
-% % error_thick = ThickEquilibrium(Q0, F, DRX, dDRXdt, parms.J1, parms.J2, parms.JF, parms.Noverlap);
-% 
-% error_thin = ThinEquilibrium(parms.Ca, Q0i, Noni, dNondti, parms.kon, parms.koff, parms.koop, parms.Noverlap);
-% error_thick = ThickEquilibrium(Q0i, Fi, DRXi, dDRXdti, parms.J1, parms.J2, parms.JF, parms.Noverlap);
-% error_muscle = MuscleEquilibrium_alt_v2(Q0i, pi, qi, dQ0dti, dQ1dti, dQ2dti, parms.f, parms.k11, parms.k12, parms.k21, parms.k22,  Noni, vts, DRXi);
-% 
-% 
-% close all
-% 
-% figure(3)
-% plot(error_thin); hold on
-% plot(error_thick,'--')
-% plot(error_muscle',':')
-% 
-% error_thin2 = (dNondti(Ns(1)+1:Ns(end)-1) + dNondti(Ns(1)+2:Ns(end)))*dt1/2 + Noni(Ns(1)+1:Ns(end)-1) - Noni(Ns(1)+2:Ns(end));
-% plot(error_thin2,'--')
+
 %% Fit cross-bridge rates using direct collocation
 % addpath(genpath('C:\Users\timvd\Documents\casadi-windows-matlabR2016a-v3.5.5'))
 addpath(genpath('C:\Users\u0167448\Documents\GitHub\casadi-windows-matlabR2016a-v3.5.5'))
@@ -262,11 +236,13 @@ Freldot = dQ0dt + dQ1dt;
 % cost function
 % J = 100 * sumsqr(Frel - Fts);
 
-id1 = Ns(1:end-1)+1;
-id2 = Ns(2:end);
-id3 = round(id1 + (id2-id1).* .5);
+% id1 = Ns(1:end-1)+1;
+% id2 = Ns(2:end);
+% id3 = round(id1 + (id2-id1).* .5);
 
-J = 100 * sumsqr(Frel(id3) - Fts(id3));
+
+J = 100 * sumsqr(Frel(idF) - Fts(idF));
+J = J + 100 * sumsqr(0.7 - Freldot(idFd(2))/Freldot(idFd(1)));
 J = J + 1 * (sumsqr(dQ0dt(1))+sumsqr(dQ1dt(1))+sumsqr(dQ2dt(1))); 
 
 opti.minimize(J); 

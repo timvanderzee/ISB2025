@@ -11,7 +11,7 @@ end
 body_states = s(1:auxdata.NStates);
 MStates = length(s(auxdata.NStates+1:end)) / auxdata.NMuscles; % number of muscle states
 muscle_states = reshape(s(auxdata.NStates+1:end), auxdata.NMuscles, MStates);
-fse = muscle_states(:,1);
+fse = max(muscle_states(:,1), 0);
 
 % Import the OpenSim modeling classes
 import org.opensim.modeling.*

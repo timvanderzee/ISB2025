@@ -98,12 +98,14 @@ ls = {'-','--'};
 input.act = .2 * ones(size(input.lMT));
 color = get(gca,'colororder');
 
-AMPs = [0 .2];
+AMPs = zeros(M, 2);
+AMPs(4,:) = [0 .1];
+AMPs(5,:) = [0 .2];
 
 for j = 1:2
     
     for i = 1:2
-        auxdata.AMP = AMPs(i);
+        auxdata.AMP = AMPs(:,i);
     
         [tFW,sFW] = sim_movement(modelnames{j}, t0, tf, s0, input, osimModel, osimState, auxdata);
         fse = sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles);

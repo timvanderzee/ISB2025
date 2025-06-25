@@ -30,7 +30,7 @@ end
 
 %% simulate pre-movement
 t_pre = linspace(t_input(1), t_input(2), 1000);
-f = 5;
+f = 3;
 AMP = auxdata.AMP;
 % T = 1/f;
 
@@ -38,7 +38,7 @@ x0 = x_isom;
 
 if ~isfield(input, 'platacc') % check whether we're doing the pendulum test
     disp('Simulation pre-movement ...')
-    for m = 5
+    for m = 4:5
         
 %         disp(num2str(m))
         
@@ -46,8 +46,8 @@ if ~isfield(input, 'platacc') % check whether we're doing the pendulum test
         A = input.act(m) * ones(size(t_pre));
         
         % pre movement
-        LMT_pre = (1 + AMP) * input.lMT(m) - AMP * input.lMT(m) * cos(2*pi*f*t_pre);
-        VMT_pre = 2 * pi * f * AMP * input.lMT(m) * sin(2*pi*f*t_pre);
+        LMT_pre = (1 + AMP(m)) * input.lMT(m) - AMP(m) * input.lMT(m) * cos(2*pi*f*t_pre);
+        VMT_pre = 2 * pi * f * AMP(m) * input.lMT(m) * sin(2*pi*f*t_pre);
         
         % simulate
         [t,state] = ode15s(@TendonForceOdeVecSRS,t_input,x_isom(m,:),[],t_pre, A,LMT_pre,VMT_pre, auxdata.params(:,m), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, vec_kT, modelname);

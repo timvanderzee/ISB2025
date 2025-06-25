@@ -16,6 +16,12 @@ parms.k12 = 2;
 parms.k21 =  451.0874;
 parms.k22 =  0.2328;
 
+parms.f = 1.1711e+03;
+parms.k11 =  14.2557;
+parms.k12 = 2;
+parms.k21 =   613.9038;
+parms.k22 =  0;
+
 parms.vmtc = 0;
 parms.Ca = 1;
 parms.ps = 1;

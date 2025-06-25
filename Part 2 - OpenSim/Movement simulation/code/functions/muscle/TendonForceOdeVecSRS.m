@@ -6,7 +6,7 @@ lMT = interp1(t_input, LMT, t);
 vMT = interp1(t_input, VMT, t);
 
 % Length and overlap
-fse = x(1);
+fse = max(x(1), 0);
 [~, lMtilda, cos_alpha] = get_lM_from_fse(fse, lMT, mparams, kT);
 FMltilda = get_overlap(lMtilda, Faparam);
 
