@@ -1,4 +1,4 @@
-function [dx, FT] = TendonForceOdeVecSRS(t,x,t_input,A,LMT,VMT,mparams, Fvparam, Fpparam, Faparam, lMtilda_isom, ksrs, kT, type)
+function [dx, FT] = TendonForceOdeVecSRS(t,x,t_input,A,LMT,VMT,mparams, Fvparam, Fpparam, Faparam, kT, type)
 
 % Input
 a = interp1(t_input, A, t);
@@ -10,16 +10,11 @@ fse = x(1);
 [~, lMtilda, cos_alpha] = get_lM_from_fse(fse, lMT, mparams, kT);
 FMltilda = get_overlap(lMtilda, Faparam);
 
-% Force from short-range stiffness
-dlM = (0.5*tanh(1000*(lMtilda - lMtilda_isom))+0.5) .*(lMtilda - lMtilda_isom);
-dlM = (0.5*tanh(1000*(-dlM+5.7*10^(-3)))+ 0.5).*dlM + (0.5*tanh(1000*(dlM-5.7*10^(-3)))+0.5)*5.7*10^(-3);
-Fsrs = ksrs * a .* FMltilda.*dlM;
-
 % Parallel force
 [Fpe, kP] = get_parallel_force(lMtilda, Fpparam);
 
 % Contractile element force
-FMce = max(fse./cos_alpha-Fpe-Fsrs, 0);
+FMce = max(fse./cos_alpha-Fpe, 0);
 
 % Contractile dynamics
 if strcmp(type, 'Hill')
