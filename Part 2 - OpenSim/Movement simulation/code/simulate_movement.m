@@ -95,25 +95,42 @@ close all; clc
 modelnames = {'Hill', 'Biophysical'};
 ls = {'-','--'};
 
+input.act = .2 * ones(size(input.lMT));
+color = get(gca,'colororder');
+
+AMPs = [0 .2];
+
 for j = 1:2
-    [tFW,sFW] = sim_movement(modelnames{j}, t0, tf, s0, input, osimModel, osimState, auxdata);
+    
+    for i = 1:2
+        auxdata.AMP = AMPs(i);
+    
+        [tFW,sFW] = sim_movement(modelnames{j}, t0, tf, s0, input, osimModel, osimState, auxdata);
+        fse = sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles);
 
-    fse = sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles);
+        figure(1)
+        for m = 1:M
+            subplot(3,3,m)
+            plot(tFW, fse(:,m), ls{i}, 'color', color(j,:)); hold on
+            box off
+            title(muscle_names{m})
+        end
 
-    figure(1)
-    for m = 1:M
-        subplot(3,3,m)
-        plot(tFW, fse(:,m)); hold on
+        s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
+        phi = s(:,1); % knee angle [?]
+
+        subplot(339);
+        plot(tFW, phi, ls{i}, 'color', color(j,:)); hold on
         box off
-        title(muscle_names{m})
+        title('Knee angle')
     end
+    
 end
 
 return
 
 
 %% write things
-s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
 
 cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Movement simulation\output')
 % Write model states to an OpenSim STO file

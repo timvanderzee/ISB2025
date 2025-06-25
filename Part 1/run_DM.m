@@ -1,6 +1,9 @@
 clear all; close all; clc
 
+% from Horslen paper: from 1 typical example fiber
 load('parms.mat', 'parms')
+
+% for a typical Horslen protocol
 load('protocol.mat', 'XData')
 
 parms.forcible_detachment = 0;
@@ -16,29 +19,25 @@ Ca = 10^(-XData.pCas+6);
 ls = {'-','--'};
 close all
 
-parms.act = 1;
-parms.cosa = 1;
-parms.Noverlap = 1;
+parms.act = 1; % active muscle volume
+parms.cosa = 1; % cosine of pennation angle
+parms.Noverlap = 1; % myofilament overlap
 
-modelname = 'fiber_dynamics';
 
-for j = 1
+for j = 2
 
-    if j == 1
+    if j == 1 % DM
         parms.xss = zeros(1,7);
 
-    else
-        nbins = 500;
-        parms.xi0 = linspace(-15,15,nbins);
+    else % discretized
+        nbins = 500; % number of bins
+        parms.xi0 = linspace(-15,15,nbins); % initial strain vector (power stroke)
         parms.nbins = length(parms.xi0);
-        parms.xss = zeros(1,parms.nbins + 4);
-        parms.xss(end-2) = 0.0909;
+        parms.xss = zeros(1,parms.nbins + 4); % 4 non-cross-bridge states
+        parms.xss(end-2) = 0.0909; % DRX state, given default parameters
     end
     
-    model = eval(['@',modelname]);
-
-    tic
-    [t,x] = stretch_shorten(model, Ts, us, parms.xss, parms, Ca);
+    [t,x] = stretch_shorten('@fiber_dynamics', Ts, us, parms.xss, parms, Ca);
 
     F = nan(1,length(x));
     for i = 1:length(x)
@@ -51,15 +50,16 @@ for j = 1
 end
 
 %% test effect of Ca
+% simulate isometric at different calcium levels
 pCas = [9 linspace(7, 4.5, 100)];
 Cas = 10.^(-pCas+6);
-
+parms.vmtc = 0;
 F = nan(size(Cas));
+
 for j = 1:length(Cas)
     
     Ca = Cas(j);
-    [t,x] = ode15s(model, [0 10], parms.xss, [], parms, Ca);
-   
+    [t,x] = ode15s(model, [0 10], parms.xss, [], parms, Ca);   
     
     [~,F(j)] = model(t(end), x(end,:)', parms, Ca);
         

@@ -1,4 +1,4 @@
-function[vM, Xdot] = contractile_dynamics_BP_v3(a, FMltilda, x, vMT, kT, kP, cos_a, params)
+function[vM, Xdot] = contractile_dynamics_BP(a, FMltilda, x, vMT, kT, kP, cos_a, params)
 
 % v2: with dampening
 lMo = params(2);
