@@ -50,6 +50,24 @@ for j = 1
     xlim([9.8 10.6])
 end
 
+%% test effect of Ca
+pCas = [9 linspace(7, 4.5, 100)];
+Cas = 10.^(-pCas+6);
+
+F = nan(size(Cas));
+for j = 1:length(Cas)
+    
+    Ca = Cas(j);
+    [t,x] = ode15s(model, [0 10], parms.xss, [], parms, Ca);
+   
+    
+    [~,F(j)] = model(t(end), x(end,:)', parms, Ca);
+        
+end
+
+figure(2)
+plot(-pCas, F)
+
 %% test overlap and activation effects
 close all
 c = linspace(0,1,5);
