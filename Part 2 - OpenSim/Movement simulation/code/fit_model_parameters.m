@@ -261,9 +261,9 @@ Freldot = dQ0dt + dQ1dt;
 % id3 = round(id1 + (id2-id1).* .5);
 
 
-J = 100 * sumsqr(Frel(idF) - Fts(idF));
-J = J + 100 * sumsqr(0.7 - Freldot(idFd(2))/Freldot(idFd(1)));
-J = J + 1 * (sumsqr(dQ0dt(1))+sumsqr(dQ1dt(1))+sumsqr(dQ2dt(1))); 
+J = 100 * sum((Frel(idF) - Fts(idF)).^2);
+J = J + 100 * sum((0.7 - Freldot(idFd(2))/Freldot(idFd(1))).^2);
+J = J + 1 * (sum(dQ0dt(1).^2) + sum(dQ1dt(1).^2) + sum(dQ2dt(1).^2)); 
 
 opti.minimize(J); 
 
@@ -343,7 +343,7 @@ for i = 1:length(Ns)-1
     xline(toc(Ns(i)+1),'k--')
 end
 
-cost = 100 * sumsqr(R.F(Ns(2:end)-1) - Fts(Ns(2:end)-1)) + 1 * (sumsqr(R.dQ0dt(1))+sumsqr(R.dQ1dt(1))+sumsqr(R.dQ2dt(1)));
+% cost = 100 * sumsqr(R.F(Ns(2:end)-1) - Fts(Ns(2:end)-1)) + 1 * (sumsqr(R.dQ0dt(1))+sumsqr(R.dQ1dt(1))+sumsqr(R.dQ2dt(1)));
 
 for i = 1:3
     subplot(3,1,i); hold on
