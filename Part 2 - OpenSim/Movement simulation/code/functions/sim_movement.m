@@ -22,7 +22,7 @@ for m = 1:auxdata.NMuscles
     VMT = [input.vMT(m); input.vMT(m)];
 
     % simulate
-    [t,state] = ode15s(@TendonForceOdeVecSRS,t_input,x00,[],t_input, A,LMT,VMT, auxdata.params(:,m), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, vec_kT, modelname);
+    [t,state] = ode15s(@TendonForceOdeVecSRS,t_input,x00,[],t_input, A,LMT,VMT, auxdata.params(:,m), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, vec_kT, modelname, auxdata.parms);
 
     x_isom(m,:) = state(end,:); 
   
@@ -30,7 +30,7 @@ end
 
 %% simulate pre-movement
 t_pre = linspace(t_input(1), t_input(2), 1000);
-f = 3;
+f = 5;
 AMP = auxdata.AMP;
 % T = 1/f;
 
@@ -50,7 +50,7 @@ if ~isfield(input, 'platacc') % check whether we're doing the pendulum test
         VMT_pre = 2 * pi * f * AMP(m) * input.lMT(m) * sin(2*pi*f*t_pre);
         
         % simulate
-        [t,state] = ode15s(@TendonForceOdeVecSRS,t_input,x_isom(m,:),[],t_pre, A,LMT_pre,VMT_pre, auxdata.params(:,m), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, vec_kT, modelname);
+        [t,state] = ode15s(@TendonForceOdeVecSRS,t_input,x_isom(m,:),[],t_pre, A,LMT_pre,VMT_pre, auxdata.params(:,m), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, vec_kT, modelname, auxdata.parms);
 
         x0(m,:) = state(end,:); 
 

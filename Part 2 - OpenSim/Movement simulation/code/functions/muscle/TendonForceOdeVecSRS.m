@@ -1,4 +1,4 @@
-function [dx, FT] = TendonForceOdeVecSRS(t,x,t_input,A,LMT,VMT,mparams, Fvparam, Fpparam, Faparam, kT, type)
+function [dx, FT] = TendonForceOdeVecSRS(t,x,t_input,A,LMT,VMT,mparams, Fvparam, Fpparam, Faparam, kT, type, XBparam)
 
 % Input
 a = interp1(t_input, A, t);
@@ -20,7 +20,7 @@ FMce = max(fse./cos_alpha-Fpe, 0);
 if strcmp(type, 'Hill')
     [vM, Xd] = contractile_dynamics(a, FMltilda, FMce, Fvparam, mparams);
 elseif strcmp(type, 'Biophysical')
-    [vM, Xd] = contractile_dynamics_BP(a, FMltilda, [FMce x(2) x(3) x(4) x(5)], vMT, kT, kP, cos_alpha, mparams);
+    [vM, Xd] = contractile_dynamics_BP(a, FMltilda, [FMce x(2) x(3) x(4) x(5)], vMT, kT, kP, cos_alpha, mparams, XBparam);
 end
 
 % Tendon velocity and force

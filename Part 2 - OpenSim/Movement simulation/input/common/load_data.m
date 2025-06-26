@@ -1,4 +1,4 @@
-function[input, s0, t0, tf, models, muscle_names] = load_data(type)
+function[input, s0, t0, tf, models, muscle_names] = load_data(type, parms)
 
 if strcmp(type, 'standing_balance')
 
@@ -49,7 +49,7 @@ elseif strcmp(type, 'pendulum_test')
     models = {'leg39_path_actuators.osim', 'leg39_welded.osim'};
     muscle_names = {'bifemlh_r'; 'bifemsh_r'; 'glut_max2_r'; 'rect_fem_r'; 'vas_int_r'; 'med_gas_r'; 'soleus_r'; 'tib_ant_r'};
     
-    input.act = .05 * ones(1, length(muscle_names));
+    input.act = parms.act * ones(1, length(muscle_names));
 end
 
 end

@@ -1,5 +1,6 @@
-clear all; close all; clc
-cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Movement simulation\input\common')
+function[parms] = fit_model_parameters(opti)
+
+% cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Movement simulation\input\common')
 
 % Horslen parameters
 load('parms.mat','parms')
@@ -36,11 +37,21 @@ X0 = x0(end,:);
 
 
 %% Design velocity vector
-close all
 vmax = 5;
 
 vt = [0 -2 2 -4 4 -6 0 5 -5 0 5]/10 * vmax;
-ts = [.2 .1 .1 .1 .1 .1 .3 .1 .1 .05 .1];
+
+% for velocity part, we just need to evaluate until evaluation time
+idv = [2 3 4 5 6];
+
+ts = .2 * ones(size(vt));
+for i = 1:length(idv)
+    ts(i+1) = .12 / abs(vt(idv(i)));
+end
+
+idS = 7:length(vt);
+ts(idS) = [.3 .1 .1 .1 .1];
+Ts = [0 cumsum(ts)];
 
 toc = linspace(0,sum(ts),1000);
 N = length(toc);
@@ -48,32 +59,34 @@ dt1 = mean(diff(toc));
 
 % model constraints
 Ns = floor(linspace(0, N, length(vt)+1));
-vts = zeros(1,N);
 
-Ts = [0 cumsum(ts)];
+vts = zeros(1,N);
 for i = 1:(length(Ns)-1)
     id = (toc > Ts(i)) & (toc <= Ts(i+1));
     vts(id) = vt(i);
 end
 
-idv = [2 3 4 5];
+% close all
+% figure(1)
+% plot(toc, vts); hold on
+
+%
 idF = nan(1, length(idv)+1);
 
 idF(1) = find(toc < Ts(2), 1, 'last');
 for i = 1:length(idv)
-    idF(i+1) = find(toc < (Ts(idv(i)) + .12/abs(vt(idv(i)))), 1, 'last');
+    idF(i+1) = find(toc < Ts(i+1), 1, 'last');
 end
 
-idFd = [find(toc > Ts(end-4),1); find(toc > Ts(end-1),1)];
+% plot(toc(idF),vts(idF),'o')
 
-plot(toc, vts); hold on
-plot(toc(idF), vts(idF),'o')
-plot(toc(idFd), vts(idFd),'x')
+idFd = [find(toc > Ts(end-4),1); find(toc > Ts(end-1),1)];
+% plot(toc(idFd), vts(idFd),'x')
+
 
 %% Get initial state
 close all
 Fvparam = [ -0.3183   -8.1492   -0.3741    0.8856];
-
 
 e1 = Fvparam(1);
 e2 = Fvparam(2);
@@ -113,28 +126,25 @@ qi = Q2i./Q0i - (Q1i./Q0i).^2;
 
 Fi = interp1(t, F, toc);
 
-figure(1)
-subplot(131)
-plot(toc, vts)
-
-subplot(132)
-plot(t, F*2); hold on
-plot(toc, Fts, '--')
-
-%
-vi = interp1(toc, vts, t);
-F0 = F(end);
-
-subplot(133)
-plot(vH, FMvtilda); hold on
-plot(vi, F*2, '.')
+% figure(1)
+% subplot(131)
+% plot(toc, vts)
+% 
+% subplot(132)
+% plot(t, F*2); hold on
+% plot(toc, Fts, '--')
+% 
+% %
+% vi = interp1(toc, vts, t);
+% F0 = F(end);
+% 
+% subplot(133)
+% plot(vH, FMvtilda); hold on
+% plot(vi, F*2, '.')
 
 
 %% Fit cross-bridge rates using direct collocation
 % addpath(genpath('C:\Users\timvd\Documents\casadi-windows-matlabR2016a-v3.5.5'))
-addpath(genpath('C:\Users\u0167448\Documents\GitHub\casadi-windows-matlabR2016a-v3.5.5'))
-import casadi.*;        % Import casadi libraries
-opti = casadi.Opti();   % Initialise opti structure
 
 % States
 Q0          = opti.variable(1,N);
@@ -153,10 +163,13 @@ dQ2dt        = opti.variable(1,N);
 dNondt       = opti.variable(1,N); 
 dDRXdt       = opti.variable(1,N); 
 
-opti.subject_to(Q0 > 0);
-opti.subject_to(q > 0);
-opti.subject_to(0 < Non <= 1);
-opti.subject_to(.1 < DRX <= 1);
+opti.subject_to(Q0 >= 0);
+opti.subject_to(Q1 >= -Q0);
+opti.subject_to(q >= 0);
+opti.subject_to(Non >= 0);
+opti.subject_to(Non <= 1);
+opti.subject_to(DRX >= 0);
+opti.subject_to(DRX <= 1);
 
 % extra constraints
 opti.subject_to(Q1 - Q0 .* p == 0);
@@ -215,9 +228,16 @@ parms.Noverlap = 1;
 id = (Ns(1)+1):Ns(end);
 F = (Q0(id) + Q1(id));
 
-error_thin = ThinEquilibrium(parms.Ca, Q0(id), Non(id), dNondt(id), parms.kon, parms.koff, koop, parms.Noverlap);      
-error_thick = ThickEquilibrium(Q0(id), F, DRX(id), dDRXdt(id), J1, J2, JF, parms.Noverlap);
-error1 = MuscleEquilibrium(Q0(id), p(id), q(id), dQ0dt(id), dQ1dt(id), dQ2dt(id), f, k11, k12, k21, k22,  Non(id), vts(id), DRX(id));
+% make sure things can't be negative
+k = 20;
+Nonc = log(1+exp(Non*k))/k;
+DRXc = log(1+exp(DRX*k))/k;
+Q0c = log(1+exp(Q0*k))/k;
+Fc = log(1+exp(F*k))/k;
+
+error_thin = ThinEquilibrium(parms.Ca, Q0c(id), Nonc(id), dNondt(id), parms.kon, parms.koff, koop, parms.Noverlap);      
+error_thick = ThickEquilibrium(Q0c(id), Fc, DRXc(id), dDRXdt(id), J1, J2, JF, parms.Noverlap);
+error1 = MuscleEquilibrium(Q0c(id), p(id), q(id), dQ0dt(id), dQ1dt(id), dQ2dt(id), f, k11, k12, k21, k22,  Nonc(id), vts(id), DRXc(id));
 
 error = [error; error_thin(:); error_thick(:); error1(:)];
 
@@ -268,6 +288,8 @@ catch
     sol = opti.debug();
 end
 
+close all
+
 %% Get values
 R.Q0 = sol.value(Q0); 
 R.Q1 = sol.value(Q1); 
@@ -287,20 +309,20 @@ end
 
 R.t = 0:dt1:(N-1)*dt1;
 
-close all
+% close all
+% figure(1)
+% subplot(311)
+% plot(R.t, R.Q0); hold on
+% 
+% subplot(312)
+% plot(R.t, R.Q1); hold on
+% 
+% subplot(313)
+% plot(R.t, R.Q2); hold on
+
 figure(1)
 subplot(311)
-plot(R.t, R.Q0)
-
-subplot(312)
-plot(R.t, R.Q1)
-
-subplot(313)
-plot(R.t, R.Q2)
-
-figure(2)
-subplot(311)
-plot(R.t, vts)
+plot(R.t, vts); hold on
 ylabel('Velocity')
 
 subplot(312)
@@ -324,19 +346,169 @@ end
 cost = 100 * sumsqr(R.F(Ns(2:end)-1) - Fts(Ns(2:end)-1)) + 1 * (sumsqr(R.dQ0dt(1))+sumsqr(R.dQ1dt(1))+sumsqr(R.dQ2dt(1)));
 
 for i = 1:3
-    subplot(3,1,i)
+    subplot(3,1,i); hold on
     box off
     xlabel('Time (s)')
 end
 
-return
-%% Test
-parms.f = R.f;
-parms.Ca = 1;
-[ti,xi] = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 1], y0, yp0);
+
+
+%% Test protocol
+osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 Ts(end)], X0, xp0);
+t = osol.x;
+x = osol.y;
+F = x(1,:) + x(2,:);
+[~,xdot] = deval(osol, t);
+Fdot = xdot(1,:) + xdot(2,:);
+
+figure(1)
+subplot(312)
+plot(t, F*2,':')
+
+subplot(313)
+plot(t, Fdot*2,':')
+
+%% Test force-velocity
+vmax = 5;
+
+vt = [0 -2 2 -3 3 -4 4 -5 5 -6 6 -7 7 -8 8 -9 9]/10 * vmax;
+
+% for velocity part, we just need to evaluate until evaluation time
+idv = 2:length(vt);
+
+ts = .2 * ones(size(vt));
+for i = 1:length(idv)
+    ts(i+1) = .12 / abs(vt(idv(i)));
+end
+
+Ts = [0 cumsum(ts)];
+toc = linspace(0,sum(ts),1000);
+N = length(toc);
+
+% model constraints
+Ns = floor(linspace(0, N, length(vt)+1));
+
+vts = zeros(1,N);
+for i = 1:(length(Ts)-1)
+    id = (toc > Ts(i)) & (toc <= Ts(i+1));
+    vts(id) = vt(i);
+end
+
+parms.ti = toc;
+parms.vts = vts;
+
+osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 Ts(end)], X0, xp0);
+t = osol.x;
+x = osol.y;
+F = x(1,:) + x(2,:);
+[~,xdot] = deval(osol, t);
+Fdot = xdot(1,:) + xdot(2,:);
+
+idF = nan(1, length(vt));
+for i = 1:length(vt)
+    idF(i) = find(t < (Ts(i+1)-.001), 1, 'last');
+end
+
+Fss = F(idF) * 2;
+
+% close all
+% figure(3)
+% 
+% subplot(121);
+% plot(t, F*2); hold on
+% plot(t(idF), F(idF)*2,'o')
+
+v = interp1(toc, vts, t);
+
+[~, id] = sort(vt);
 
 figure(2)
-plot(ti, xi(:,1)+xi(:,2))
+subplot(121);
+% subplot(122)
+plot(vt(id), Fss(id), '-','linewidth',2); hold on
+% plot(v, F, '.');
+
+% Test SRS
+vmax = 5;
+% close all
+
+ISIs = logspace(-5,0, 10);
+thix = nan(size(ISIs));
+
+for j = 1:length(ISIs)
+
+vt = [0 .5 -.5 0 .5] * vmax;
+ts = [.2 .2 .2 ISIs(j) .2];
 
 
+Ts = [0 cumsum(ts)];
+toc = linspace(0,sum(ts),1000);
+N = length(toc);
+
+% model constraints
+Ns = floor(linspace(0, N, length(vt)+1));
+
+vts = zeros(1,N);
+
+for i = 1:(length(Ts)-1)
+    id = (toc > Ts(i)) & (toc <= Ts(i+1));
+    vts(id) = vt(i);
+end
+
+parms.ti = toc;
+parms.vts = vts;
+
+osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 Ts(end)], X0, xp0);
+t = osol.x;
+x = osol.y;
+F = x(1,:) + x(2,:);
+[~,xdot] = deval(osol, t);
+Fdot = xdot(1,:) + xdot(2,:);
+
+
+idFd1 = find(t > Ts(end-4) & t < (Ts(end-4) + .01));
+idFd2 = find(t > Ts(end-1) & t < (Ts(end-1) + .01));
+% 
+% close all
+% figure(1)
+% subplot(311);
+% plot(toc, vts)
+% 
+% subplot(312);
+% plot(t, F*2); hold on
+% plot(t(idFd2), F(idFd2)*2,'.')
+% plot(t(idFd1), F(idFd1)*2,'.')
+% 
+% subplot(313);
+% plot(t, Fdot*2); hold on
+% plot(t(idFd2), Fdot(idFd2)*2,'.')
+% plot(t(idFd1), Fdot(idFd1)*2,'.')
+
+thix(j) = mean(Fdot(idFd2)) / mean(Fdot(idFd1));
+
+end
+
+
+figure(2);
+
+subplot(122);
+semilogx(ISIs, thix,'linewidth',2)
+
+%% make nice
+figure(2)
+
+subplot(121)
+xlabel('Velocity (L_0 / s)')
+ylabel('Force')
+box off
+title('Force-velocity')
+yline(1,'k--')
+xline(0,'k--')
+
+subplot(122)
+xlabel('Recovery time (s)')
+ylabel('Relative short-range stiffness')
+box off
+title('History dependence')
+yline(1,'k--')
 

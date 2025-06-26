@@ -1,4 +1,4 @@
-function[vM, Xdot] = contractile_dynamics_BP(a, FMltilda, x, vMT, kT, kP, cos_a, params)
+function[vM, Xdot] = contractile_dynamics_BP(a, FMltilda, x, vMT, kT, kP, cos_a, params, parms)
 
 % v2: with dampening
 lMo = params(2);
@@ -10,17 +10,17 @@ delta = 1.9207;
 
 parms.w = 0.2;
 
-parms.f = 1e3;
-parms.k11 = 55.3664;
-parms.k12 = 2;
-parms.k21 =  451.0874;
-parms.k22 =  0.2328;
-
-parms.f = 1.1711e+03;
-parms.k11 =  14.2557;
-parms.k12 = 2;
-parms.k21 =   613.9038;
-parms.k22 =  0;
+% parms.f = 1e3;
+% parms.k11 = 55.3664;
+% parms.k12 = 2;
+% parms.k21 =  451.0874;
+% parms.k22 =  0.2328;
+% 
+% parms.f = 1.1711e+03;
+% parms.k11 =  14.2557;
+% parms.k12 = 2;
+% parms.k21 =   613.9038;
+% parms.k22 =  0;
 
 parms.vmtc = 0;
 parms.Ca = 1;

@@ -45,7 +45,7 @@ dx = zeros(auxdata.NMuscles,MStates);
 FT = zeros(auxdata.NMuscles,1);
 
 for i = 1:auxdata.NMuscles
-    [dx(i,:), FT(i)] = TendonForceOdeVecSRS(t, muscle_states(i,:),[0; 2],[act(i); act(i)],[LMT(i); LMT(i)], [VMT(i); VMT(i)], auxdata.params(:,i), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, auxdata.kT, type);   
+    [dx(i,:), FT(i)] = TendonForceOdeVecSRS(t, muscle_states(i,:),[0; 2],[act(i); act(i)],[LMT(i); LMT(i)], [VMT(i); VMT(i)], auxdata.params(:,i), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, auxdata.kT, type, auxdata.parms);   
 end
 
 M = 2000;
