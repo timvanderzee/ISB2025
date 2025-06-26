@@ -94,7 +94,7 @@ e3 = Fvparam(3);
 e4 = Fvparam(4);
 
 FMvtilda = linspace(0,2);
-vH = vmax/e2*(sinh((FMvtilda-e4)/e1)-e3); % 0-1
+vH = vmax/e2*(sinh((FMvtilda-e4)/e1)-e3); % can be inverted = simpler
 Fts = interp1(vH, FMvtilda, vts);
 
 parms.vts = vts;
@@ -209,6 +209,9 @@ for i = 1:length(allparms)
     eval([allparms{i}, ' = ', num2str(parms.(allparms{i}))])
 end
 
+% k = k21 * exp(k22 * x) + k11 * exp(k12 * x);
+
+% k = k21 * exp(k22 * x);
 optparms = {'f', 'k11', 'k22', 'k21'};
 lb = [1 1 0 1];
 ub = [2e3 2e3 5 1e3];
@@ -511,4 +514,6 @@ ylabel('Relative short-range stiffness')
 box off
 title('History dependence')
 yline(1,'k--')
+
+
 
