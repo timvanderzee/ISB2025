@@ -1,14 +1,12 @@
 clear all; close all; clc
 
-fullfilepath = which('main_part2.m');
-filefolder = fullfilepath(1:end-12);
+cd ..
+cd ..
+mainfolder = 'C:\Users\u0167448\Documents\GitHub\ISB2025';
+casadifolder = 'C:\Users\u0167448\Documents\GitHub\casadi-windows-matlabR2016a-v3.5.5';
 
-cd(filefolder)
-cd ..
-cd ..
-cd ..
-
-mainfolder = cd;
+addpath(genpath(mainfolder))
+addpath(genpath(casadifolder))
 
 import casadi.*;        % Import casadi libraries
 opti = casadi.Opti();   % Initialise opti structure
