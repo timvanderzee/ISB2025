@@ -9,11 +9,10 @@ cd ..
 cd ..
 
 mainfolder = cd;
-
 import casadi.*;        % Import casadi libraries
-opti = casadi.Opti();   % Initialise opti structure
 
 %% fit model parameters
+opti = casadi.Opti();   % Initialise opti structure
 parms = fit_model_parameters(opti);
 
 %% simulate movement
