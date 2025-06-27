@@ -1,50 +1,36 @@
-function [vts, Fts, toc, idF, idFd] = design_length_input_vector(vmax, N)
+function [vts, Fts, toc, idF, idFd] = design_length_input_vector(vmax, RT, V_rel, N)
 
 %% Design velocity vector
-% vmax = 5;
-
-vt = [0 -2 2 -4 4 -6 0 5 -5 0 5]/10 * vmax;
+vt = [0 -.2 0 .2 0 -.4 0 .4 0 -.6 0 .6 0 -.8 0 .8 0 V_rel -V_rel 0 V_rel] * vmax;
 
 % for velocity part, we just need to evaluate until evaluation time
-idv = [2 3 4 5 6];
+idv = 1:(length(vt)-5);
 
 ts = .2 * ones(size(vt));
 for i = 1:length(idv)
-    ts(i+1) = .12 / abs(vt(idv(i)));
+    ts(idv(i)) = .12 / max(abs(vt(idv(i))), .6);
 end
 
-idS = 7:length(vt);
-ts(idS) = [.3 .1 .1 .1 .1];
+idS = (length(vt)-4):length(vt);
+ts(idS) = [.3 .1 .1 RT .1];
 Ts = [0 cumsum(ts)];
-
 toc = linspace(0,sum(ts),1000);
-% N = length(toc);
 
-% model constraints
-Ns = floor(linspace(0, N, length(vt)+1));
-
+% velocity vector
 vts = zeros(1,N);
-for i = 1:(length(Ns)-1)
+for i = 1:(length(Ts)-1)
     id = (toc > Ts(i)) & (toc <= Ts(i+1));
     vts(id) = vt(i);
 end
 
-% close all
-% figure(1)
-% plot(toc, vts); hold on
-
-%
+% indices
 idF = nan(1, length(idv)+1);
-
 idF(1) = find(toc < Ts(2), 1, 'last');
 for i = 1:length(idv)
-    idF(i+1) = find(toc < Ts(i+1), 1, 'last');
+    idF(i+1) = find(toc < Ts(idv(i)+1), 1, 'last');
 end
 
-% plot(toc(idF),vts(idF),'o')
-
 idFd = [find(toc > Ts(end-4),1); find(toc > Ts(end-1),1)];
-% plot(toc(idFd), vts(idFd),'x')
 
 %% get the force
 Fvparam = [ -0.3183   -8.1492   -0.3741    0.8856];

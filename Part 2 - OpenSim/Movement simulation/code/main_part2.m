@@ -9,17 +9,32 @@ cd ..
 cd ..
 
 mainfolder = cd;
+addpath(genpath(mainfolder));
 import casadi.*;        % Import casadi libraries
+
+%% load some parameters
+cd('Part 2 - OpenSim\Movement simulation\input\common')
+load('new_parms.mat','parms')
 
 %% fit model parameters
 opti = casadi.Opti();   % Initialise opti structure
-parms = fit_model_parameters(opti);
+vmax = 5; % maximal shortening velocity (L0/s)
+RT = 0.1; % recovery time (s)
+SRS_rel = 0.7; % relative SRS compared to no pre-movement (-) for the above recovery time
+V_rel = 0.5; % relative velocity at which SRS changes are tested (relative to vmax) 
+w = [10 100 1]; % weights for fitting (1) force, (2) history-dependence, (3) regularization
+
+% parameters that are to be fitted
+optparms = {'f', 'k11', 'k22', 'k21','JF'};
+
+% running the fitting function
+newparms = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms);
 
 %% simulate movement
-act = .05;
+act = .05; % activation
 [FSE] = simulate_movement(act, parms, mainfolder);
 
-%% first sing excursion
+%% first swing excursion
 figure(4)
 bar(categorical({'Hill', 'Biophysical'}), -FSE)
 legend('No pre-movement', 'With pre-movement', 'location', 'bestoutside')

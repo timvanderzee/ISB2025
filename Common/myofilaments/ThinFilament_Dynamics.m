@@ -1,5 +1,11 @@
 function[Jon, Joff] = ThinFilament_Dynamics(Ca, Q0, Non, kon, koff, koop, Ntot)
 
+k = 20;
+Non = log(1+exp(Non*k))/k;
+Q0 = log(1+exp(Q0*k))/k;
+
+
+
     % quantities 
 %     Noff = max(Noverlap - Non, 0);
     Noff = Ntot - Non;
