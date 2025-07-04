@@ -14,7 +14,7 @@ import casadi.*;        % Import casadi libraries
 
 %% load some parameters
 cd('Part 2 - OpenSim\Movement simulation\input\common')
-load('parms.mat','parms')
+load('new_parms.mat','parms')
 
 %% fit model parameters
 opti = casadi.Opti();   % Initialise opti structure

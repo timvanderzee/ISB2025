@@ -899,3 +899,95 @@
 [2025-07-04 04:19:35.016] [warning] Couldn't find file 'talus.vtp'.
 [2025-07-04 04:19:35.016] [warning] Couldn't find file 'foot.vtp'.
 [2025-07-04 04:19:35.016] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:22:53.411] [info] Loaded model leg39 from file leg39_path_actuators.osim
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:22:53.411] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:22:53.414] [info] Updating Model file from 40000 to latest format...
+[2025-07-04 04:22:53.416] [info] Loaded model leg39 from file leg39_welded.osim
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:22:53.417] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:23:49.724] [info] Loaded model leg39 from file leg39_path_actuators.osim
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:23:49.725] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:23:49.727] [info] Updating Model file from 40000 to latest format...
+[2025-07-04 04:23:49.730] [info] Loaded model leg39 from file leg39_welded.osim
+[2025-07-04 04:23:49.730] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:23:49.731] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:25:44.730] [info] Loaded model leg39 from file leg39_path_actuators.osim
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:25:44.730] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:25:44.733] [info] Updating Model file from 40000 to latest format...
+[2025-07-04 04:25:44.736] [info] Loaded model leg39 from file leg39_welded.osim
+[2025-07-04 04:25:44.736] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:25:44.736] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:25:44.736] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:25:44.736] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:25:44.737] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:25:44.737] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:25:44.737] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:25:44.737] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:25:44.737] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:25:44.737] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:29:20.423] [info] Loaded model leg39 from file leg39_path_actuators.osim
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:29:20.424] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-04 04:29:20.428] [info] Updating Model file from 40000 to latest format...
+[2025-07-04 04:29:20.432] [info] Loaded model leg39 from file leg39_welded.osim
+[2025-07-04 04:29:20.432] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-04 04:29:20.432] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-04 04:29:20.432] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-04 04:29:20.432] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-04 04:29:20.433] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-04 04:29:20.433] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-04 04:29:20.433] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-04 04:29:20.433] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-04 04:29:20.433] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-04 04:29:20.433] [warning] Couldn't find file 'bofoot.vtp'.
