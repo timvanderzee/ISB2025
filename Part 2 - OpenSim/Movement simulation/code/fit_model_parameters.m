@@ -107,10 +107,17 @@ opti.set_initial(dDRXdt, dDRXdti);
 
 %% dynamics constraints
 F = Q0 + Q1; % cross-bridge force
+
+k = 20;
+Nonc = log(1+exp(Non*k))/k;
+DRXc = log(1+exp(DRX*k))/k;
+Q0c = log(1+exp(Q0*k))/k;
+Fc = log(1+exp(F*k))/k;
+
 error = [];
-error_thin  = ThinEquilibrium(parms.Ca, Q0, Non, dNondt, parms.kon, parms.koff, koop, parms.Noverlap); % thin filament dynamics     
-error_thick = ThickEquilibrium(F, DRX, dDRXdt, J1, J2, JF, parms.Noverlap); % thick filament dynamics
-error1      = MuscleEquilibrium(Q0, p, q, dQ0dt, dQ1dt, dQ2dt, f, parms.w, k11, k12, k21, k22,  Non, vts, DRX); % cross-bridge dynamics
+error_thin  = ThinEquilibrium(parms.Ca, Q0c, Nonc, dNondt, parms.kon, parms.koff, koop, parms.Noverlap); % thin filament dynamics     
+error_thick = ThickEquilibrium(Fc, DRXc, dDRXdt, J1, J2, JF, parms.Noverlap); % thick filament dynamics
+error1      = MuscleEquilibrium(Q0c, p, q, dQ0dt, dQ1dt, dQ2dt, f, parms.w, k11, k12, k21, k22,  Nonc, vts, DRXc); % cross-bridge dynamics
 error       = [error; error_thin(:); error_thick(:); error1(:)];
 opti.subject_to(error == 0);
 
