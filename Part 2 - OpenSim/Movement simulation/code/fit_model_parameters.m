@@ -1,22 +1,20 @@
 function[parms] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms)
 
-% get parameter bounds (need to eventually use look-up table)
+% parameters
+allparms = {'f','k11','k12','k21','k22','JF','koop','J1','J2'};
+
+for i = 1:length(allparms)
+    eval([allparms{i}, ' = ', num2str(parms.(allparms{i}))])
+end
+
+% optparms = {'f', 'k11', 'k22', 'k21'};
 lb = [1 1 0 1 1];
 ub = [2e3 2e3 5 1e3 200];
 
-% create variables for these parameters, define their range, and create an initial guess 
 for i = 1:length(optparms)
-    eval([optparms{i}, '= opti.variable(1);'])
-    eval(['opti.subject_to(',num2str(lb(i)), '<', optparms{i}, '<', num2str(ub(i)),');']);
-    eval(['opti.set_initial(',optparms{i},',', num2str(parms.(optparms{i})),');']);
-end
-
-% parameters that can be fitted
-allparms = {'f','k11','k12','k21','k22','JF','koop','J1','J2'};
-
-% create variables for these parameters
-for i = 1:length(allparms)
-    eval([allparms{i}, ' = ', num2str(parms.(allparms{i})),';'])
+    eval([optparms{i}, '= opti.variable(1)'])
+    eval(['opti.subject_to(',num2str(lb(i)), '<', optparms{i}, '<', num2str(ub(i)),')']);
+    eval(['opti.set_initial(',optparms{i},',', num2str(parms.(optparms{i})),')']);
 end
 
 %% design velocity input vector

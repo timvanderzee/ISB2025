@@ -14,7 +14,7 @@ import casadi.*;        % Import casadi libraries
 
 %% load some parameters
 cd('Part 2 - OpenSim\Movement simulation\input\common')
-load('new_parms.mat','parms')
+load('parms.mat','parms')
 
 %% fit model parameters
 opti = casadi.Opti();   % Initialise opti structure
@@ -25,14 +25,14 @@ V_rel = 0.5; % relative velocity at which SRS changes are tested (relative to vm
 w = [10 100 1]; % weights for fitting (1) force, (2) history-dependence, (3) regularization
 
 % parameters that are to be fitted
-optparms = {'f', 'k11', 'k22', 'k21','JF'};
+optparms = {'f', 'k11', 'k22', 'k21'};
 
 % running the fitting function
 newparms = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms);
 
 %% simulate movement
 act = .05; % activation
-[FSE] = simulate_movement(act, parms, mainfolder);
+[FSE] = simulate_movement(act, newparms, mainfolder);
 
 %% first swing excursion
 figure(4)
