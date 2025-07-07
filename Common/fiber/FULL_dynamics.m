@@ -21,10 +21,6 @@ function[nd, Ld, Q0, Q1] = FULL_dynamics(ns, f, w, k1, k2, xi, Non, DRX, kS, kP,
     FXBdot_isom  = Qdot(2) + parms.ps * Qdot(1);
 
     % from solving velocity constraint
-    Ld  = (cos_a * parms.vmtc * kS * kT - cos_a^2 * (FXBdot_isom*(kS+kP)) - kT * FXBdot_isom) / (kS*kT + cos_a^2 * (kS * (Q0+kP) + kP*Q0) + kT * Q0);
-
-    if parms.no_tendon
-        Ld = parms.c * parms.vmtc;
-    end 
+    Ld = Length_dynamics(FXBdot_isom, Q0, kS, kP, kT, cos_a, parms);
     
 end
