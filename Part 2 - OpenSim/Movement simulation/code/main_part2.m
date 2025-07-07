@@ -33,7 +33,7 @@ newparms = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, par
 %% simulate movement
 close all
 
-act = 1e-1; % activation
+act = 1e-3; % activation
 [FSE] = simulate_movement(act, newparms, mainfolder);
 
 %% first swing excursion
