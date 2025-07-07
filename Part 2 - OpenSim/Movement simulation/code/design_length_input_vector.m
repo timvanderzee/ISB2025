@@ -32,16 +32,8 @@ end
 
 idFd = [find(toc > Ts(end-4),1); find(toc > Ts(end-1),1)];
 
-%% get the force
-Fvparam = [ -0.3183   -8.1492   -0.3741    0.8856];
-
-e1 = Fvparam(1);
-e2 = Fvparam(2);
-e3 = Fvparam(3);
-e4 = Fvparam(4);
-
-FMvtilda = linspace(0,2);
-vH = vmax/e2*(sinh((FMvtilda-e4)/e1)-e3); % can be inverted = simpler
-Fts = interp1(vH, FMvtilda, vts);
+%% get the target force
+d = [ -0.3183   -8.1492   -0.3741    0.8856];
+Fts = d(1) * log((d(2)*vts/vmax + d(3)) + sqrt((d(2)*vts/vmax + d(3)).^2 + 1)) + d(4);
 
 end

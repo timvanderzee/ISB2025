@@ -1,35 +1,29 @@
-function[parms] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms)
+function[parms, out] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms)
 
 % parameters
 allparms = {'f','k11','k12','k21','k22','JF','koop','J1','J2'};
 
 for i = 1:length(allparms)
-    eval([allparms{i}, ' = ', num2str(parms.(allparms{i}))])
+    eval([allparms{i}, ' = ', num2str(parms.(allparms{i})),';'])
 end
 
-% optparms = {'f', 'k11', 'k22', 'k21'};
 lb = [1 1 0 1 1];
 ub = [2e3 2e3 5 1e3 200];
 
 for i = 1:length(optparms)
-    eval([optparms{i}, '= opti.variable(1)'])
-    eval(['opti.subject_to(',num2str(lb(i)), '<', optparms{i}, '<', num2str(ub(i)),')']);
-    eval(['opti.set_initial(',optparms{i},',', num2str(parms.(optparms{i})),')']);
+    eval([optparms{i}, '= opti.variable(1);'])
+    eval(['opti.subject_to(',num2str(lb(i)), '<', optparms{i}, '<', num2str(ub(i)),');']);
+    eval(['opti.set_initial(',optparms{i},',', num2str(parms.(optparms{i})),');']);
 end
 
 %% design velocity input vector
 % this is for testing both force-velocity and history-dependent properties
 N = 1000; % number of nodes 
 [vts, Fts, toc, idF, idFd] = design_length_input_vector(vmax, RT, V_rel, N);
-dt1 = mean(diff(toc));
-% 
-% plot(toc, vts); hold on
-% plot(toc(idF), vts(idF),'o');
+dt = mean(diff(toc));
 
 %% obtain initial guess
 % intial guess is obtained through running a forward simulation with the
-% initial parameter values
-
 % first, simulate an isometric contraction
 parms.vts = [0 0];
 parms.ti = [0 1];
@@ -122,11 +116,11 @@ error       = [error; error_thin(:); error_thick(:); error1(:)];
 opti.subject_to(error == 0);
 
 %% derivative constraints
-opti.subject_to((dNondt(1:N-1) + dNondt(2:N))*dt1/2 + Non(1:N-1) == Non(2:N));
-opti.subject_to((dDRXdt(1:N-1) + dDRXdt(2:N))*dt1/2 + DRX(1:N-1) == DRX(2:N));
-opti.subject_to((dQ0dt(1:N-1) + dQ0dt(2:N))*dt1/2 + Q0(1:N-1) == Q0(2:N));
-opti.subject_to((dQ1dt(1:N-1) + dQ1dt(2:N))*dt1/2 + Q1(1:N-1) == Q1(2:N));
-opti.subject_to((dQ2dt(1:N-1) + dQ2dt(2:N))*dt1/2 + Q2(1:N-1) == Q2(2:N));
+opti.subject_to((dNondt(1:N-1) + dNondt(2:N))*dt/2 + Non(1:N-1) == Non(2:N));
+opti.subject_to((dDRXdt(1:N-1) + dDRXdt(2:N))*dt/2 + DRX(1:N-1) == DRX(2:N));
+opti.subject_to((dQ0dt(1:N-1) + dQ0dt(2:N))*dt/2 + Q0(1:N-1) == Q0(2:N));
+opti.subject_to((dQ1dt(1:N-1) + dQ1dt(2:N))*dt/2 + Q1(1:N-1) == Q1(2:N));
+opti.subject_to((dQ2dt(1:N-1) + dQ2dt(2:N))*dt/2 + Q2(1:N-1) == Q2(2:N));
 
 %% cost
 Frel = F * 2;
@@ -172,7 +166,7 @@ R.dQ1dt = sol.value(dQ1dt);
 R.dQ2dt = sol.value(dQ2dt); 
 R.F     = sol.value(Frel); 
 R.Fdot  = R.dQ0dt + R.dQ1dt;
-R.t = 0:dt1:(N-1)*dt1;
+R.t = 0:dt:(N-1)*dt;
 
 figure(1)
 subplot(311)
@@ -224,113 +218,10 @@ plot(t, Fdot*2,':','color',color(1,:))
 
 set(gcf,'units','normalized','position', [.1 .1 .4 .8])
 
-%% Visualize force-velocity
-[vs, id] = sort(vts(idF));
-Fs = Fi(idF)*2;
-
-Fvparam = [ -0.3183   -8.1492   -0.3741    0.8856];
-
-e1 = Fvparam(1);
-e2 = Fvparam(2);
-e3 = Fvparam(3);
-e4 = Fvparam(4);
-
-FMvtilda = linspace(0,1.5);
-vH = vmax/e2*(sinh((FMvtilda-e4)/e1)-e3); % can be inverted = simpler
-
-figure(2)
-subplot(211);
-plot(vs, Fs(id), '-','linewidth',2); hold on
-plot(vH, FMvtilda, '--'); hold on
-xlabel('Velocity (L_0 / s)')
-ylabel('Force')
-box off
-title('Force-velocity')
-yline(1,'k--')
-xline(0,'k--')
-
-%% Test SRS
-% first, simulate isometric
-parms.ti = [0 .3];
-parms.vts = [0 0];
-sol0 = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 .3], x0(end,:), xp0, odeopt);
-X00 = sol0.y(:,end);
-
-% next, simulate a stretch
-parms.ti = [0 .01];
-parms.vts = [V_rel V_rel] * vmax;
-sol1 = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 .01], X00, xp0, odeopt);
-F1 = sol1.y(1,:) + sol1.y(2,:);
-SRS1 = (F1(end)-F1(1)) / .01;
-
-% now, simulate the entire stretch-shorten protocol
-vt = [0 V_rel -V_rel 0] * vmax;
-ts = [.3 .1 .1 10];
-
-Ts = [0 cumsum(ts)];
-toc = linspace(0,sum(ts),10000);
-vts = zeros(1,N);
-
-for i = 1:(length(Ts)-1)
-    id = (toc > Ts(i)) & (toc <= Ts(i+1));
-    vts(id) = vt(i);
-end
-
-parms.ti = toc;
-parms.vts = vts;
-
-osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 Ts(end)], x0(end,:), xp0, odeopt);
-t = osol.x;
-[~,xdot] = deval(osol, t);
-% F = osol.y(1,:) + osol.y(2,:);
-% Fdot = xdot(1,:) + xdot(2,:);
-% id = t > Ts(2) & t < (Ts(2)+0.01);
-% SRS1 = mean(Fdot(id));
-% close all
-% figure(10)
-% plot(t, F); hold on
-
-RTs = logspace(-5,1, 20);
-SRS2 = nan(length(RTs), 1);
-for j = 1:length(RTs) 
-    
-    X0 = interp1(t(:), osol.y', Ts(4) + RTs(j));
-    Xp0 = interp1(t(:), xdot', Ts(4) + RTs(j));
-    
-    parms.ti = [0 .01];
-    parms.vts = [V_rel V_rel] * vmax;
-
-    nsol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 .01], X0, Xp0(:), odeopt);
-
-    nt = nsol.x;
-    [~,nxdot] = deval(nsol, nt);
-    Fdot2 = nxdot(1,:) + nxdot(2,:);
-    
-    F2 = nsol.y(1,:) + nsol.y(2,:);
-%     hold on
-%     plot(nsol.x + Ts(4) + RTs(j), F2);
-    
-%     id2 = nt < .01;
-    SRS2(j) = (F2(end) - F2(1)) / .01;
+%% output
+out.v = vts(idF);
+out.F = R.F(idF);
+out.SRS = R.Fdot(idFd(2))/R.Fdot(idFd(1));
+out.Ft = Fts(idF);
 
 end
-
-% thixotropy: SRS reduction with pre-movement
-thix = SRS2 ./ SRS1;
-
-figure(2);
-color = get(gca,'colororder');
-
-subplot(212);
-semilogx(RT, R.Fdot(idFd(2))/R.Fdot(idFd(1)), '.', 'markersize', 10); hold on
-xline(RT, '--','color',color(1,:))
-yline(SRS_rel, '--','color',color(1,:))
-semilogx(RTs, thix,':','color',color(1,:))
-xlabel('Recovery time (s)')
-ylabel('Relative short-range stiffness')
-box off
-title('History dependence')
-yline(1,'--','color',color(2,:))
-
-set(gcf,'units','normalized','position', [.5 .1 .4 .8])
-

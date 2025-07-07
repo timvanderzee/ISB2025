@@ -28,11 +28,12 @@ w = [10 100 1]; % weights for fitting (1) force, (2) history-dependence, (3) reg
 optparms = {'f', 'k11', 'k22', 'k21', 'JF'};
 
 % running the fitting function
-newparms = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms);
+[newparms, out] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms);
+
+%% evaluate model force-velocity and SRS properties
+eval_model_behavior(vmax, RT, SRS_rel, V_rel, newparms, out)
 
 %% simulate movement
-close all
-
 act = 1e-3; % activation
 [FSE] = simulate_movement(act, newparms, mainfolder);
 
