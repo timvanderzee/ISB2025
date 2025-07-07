@@ -7,20 +7,40 @@ else
 end
 
 x00 = zeros(1, M);
+
 x_isom = zeros(auxdata.NMuscles,M);
 
-disp('Simulation isometric ...')
+disp(modelname)
+disp('Simulating isometric ...')
 t_input = [0; 5];
-
-% ls = {'-','--'};
-% act = 1;
 vec_kT = 35;
 
 for m = 1:auxdata.NMuscles
+    disp(m)
+    x00(1) = auxdata.fse0(m);
+    
     A = [input.act(m); input.act(m)];
     LMT = [input.lMT(m); input.lMT(m)];
     VMT = [input.vMT(m); input.vMT(m)];
 
+    if ~strcmp(modelname, 'Hill')
+
+        % Length and overlap
+        fse = max(auxdata.fse0(m), 0);
+        [~, lMtilda, cos_alpha] = get_lM_from_fse(fse, input.lMT(m), auxdata.params(:,m), vec_kT);
+        % Parallel force
+        [Fpe, ~] = get_parallel_force(lMtilda, auxdata.Fpparam);
+
+        % Contractile element force
+        FMce = max(fse./cos_alpha - Fpe, 0);
+
+        delta = 1.9207;
+
+        Q0 = FMce / delta;
+        x00(2) = Q0;
+       
+    end
+        
     % simulate
     [t,state] = ode15s(@TendonForceOdeVecSRS,t_input,x00,[],t_input, A,LMT,VMT, auxdata.params(:,m), auxdata.Fvparam, auxdata.Fpparam, auxdata.Faparam, vec_kT, modelname, auxdata.parms);
 
@@ -37,7 +57,7 @@ AMP = auxdata.AMP;
 x0 = x_isom;
 
 if ~isfield(input, 'platacc') % check whether we're doing the pendulum test
-    disp('Simulation pre-movement ...')
+    disp('Simulating pre-movement ...')
     for m = 4:5
         
 %         disp(num2str(m))
@@ -59,11 +79,10 @@ end
 
 %% simulate movement
 
-disp('Simulation movement ...')
+disp('Simulating movement ...')
 auxdata.kT = vec_kT;
 
 % simulate
 [tFW,sFW] = ode15s(@compute_state_derivatives,[t0 tf],[s0(:); x0(:)],[], input, osimModel, osimState, auxdata, modelname);
-
 
 end

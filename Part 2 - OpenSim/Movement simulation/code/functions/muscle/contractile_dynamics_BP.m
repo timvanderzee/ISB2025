@@ -8,47 +8,18 @@ lTs = params(3);
 gamma = 100; % length scaling
 delta = 1.9207;
 
-parms.w = 0.2;
-
-% parms.f = 1e3;
-% parms.k11 = 55.3664;
-% parms.k12 = 2;
-% parms.k21 =  451.0874;
-% parms.k22 =  0.2328;
-% 
-% parms.f = 1.1711e+03;
-% parms.k11 =  14.2557;
-% parms.k12 = 2;
-% parms.k21 =   613.9038;
-% parms.k22 =  0;
-
-parms.vmtc = 0;
-parms.Ca = 1;
-parms.ps = 1;
-
-parms.J1 = 89.2823;
-parms.J2 = 4 * parms.J1;
-parms.JF = 70.8;
-
-parms.koop = 19.4;
-parms.kon = 34.7;
-parms.koff = 80;
-
-parms.gaussian.IGef{1} =  @(c,k)(c(1)*k(1)*exp(min(c(3)*k(2)^2/4-c(2)*k(2),2)));
-parms.gaussian.IGef{2} =  @(c,k)(c(1)*k(1)*exp(min(c(3)*k(2)^2/4-c(2)*k(2),2)))*(c(2)-c(3)*k(2)/2);
-parms.gaussian.IGef{3} =  @(c,k)(c(1)*k(1)*exp(min(c(3)*k(2)^2/4-c(2)*k(2),2)))*((c(2)-c(3)*k(2)/2).^2+c(3)/2);
-
 %% simulate biophysical dynamics
 eps = 1e-6;
 FM = x(1);
 Q0 = x(2);
+
+Q0 = max(Q0, eps);
 Q1 = FM / delta - parms.ps * Q0;
 Q2 = x(3);
 Non = x(4);
 DRX = x(5);
 
-Q0 = max(Q0, eps);
-Q2 = max(Q2, eps);
+% Q2 = max(Q2, 0);
  
 % get geometry
 % F = Q1 + parms.ps * Q0;

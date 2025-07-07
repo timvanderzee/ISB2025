@@ -19,13 +19,19 @@ dDRXdt = yp(5);
 [error_thin, ~] = ThinEquilibrium(parms.Ca, Q0, Non, dNondt, parms.kon, parms.koff, parms.koop, parms.act * parms.Noverlap);
 
 % Thick filament
+k = 100;
 F = Q1 + Q0;
+F = log(1+exp(F*k))/k;
 [error_thick, ~] = ThickEquilibrium(F, DRX, dDRXdt, parms.J1, parms.J2, parms.JF, parms.act * parms.Noverlap);
 
 % Compute p and q
-Q00 = max(Q0, 1e-6);
+% Q00 = max(Q0, 1e-6);
+Q00 = log(1+exp(Q0*k))/k;
+
 p = Q1./Q00; 
 q = Q2./Q00 - p.^2;  
+
+q = log(1+exp(q*k))/k;
 
 % Cross-bridge dynamics
 [error_fv] = MuscleEquilibrium(Q0, p, q, dQ0dt, dQ1dt, dQ2dt, parms.f, parms.w, parms.k11, parms.k12, parms.k21, parms.k22, Non, vMtilda, DRX);

@@ -5,7 +5,7 @@ function[Xdot, Ld, Q0, Q1] = DM_dynamics(Q, f, w, k1, k2, IGef, Non, DRX, kS, kP
     Q2 = Q(3);
 
     % get mean and standard deviation
-    eps = 1e-8;
+    eps = 1e-6;
     p = Q1/max(Q0, eps); % mean of the distribution
     q = max(Q2/max(Q0, eps) - p^2, eps); % standard deviation of the distribution
 

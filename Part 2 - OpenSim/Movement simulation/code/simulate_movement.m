@@ -105,14 +105,23 @@ AMPs = zeros(M, 2);
 AMPs(4,:) = [0 .1];
 AMPs(5,:) = [0 .2];
 
+
 for j = 1:2
+    
+    if j == 2
+        auxdata.fse0 = fse0(1,:);
+    else
+        auxdata.fse0 = zeros(1, M);
+    end
     
     for i = 1:2
         auxdata.AMP = AMPs(:,i);
     
         [tFW,sFW] = sim_movement(modelnames{j}, t0, tf, s0, input, osimModel, osimState, auxdata);
-        fse = sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles);
+        fse = max(sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles), 0);
 
+        fse0(i,:) = fse(1,:);
+        
         figure(3)
         for m = 1:M
             subplot(3,3,m)

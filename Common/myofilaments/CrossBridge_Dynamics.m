@@ -1,6 +1,6 @@
 function[Q0dot, Q1dot, Q2dot] = CrossBridge_Dynamics(Q0, p, q, f, w, k1, k2, IGef, Non, DRX)
 % 
-% k = 20;
+% k = 100;
 % Non = log(1+exp(Non*k))/k;
 % DRX = log(1+exp(DRX*k))/k;
 % Q0 = log(1+exp(Q0*k))/k;

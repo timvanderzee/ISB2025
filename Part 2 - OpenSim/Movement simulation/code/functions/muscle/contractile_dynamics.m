@@ -11,6 +11,8 @@ e4 = Fvparam(4);
 
 vMtilda = 1/e2*(sinh((FMvtilda-e4)/e1)-e3); % 0-1
 
+vMtilda = min(vMtilda, 1);
+
 vM = vMtilda.*vMmax;
 Xd = [];
 

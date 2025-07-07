@@ -14,7 +14,7 @@ FMltilda = get_overlap(lMtilda, Faparam);
 [Fpe, kP] = get_parallel_force(lMtilda, Fpparam);
 
 % Contractile element force
-FMce = max(fse./cos_alpha-Fpe, 0);
+FMce = max(fse./cos_alpha - Fpe, 0);
 
 % Contractile dynamics
 if strcmp(type, 'Hill')
