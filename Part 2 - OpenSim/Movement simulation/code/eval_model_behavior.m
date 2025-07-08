@@ -88,7 +88,6 @@ end
 thix = SRS2 ./ SRS1;
 
 %% plotting
-figure(2)
 color = get(gca,'colororder');
 
 subplot(121);

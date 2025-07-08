@@ -12,35 +12,51 @@ mainfolder = cd;
 addpath(genpath(mainfolder));
 import casadi.*;        % Import casadi libraries
 
-%% load some parameters
-cd('Part 2 - OpenSim\Movement simulation\input\common')
+%% Assignment 1: simulate standing balance
+% load some parameters to start with
+cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\common'])
+load('parms.mat','parms')
+
+if ishandle(1), close(1); end; figure(1)
+simulate_movement('standing_balance', {'reguluar'}, [], parms, mainfolder);
+
+%% Assignment 2: fit model parameters
+% load some parameters to start with
+cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\common'])
 load('new_parms.mat','parms')
 
-%% fit model parameters
-opti = casadi.Opti();   % Initialise opti structure
-vmax = 5; % maximal shortening velocity (L0/s)
+% initialise opti structure
+opti = casadi.Opti(); 
+
+% define desired force-velocity properties
+vmax = 5; % maximal shortening velocity [L0/s]
+
+% define desired SRS properties
 RT = 0.1; % recovery time (s)
 SRS_rel = 0.7; % relative SRS compared to no pre-movement (-) for the above recovery time
 V_rel = 0.5; % relative velocity at which SRS changes are tested (relative to vmax) 
-w = [10 100 1]; % weights for fitting (1) force, (2) history-dependence, (3) regularization
 
-% parameters that are to be fitted
+% define weigth vector
+w = [10 100 1]; % weights for fitting (1) force-velocity, (2) SRS, (3) regularization
+
+% specify parameters to be fitted
 optparms = {'f', 'k11', 'k22', 'k21', 'JF'};
 
-% running the fitting function
+% run the fitting function
+if ishandle(1), close(1); end; figure(1)
 [newparms, out] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms);
 
-%% evaluate model force-velocity and SRS properties
+%% Assignment 2: evaluate model force-velocity and SRS properties
+if ishandle(2), close(2); end; figure(2)
 eval_model_behavior(vmax, RT, SRS_rel, V_rel, newparms, out)
 
-%% simulate movement
-act = 1e-3; % activation
-[FSE] = simulate_movement(act, newparms, mainfolder);
+%% Assignment 3: simulate standing balance
+if ishandle(3), close(3); end; figure(3)
+simulate_movement('standing_balance', {'reguluar'}, [], newparms, mainfolder);
 
-%% first swing excursion
-figure(4)
-bar(categorical({'Hill', 'Biophysical'}), -FSE)
-legend('No pre-movement', 'With pre-movement', 'location', 'bestoutside')
-legend boxoff
-ylabel('First swing excursion (rad)')
-box off
+%% Assignment 4: simulate pendulum test
+if ishandle(4), close(4); end; figure(4)
+act = 1e-2; % activation
+simulate_movement('pendulum_test', {'reguluar', 'pre_movement'}, act, newparms, mainfolder);
+
+

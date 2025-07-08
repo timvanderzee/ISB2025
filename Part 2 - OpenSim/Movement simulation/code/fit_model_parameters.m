@@ -145,7 +145,7 @@ p_opts = struct('expand',true);
 s_opts = struct('max_iter', 500);
 opti.solver('ipopt',p_opts,s_opts);
 
-figure(100); 
+% visualize 
 opti.callback(@(i) plot(toc, [Fts; opti.debug.value(Frel)]))
 
 try
@@ -153,8 +153,6 @@ try
 catch
     sol = opti.debug();
 end
-
-close all
 
 %% Plot the result
 % obtain the solution
@@ -168,7 +166,6 @@ R.F     = sol.value(Frel);
 R.Fdot  = R.dQ0dt + R.dQ1dt;
 R.t = 0:dt:(N-1)*dt;
 
-figure(1)
 subplot(311)
 plot(R.t, vts, 'linewidth',1.5); hold on
 ylabel('Velocity')
@@ -205,7 +202,7 @@ F = x(1,:) + x(2,:);
 Fdot = xdot(1,:) + xdot(2,:);
 Fi = interp1(t, F, toc);
 
-figure(1)
+
 color = get(gca,'colororder');
 
 subplot(312)

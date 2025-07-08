@@ -9,14 +9,11 @@ end
 x00 = zeros(1, M);
 
 x_isom = zeros(auxdata.NMuscles,M);
-
-disp(modelname)
-disp('Simulating isometric ...')
 t_input = [0; 5];
 vec_kT = 35;
 
 for m = 1:auxdata.NMuscles
-    disp(m)
+%     disp(m)
     x00(1) = auxdata.fse0(m);
     
     A = [input.act(m); input.act(m)];
@@ -49,15 +46,13 @@ for m = 1:auxdata.NMuscles
 end
 
 %% simulate pre-movement
-t_pre = linspace(t_input(1), t_input(2), 1000);
-f = 5;
-AMP = auxdata.AMP;
-% T = 1/f;
-
 x0 = x_isom;
 
 if ~isfield(input, 'platacc') % check whether we're doing the pendulum test
-    disp('Simulating pre-movement ...')
+    t_pre = linspace(t_input(1), t_input(2), 1000);
+    f = 5;
+    AMP = auxdata.AMP;
+
     for m = 4:5
         
 %         disp(num2str(m))
@@ -78,8 +73,6 @@ if ~isfield(input, 'platacc') % check whether we're doing the pendulum test
 end
 
 %% simulate movement
-
-disp('Simulating movement ...')
 auxdata.kT = vec_kT;
 
 % simulate

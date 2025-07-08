@@ -1,6 +1,8 @@
 clear all; close all; clc
 
 % from Horslen paper: from 1 typical example fiber
+cd('C:\Users\timvd\Documents\ISB2025\Part 1\parameters')
+cd('C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\common')
 load('parms.mat', 'parms')
 
 % for a typical Horslen protocol
@@ -22,22 +24,24 @@ close all
 parms.act = 1; % active muscle volume
 parms.cosa = 1; % cosine of pennation angle
 parms.Noverlap = 1; % myofilament overlap
-model = @fiber_dynamics;
 parms.n_func = @(xi, Q, eps) Q(1) ./ (sqrt(2*pi)*(sqrt(max(Q(3)/Q(1) - (Q(2)/Q(1))^2, eps)))) * exp(-((xi-(Q(2)/max(Q(1), eps))).^2) / (2*(sqrt(max(Q(3)/Q(1) - (Q(2)/Q(1))^2, eps)))^2)); 
 
+model = @fiber_dynamics;
 ti = linspace(9.8, 10.6, 100);
 ni = nan(length(ti), 500, 2);
 Fi = nan(length(ti),2);
 li = nan(length(ti),2);
 
+nbins = 500; % number of bins
+    
 for j = 1:2
+    parms.xi = linspace(-15,15,nbins); % initial strain vector (power stroke)
 
     if j == 1 % DM
         parms.xss = zeros(1,7);
 
     else % discretized
-        nbins = 500; % number of bins
-        parms.xi = linspace(-15,15,nbins); % initial strain vector (power stroke)
+
         parms.nbins = length(parms.xi);
         parms.xss = zeros(1,parms.nbins + 4); % 4 non-cross-bridge states
         parms.xss(end-2) = 0.0909; % DRX state, given default parameters

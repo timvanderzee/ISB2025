@@ -1,18 +1,9 @@
-function [FSE] = simulate_movement(act, parms, mainfolder)
+function [] = simulate_movement(stype, conditions, act, parms, mainfolder)
 
-% mainfolder = 'C:\Users\u0167448\Documents\GitHub\ISB2025';
-% addpath(genpath(cd))
-
-% stype = 'standing_balance';
-stype = 'pendulum_test';
-
-parms.act = act;
-[input, s0, t0, tf, models, muscle_names] = load_data(stype, parms);
+% get some settings
+[input, s0, t0, tf, models, muscle_names] = load_data(stype, act);
 
 % generic muscle parameters
-vec_ksrs = 0;
-vec_kT = 35;
-k = 1;
 M = length(muscle_names);
 auxdata = get_muscle_parms();
 auxdata.NMuscles = M;
@@ -92,80 +83,88 @@ for i = 1:Ncontrols
     q(i,1) = cell(currentActuator.getName());
 end
 
-
 %% simulate movement
-% close all; clc
-modelnames = {'Hill', 'Biophysical'};
 ls = {'-','--'};
-
-% input.act = .2 * ones(size(input.lMT));
 color = get(gca,'colororder');
+auxdata.fse0 = zeros(1, M);
+modelnames = {'Hill', 'Biophysical'};
 
-AMPs = zeros(M, 2);
-AMPs(4,:) = [0 .1];
-AMPs(5,:) = [0 .2];
+% loop over models
+for j = 1:length(modelnames)
+    disp(modelnames{j})
 
+    % loop over conditions
+    for i = 1:length(conditions)
+        disp(conditions{i})
 
-for j = 1:2
-    
-    if j == 2
-        auxdata.fse0 = fse0(1,:);
-    else
-        auxdata.fse0 = zeros(1, M);
-    end
-    
-    for i = 1:2
-        auxdata.AMP = AMPs(:,i);
-    
+        if strcmp(stype, 'pendulum_test')
+            AMPs = zeros(M, 1);
+            if strcmp(conditions{i}, 'pre_movement')
+                AMPs(4) = .1;
+                AMPs(5) = .2;
+            end    
+            auxdata.AMP = AMPs;
+        end
+        
         [tFW,sFW] = sim_movement(modelnames{j}, t0, tf, s0, input, osimModel, osimState, auxdata);
         fse = max(sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles), 0);
 
-        fse0(i,:) = fse(1,:);
+        % used the steady-state for next simulations
+        auxdata.fse0 = fse(1,:);
         
-        figure(3)
-        for m = 1:M
-            subplot(3,3,m)
-            plot(tFW, fse(:,m), ls{i}, 'color', color(j,:)); hold on
-            box off
-            title(muscle_names{m})
+        % reorganize states
+        s = nan(size(sFW,1), auxdata.NStates);
+        
+        for k = 1:(auxdata.NStates/2)
+            kodd = (k-1)*2+1;
+            keve = kodd + 1;
+            
+            s(:,kodd) = sFW(:,k);
+            s(:,keve) = sFW(:,k+(auxdata.NStates/2));
         end
-
-        s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
-        phi = s(:,1); % knee angle [?]
-
-        subplot(339);
-        plot(tFW, phi, ls{i}, 'color', color(j,:)); hold on
-        box off
-        title('Knee angle')
+            
+%         s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
         
-        FSE(j,i) = min(phi);
+        if strcmp(stype, 'pendulum_test')
+            phi = s(:,1); % knee angle [?]
+            plot(tFW, phi, ls{i}, 'color', color(j,:)); hold on
+            box off
+            title('Knee angle')
+
+%             FSE(j,i) = min(phi);
+        else
+            for k = 1:3
+            subplot(1,3,k)
+            phi = sFW(:,k+1); % ankle angle [?]
+            plot(tFW, phi, ls{i}, 'color', color(j,:)); hold on
+            box off
+%             title('Knee angle')
+            end
+            
+        end
+        % write to sto file
+        if ~isfolder([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+            mkdir([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+        end
+        cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+
+        if strcmp(stype, 'pendulum_test')
+            if ~isfolder(['a=',num2str(act)])
+                mkdir(['a=',num2str(act)])
+            end
+            cd(['a=',num2str(act)])
+        end
+        
+        % Write model states to an OpenSim STO file
+        StatesData.name = [stype, '_', modelnames{j}, '_', conditions{i}];
+        StatesData.nRows = length(tFW);
+        StatesData.nColumns = Nstates + 1;
+        StatesData.labels = [{'time'}; stateNames]';
+        StatesData.inDegrees = false;
+        StatesData.data = [tFW,s(:,1:Nstates)];
+        writeOpenSimStatesFile(StatesData)
+        
     end
-    
+    disp(' ');
 end
-
 end
-% return
-
-
-% %% write things
-% 
-% cd('C:\Users\u0167448\Documents\GitHub\ISB2025\Part 2 - OpenSim\Movement simulation\output')
-% % Write model states to an OpenSim STO file
-% StatesData.name = 'Pendulum_FW_States';
-% StatesData.nRows = length(tFW);
-% StatesData.nColumns = Nstates + 1;
-% StatesData.labels = [{'time'}; stateNames]';
-% StatesData.inDegrees = false;
-% StatesData.data = [tFW,s(:,1:Nstates)];
-% writeOpenSimStatesFile(StatesData)
-% 
-% %%
-% % Create data structure for the controls file
-% ControlData.name = 'Pendulum_FW_Controls';
-% ControlData.nRows = size(tFW);
-% ControlData.nColumns = Ncontrols+1; %All the controls + time
-% ControlData.inDegrees = false;
-% ControlData.labels= [{'time'}; controlNames]';
-% writeOpenSimControlFile(ControlData)
-        
-

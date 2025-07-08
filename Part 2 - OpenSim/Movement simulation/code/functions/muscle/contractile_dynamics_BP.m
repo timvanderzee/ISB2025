@@ -6,7 +6,7 @@ lTs = params(3);
 
 %% define parameters
 gamma = 100; % length scaling
-delta = 1.9207;
+delta = parms.Fscale;
 
 %% simulate biophysical dynamics
 eps = 1e-6;
