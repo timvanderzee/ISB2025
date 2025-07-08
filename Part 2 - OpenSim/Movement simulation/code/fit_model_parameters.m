@@ -1,5 +1,7 @@
 function[parms, out] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms)
 
+parms.Fscale = 2;
+
 % parameters
 allparms = {'f','k11','k12','k21','k22','JF','koop','J1','J2'};
 
