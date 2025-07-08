@@ -92,10 +92,10 @@ figure(2)
 color = get(gca,'colororder');
 
 subplot(121);
-plot(out.v, out.Ft, 'o', 'color', color(3,:)); hold on
+plot(out.v, out.Ft, 'o', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5]); hold on
 plot(vH * vmax, FH, '--', 'color', color(2,:)); hold on
-plot(out.v, out.F,'o','color',color(1,:),'markerfacecolor', color(1,:))
-plot(vH * vmax, Fss, '-','linewidth',1, 'color', color(1,:)); hold on
+% plot(out.v, out.F,'x','color',color(1,:))
+plot(vH * vmax, Fss, '-','linewidth',1.5, 'color', color(1,:)); hold on
 
 legend('Target' ,'Hill','Biophysical', 'location','best')
 legend boxoff
@@ -107,15 +107,10 @@ title('Force-velocity')
 
 
 subplot(122);
-plot(RT, SRS_rel, 'o', 'color', color(3,:)); hold on
+plot(RT, SRS_rel, 'o', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5]); hold on
 yline(1,'--','color',color(2,:))
-
-plot(RT, out.SRS, 'o', 'color', color(1,:),'markerfacecolor', color(1,:))
-semilogx(RTs, thix,'-','color',color(1,:),'linewidth',1); hold on
-xline(RT, '-.','color',color(3,:)); hold on
-
-yline(SRS_rel, '-.','color',color(3,:)); hold on
-
+% plot(RT, out.SRS, 'x', 'color', color(1,:))
+semilogx(RTs, thix,'-','color',color(1,:),'linewidth',1.5); hold on
 
 set(gca,'XScale','log')
 legend('Target', 'Hill','Biophysical', 'location','best')

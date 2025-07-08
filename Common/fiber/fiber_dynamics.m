@@ -1,4 +1,4 @@
-function[xdot, Ftot, Ld] = fiber_dynamics(t, x, parms, Ca)
+function[xdot, Ftot, Ld, n] = fiber_dynamics(t, x, parms, Ca)
 
 % retrieve states
 Non     = x(1); % thin filment activation
@@ -8,7 +8,7 @@ lmtc    = x(end-1); % CE + SE length
 L       = x(end-0); % CE length
 
 % get moments and strain vector
-[Q0, Q1, parms.xi] = force_from_distribution(Q, L, parms);
+[Q0, Q1, parms.xi, n] = force_from_distribution(Q, L, parms);
 
 % Q0: number of cross-bridges
 % Q1: (delta) force
@@ -50,8 +50,5 @@ F_act = FXB * parms.Fscale;
 Ftot = F_act(:) + F_pas(:);
 
 xdot = [Xd(:); parms.vmtc; Ld];
-
-%     xi = parms.xi;
-%     n = n_func(Q, parms.xi);
 
 end
