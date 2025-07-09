@@ -1,4 +1,12 @@
-function[] = eval_model_behavior(vmax, RT, SRS_rel, V_rel, parms, out)
+function[] = eval_model_behavior(parms, out, SRSdata)
+
+% define desired force-velocity properties
+vmax = 5; % maximal shortening velocity [L0/s]
+
+% define desired SRS properties
+RT = 0.1; % recovery time (s)
+V_rel = 0.5; % relative velocity at which SRS is evaluated (relative to vmax) 
+SRS_rel = interp1(SRSdata.xm, SRSdata.ym, RT); % relative SRS compared to no pre-movement (-) for the above recovery time
 
 %% Isometric
 parms.ti = [0 1];
@@ -96,6 +104,10 @@ plot(vH * vmax, FH, '--', 'color', color(2,:)); hold on
 % plot(out.v, out.F,'x','color',color(1,:))
 plot(vH * vmax, Fss, '-','linewidth',1.5, 'color', color(1,:)); hold on
 
+for k = 1:length(out.v)
+    xline(out.v, '--', 'color', [.5 .5 .5])
+end
+
 legend('Target' ,'Hill','Biophysical', 'location','best')
 legend boxoff
 
@@ -106,10 +118,10 @@ title('Force-velocity')
 
 
 subplot(122);
-plot(RT, SRS_rel, 'o', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5]); hold on
+errorbar(SRSdata.xm, SRSdata.ym, SRSdata.ys, 'o', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5]); hold on
 yline(1,'--','color',color(2,:))
-% plot(RT, out.SRS, 'x', 'color', color(1,:))
 semilogx(RTs, thix,'-','color',color(1,:),'linewidth',1.5); hold on
+xline(RT, '--', 'color', [.5 .5 .5])
 
 set(gca,'XScale','log')
 legend('Target', 'Hill','Biophysical', 'location','best')

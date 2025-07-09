@@ -1,5 +1,14 @@
-function[parms, out] = fit_model_parameters(opti, optparms, w, vmax, RT, SRS_rel, V_rel, parms)
+function[parms, out] = fit_model_parameters(opti, optparms, w, SRSdata, parms)
 
+% define desired force-velocity properties
+vmax = 5; % maximal shortening velocity [L0/s]
+
+% define desired SRS properties
+RT = 0.1; % recovery time (s)
+V_rel = 0.5; % relative velocity at which SRS is evaluated (relative to vmax) 
+SRS_rel = interp1(SRSdata.xm, SRSdata.ym, RT); % relative SRS compared to no pre-movement (-) for the above recovery time
+
+%% parameters
 parms.Fscale = 2;
 
 % parameters
@@ -156,8 +165,7 @@ catch
     sol = opti.debug();
 end
 
-%% Plot the result
-% obtain the solution
+%% Extract the result
 R.Q0    = sol.value(Q0); 
 R.Q1    = sol.value(Q1); 
 R.Q2    = sol.value(Q2); 
@@ -168,6 +176,21 @@ R.F     = sol.value(Frel);
 R.Fdot  = R.dQ0dt + R.dQ1dt;
 R.t = 0:dt:(N-1)*dt;
 
+%% Test the result
+% extract the parameters
+for i = 1:length(optparms)
+    parms.(optparms{i}) = eval(['sol.value(',optparms{i},');']);
+end
+
+% run a forward simulation
+osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 max(toc)], x0(end,:), xp0, odeopt);
+t = osol.x;
+x = osol.y;
+F = x(1,:) + x(2,:);
+[~,xdot] = deval(osol, t);
+Fdot = xdot(1,:) + xdot(2,:);
+
+%% Visualize
 subplot(311)
 plot(R.t, vts, 'linewidth',1.5); hold on
 ylabel('Velocity')
@@ -188,22 +211,6 @@ for i = 1:3
     xlabel('Time (s)')
     xlim([0 max(toc)])
 end
-
-%% Test the result
-% extract the parameters
-for i = 1:length(optparms)
-    parms.(optparms{i}) = eval(['sol.value(',optparms{i},');']);
-end
-
-% run a forward simulation
-osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 max(toc)], x0(end,:), xp0, odeopt);
-t = osol.x;
-x = osol.y;
-F = x(1,:) + x(2,:);
-[~,xdot] = deval(osol, t);
-Fdot = xdot(1,:) + xdot(2,:);
-Fi = interp1(t, F, toc);
-
 
 color = get(gca,'colororder');
 
