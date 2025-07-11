@@ -25,7 +25,7 @@ if strcmp(type, 'standing_balance')
     delta_pelvis_tilt = pelvis_tilt_exp + pelvis_tilt_mod;
 
     s0 = zeros(8,1);
-    s0(2:4) = [-IKsolution.data(sampleBegin,7)+delta_pelvis_tilt IKsolution.data(sampleBegin,6) -IKsolution.data(sampleBegin,5)]/180*pi;
+    s0(2:4) = [IKsolution.data(sampleBegin,7) IKsolution.data(sampleBegin,6) IKsolution.data(sampleBegin,5) + delta_pelvis_tilt]/180*pi;
 
     %% Force data and muscle excitation
     load(['Trial' num2str(trial)], 'data');

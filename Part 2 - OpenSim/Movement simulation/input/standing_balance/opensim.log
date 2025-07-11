@@ -134,3 +134,44 @@
 [2025-07-11 20:23:55.627] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
 [2025-07-11 20:23:55.627] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
 [2025-07-11 20:24:36.951] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Hill_reguluar.sto (nr=30 nc=9)
+[2025-07-11 20:32:09.329] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:32:09.335] [info] Loaded model gait4dof9musc.osim-scaled from file SCP_gait4dof9musc.osim
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'tibia_l.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'femur_l.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-11 20:32:09.335] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-11 20:32:09.335] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:32:09.336] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:32:09.340] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:32:09.355] [info] Loaded model gait10dof18musc.osim-scaled from file SCP_gait10dof18musc.osim
+[2025-07-11 20:32:09.356] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-11 20:32:09.356] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-11 20:32:09.356] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-11 20:32:09.356] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-11 20:32:09.356] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-11 20:32:09.356] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'l_femur.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'l_tibia.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'l_fibula.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'l_talus.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'l_foot.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'l_bofoot.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-11 20:32:09.357] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-11 20:32:09.357] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:32:09.359] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:32:22.193] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Biophysical_reguluar.sto (nr=45 nc=9)
