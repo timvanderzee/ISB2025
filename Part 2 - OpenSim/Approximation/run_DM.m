@@ -9,6 +9,7 @@ load('parms.mat', 'parms')
 load('protocol.mat', 'XData')
 
 parms.forcible_detachment = 0;
+parms.Fscale = 1.5;
 
 nbins = round(linspace(50,500,10));
 % nbins = 500;
@@ -27,10 +28,11 @@ parms.Noverlap = 1; % myofilament overlap
 parms.n_func = @(xi, Q, eps) Q(1) ./ (sqrt(2*pi)*(sqrt(max(Q(3)/Q(1) - (Q(2)/Q(1))^2, eps)))) * exp(-((xi-(Q(2)/max(Q(1), eps))).^2) / (2*(sqrt(max(Q(3)/Q(1) - (Q(2)/Q(1))^2, eps)))^2)); 
 
 model = @fiber_dynamics;
-ti = linspace(9.8, 10.6, 100);
+ti = linspace(9.9, 10.3, 100);
 ni = nan(length(ti), 500, 2);
 Fi = nan(length(ti),2);
 li = nan(length(ti),2);
+Li = nan(length(ti),2);
 
 nbins = 500; % number of bins
     
@@ -49,6 +51,7 @@ for j = 1:2
     
     [t,x] = stretch_shorten(model, Ts, us, parms.xss, parms, Ca);
 
+    L = x(:,end-1);
     lce = x(:,end);
     F = nan(1,length(x));
     n = nan(length(parms.xi), length(x));
@@ -65,6 +68,7 @@ for j = 1:2
     % interpolate n
     ni(:,:,j) = interp1(t, n', ti);
     li(:,j) = interp1(t, lce, ti);
+    Li(:,j) = interp1(t, L, ti);
     Fi(:,j) = interp1(t, F, ti);
     
 %     figure(1)
@@ -79,42 +83,51 @@ end
 %% compare distributions
 % interpolate n
 close all
-id = 57;
+id = 89;
 
 figure(1)
 color = get(gca,'colororder');
-subplot(121);
+subplot(222);
+plot(ti-9.9, Li(:,2), '-', 'linewidth',2, 'color', color(1,:));
+xlim([0 .4])
+box off
+% xlabel('Time (s)')
+ylabel('\Delta Length (L_0)')
+title('Length trajectory')
+y1 = line('xdata', [ti(id) ti(id)]-9.9, 'ydata', [0 5], 'linestyle','--', 'color', [0 0 0]);
+ylim([0 5])
 
-plot(ti, Fi(:,1), '-', 'linewidth',2); hold on
-plot(ti, Fi(:,2), '--', 'linewidth',2);
-xlim([9.8 10.6])
+subplot(224)
+plot(ti-9.9, Fi(:,1), '--', 'linewidth',2); hold on
+plot(ti-9.9, Fi(:,2), '-', 'linewidth',2, 'color', color(1,:));
+xlim([0 .4])
 
-y = line('xdata', [ti(id) ti(id)], 'ydata', [0 1.8], 'linestyle','--', 'color', [0 0 0]);
+y2 = line('xdata', [ti(id) ti(id)]-9.9, 'ydata', [0 1.8], 'linestyle','--', 'color', [0 0 0]);
 ylim([0 1.8])
 box off
 xlabel('Time (s)')
-ylabel('Force (-)')
+ylabel('Force (F_0)')
 title('Force trajectory')
-legend('Approximated','Original','location','best')
-legend boxoff
+% legend('Approximated','Original','location','best')
+% legend boxoff
 
-subplot(122)
-h = line('xdata',parms.xi * parms.h * 1e9, 'ydata', ni(id,:,1), 'linestyle','-', 'color', color(1,:),'linewidth',2);
-g = line('xdata', (parms.xi + li(id,2)) * parms.h * 1e9, 'ydata', ni(id,:,2), 'linestyle','--', 'color', color(2,:),'linewidth',2);
+subplot(2,2,[1 3])
+h = line('xdata',parms.xi * parms.h * 1e9, 'ydata', ni(id,:,1), 'linestyle','--', 'color', color(1,:),'linewidth',2);
+g = line('xdata', (parms.xi + li(id,2)) * parms.h * 1e9, 'ydata', ni(id,:,2), 'linestyle','-', 'color', color(1,:),'linewidth',2);
 axis([-24 24 0 2])
 box off
-xlabel('XB strain (nm)')
-ylabel('Fraction of attached XBs')
-title('Cross-bridge (XB) distribution')
-
-set(gcf,'units','normalized','position',[.2 .3 .5 .4])
+xlabel('Cross-bridge strain (nm)')
+ylabel('Fraction attached')
+title('Cross-bridge distribution')
+set(gcf,'units','normalized','position',[.2 .1 .3 .4])
 
 %%
 figure(1)
 clear cframe;
 
-for i = 1:length(ni)
-    set(y, 'xdata', [ti(i) ti(i)]);
+for i = 1:size(ni,1)
+    set(y1, 'xdata', [ti(i) ti(i)]-9.9);
+    set(y2, 'xdata', [ti(i) ti(i)]-9.9);
     
     set(h, 'ydata', ni(i,:,1));
     set(g, 'xdata', (parms.xi + li(i,2)) * parms.h * 1e9, 'ydata', ni(i,:,2));
@@ -131,8 +144,8 @@ open(writerObj);
 writeVideo(writerObj,cframe);
 close(writerObj);
 
-
-writerObj=VideoWriter('distributions_slowed_10x.mp4','MPEG-4');
+%%
+writerObj=VideoWriter('distributions_slowed_10x_with_approx.mp4','MPEG-4');
 writerObj.FrameRate = round(1/mean(diff(ti))) / 10;
 open(writerObj);
 writeVideo(writerObj,cframe);
