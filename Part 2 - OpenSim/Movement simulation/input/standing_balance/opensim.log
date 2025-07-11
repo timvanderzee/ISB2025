@@ -1,0 +1,136 @@
+[2025-07-11 20:00:44.012] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:00:44.018] [info] Loaded model gait4dof9musc.osim-scaled from file SCP_gait4dof9musc.osim
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-11 20:00:44.019] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-11 20:00:44.020] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-11 20:00:44.020] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-11 20:00:44.020] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-11 20:00:44.020] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-11 20:00:44.020] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-11 20:00:44.020] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:00:44.021] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:00:44.046] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:00:44.058] [info] Loaded model gait10dof18musc.osim-scaled from file SCP_gait10dof18musc.osim
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-11 20:00:44.058] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'l_femur.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'l_tibia.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'l_fibula.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'l_talus.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'l_foot.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'l_bofoot.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-11 20:00:44.059] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-11 20:00:44.059] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:00:44.060] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:01:14.422] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:01:14.505] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:01:14.534] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-11 20:01:14.543] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-11 20:01:14.620] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:01:14.620] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:01:14.821] [warning] Visualizer couldn't open tibia.vtp because: SimTK Exception thrown at PolygonalMesh.cpp:411:
+  Error detected by Simbody method PolygonalMesh::loadVtpFile(): Attempt to load a VTK PolyData (.vtp) file from file name 'C:\OpenSim 4.5\opensim\..\\Geometry\tibia.vtp' failed with message:
+  SimTK Exception thrown at Xml.cpp:108:
+  Error detected by Simbody method Xml::readFromFile(): Failed to load the Xml file 'C:\OpenSim 4.5\opensim\..\\Geometry\tibia.vtp' with error 'Failed to open file (line=0, col=0)'.
+  (Required condition 'loadOK' was not met.)
+
+  (Required condition '!"failed"' was not met.)
+
+[2025-07-11 20:01:14.823] [warning] Visualizer couldn't open femur.vtp because: SimTK Exception thrown at PolygonalMesh.cpp:411:
+  Error detected by Simbody method PolygonalMesh::loadVtpFile(): Attempt to load a VTK PolyData (.vtp) file from file name 'C:\OpenSim 4.5\opensim\..\\Geometry\femur.vtp' failed with message:
+  SimTK Exception thrown at Xml.cpp:108:
+  Error detected by Simbody method Xml::readFromFile(): Failed to load the Xml file 'C:\OpenSim 4.5\opensim\..\\Geometry\femur.vtp' with error 'Failed to open file (line=0, col=0)'.
+  (Required condition 'loadOK' was not met.)
+
+  (Required condition '!"failed"' was not met.)
+
+[2025-07-11 20:01:31.824] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Biophysical_reguluar.sto (nr=43 nc=9)
+[2025-07-11 20:02:25.059] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:02:25.064] [info] Loaded model gait4dof9musc.osim-scaled from file SCP_gait4dof9musc.osim
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-11 20:02:25.064] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-11 20:02:25.064] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:02:25.064] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:02:25.068] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:02:25.079] [info] Loaded model gait10dof18musc.osim-scaled from file SCP_gait10dof18musc.osim
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_femur.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_tibia.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_fibula.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_talus.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_foot.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'l_bofoot.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-11 20:02:25.080] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-11 20:02:25.080] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:02:25.081] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:02:35.004] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Biophysical_reguluar.sto (nr=43 nc=9)
+[2025-07-11 20:15:48.848] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:15:48.863] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:15:48.873] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:15:48.873] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:17:41.429] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait10dof18musc_Trial15_ks.mot (nr=205 nc=11)
+[2025-07-11 20:17:53.674] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Biophysical_reguluar.sto (nr=43 nc=9)
+[2025-07-11 20:20:08.788] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:20:08.793] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:20:08.794] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:20:08.794] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:20:41.258] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Biophysical_reguluar.sto (nr=43 nc=9)
+[2025-07-11 20:22:26.009] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:22:26.013] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:22:26.015] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:22:26.015] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:22:43.311] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:22:43.316] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:22:43.318] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:22:43.318] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:22:55.667] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:22:55.674] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:22:55.676] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:22:55.676] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:23:26.060] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:23:26.065] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:23:26.066] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:23:26.066] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:23:55.619] [info] Updating Model file from 30000 to latest format...
+[2025-07-11 20:23:55.626] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-11 20:23:55.627] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-11 20:23:55.627] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-11 20:24:36.951] [info] Storage: read data file = C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\output\standing_balance\standing_balance_Hill_reguluar.sto (nr=30 nc=9)
