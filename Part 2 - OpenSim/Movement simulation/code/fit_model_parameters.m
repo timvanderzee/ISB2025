@@ -194,15 +194,18 @@ Fdot = xdot(1,:) + xdot(2,:);
 subplot(311)
 plot(R.t, vts, 'linewidth',1.5); hold on
 ylabel('Velocity')
+title('Velocity')
 
 subplot(312)
 plot(R.t, R.F, 'linewidth',1.5); hold on
 plot(R.t(idF), Fts(idF), '.', 'markersize',10); 
 ylabel('Force')
+title('Force')
 
 subplot(313);
 plot(R.t, R.Fdot, 'linewidth',1.5);
 ylabel('Force-rate')
+title('Force-rate')
 
 for i = 1:3
     subplot(3,1,i); 

@@ -1,4 +1,7 @@
-function [] = simulate_movement(stype, conditions, act, parms, mainfolder)
+function [FSE] = simulate_movement(stype, conditions, act, phi0, parms, mainfolder, data)
+
+% define output
+FSE = [];
 
 % get some settings
 [input, s0, t0, tf, models, muscle_names] = load_data(stype, act);
@@ -45,6 +48,8 @@ if strcmp(stype,'standing_balance')
     for i = 0:numVar-1
         osimState.updY().set(i, s0(i+1,1));
     end
+else
+    osimState.updY().set(0, phi0(2));
 end
 
 % Get the number of states, coordinates, muscles and controls from the model;
@@ -84,7 +89,7 @@ for i = 1:Ncontrols
 end
 
 %% simulate movement
-ls = {'-','--'};
+ls = {'--','-'};
 color = get(gca,'colororder');
 auxdata.fse0 = zeros(1, M);
 modelnames = {'Hill', 'Biophysical'};
@@ -99,7 +104,7 @@ for j = 1:length(modelnames)
 
         if strcmp(stype, 'pendulum_test')
             AMPs = zeros(M, 1);
-            if strcmp(conditions{i}, 'pre_movement')
+            if strcmp(conditions{i}, 'premovement')
                 AMPs(4) = .1;
                 AMPs(5) = .2;
             end    
@@ -122,23 +127,41 @@ for j = 1:length(modelnames)
             s(:,kodd) = sFW(:,k);
             s(:,keve) = sFW(:,k+(auxdata.NStates/2));
         end
-            
-%         s = [sFW(:,1) sFW(:,7) sFW(:,2) sFW(:,8) sFW(:,3) sFW(:,9) sFW(:,4) sFW(:,10) sFW(:,5) sFW(:,11) sFW(:,6) sFW(:,12)];
-        
+                  
         if strcmp(stype, 'pendulum_test')
-            phi = s(:,1); % knee angle [?]
-            plot(tFW, phi, ls{i}, 'color', color(j,:)); hold on
-            box off
-            title('Knee angle')
+            color = get(gca,'colororder');
+            phi = (s(:,1) + phi0(1)) * 180/pi; % knee angle [?]
+            FSE(j,i,2) = max(phi) - min(phi);
+            FSE(j,i,1) = max(data(:,2,i)) - min(data(:,2,i));
+            
+            subplot(121)
+            plot(data(:,1,i), data(:,2,i), ls{i}, 'color', [.5 .5 .5]); hold on
+            title('Data')
 
-%             FSE(j,i) = min(phi);
+            subplot(122)
+            plot(tFW, phi, ls{i}, 'color', color(j,:), 'Displayname', [modelnames{j}, ' - ', conditions{i}]); hold on
+            title('Model')
+
+            for k = 1:2
+                subplot(1,2,k)            
+                box off
+                xlabel('Time (s)')
+                ylabel('Shank angle (deg)')
+                xlim([0 5])
+                ylim([-160 0])
+            end
+   
         else
+            
+            titles = {'Ankle', 'Knee', 'Hip'};
             for k = 1:3
-            subplot(1,3,k)
-            phi = sFW(:,k+1); % ankle angle [?]
-            plot(tFW, phi, ls{i}, 'color', color(j,:)); hold on
-            box off
-%             title('Knee angle')
+                subplot(1,3,k)
+                phi = sFW(:,k+1);
+                plot(tFW, phi * 180/pi, '-', 'color', color(j,:),'Displayname', modelnames{j}); hold on
+                box off
+                title(titles{k})
+                ylabel('Joint angle (deg)')
+                xlabel('Time (s)')
             end
             
         end
@@ -167,4 +190,7 @@ for j = 1:length(modelnames)
     end
     disp(' ');
 end
+
+legend
+legend boxoff
 end
