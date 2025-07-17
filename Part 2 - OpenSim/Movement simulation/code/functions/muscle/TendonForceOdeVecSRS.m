@@ -7,7 +7,7 @@ vMT = interp1(t_input, VMT, t);
 
 % Length and overlap
 fse = max(x(1), 0);
-[~, lMtilda, cos_alpha] = get_lM_from_fse(fse, lMT, mparams, kT);
+[~, lMtilda, cos_alpha, dL] = get_lM_from_fse(fse, lMT, mparams, kT);
 FMltilda = get_overlap(lMtilda, Faparam);
 
 % Parallel force
@@ -20,7 +20,7 @@ FMce = max(fse./cos_alpha - Fpe, 0);
 if strcmp(type, 'Hill')
     [vM, Xd] = contractile_dynamics(a, FMltilda, FMce, Fvparam, mparams);
 elseif strcmp(type, 'Biophysical')
-    [vM, Xd] = contractile_dynamics_BP(a, FMltilda, [FMce x(2) x(3) x(4) x(5)], vMT, kT, kP, cos_alpha, mparams, XBparam);
+    [vM, Xd] = contractile_dynamics_BP(a, FMltilda, [FMce x(2) x(3) x(4) x(5)], vMT, kT, kP, cos_alpha, mparams, XBparam, dL);
 end
 
 % Tendon velocity and force

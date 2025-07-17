@@ -1,4 +1,4 @@
-function[vM, Xdot] = contractile_dynamics_BP(a, FMltilda, x, vMT, kT, kP, cos_a, params, parms)
+function[vM, Xdot] = contractile_dynamics_BP(a, FMltilda, x, vMT, kT, kP, cos_a, params, parms, dL)
 
 % v2: with dampening
 lMo = params(2);
@@ -28,11 +28,13 @@ DRX = x(5);
 kS = 100;
 kT = (kT .* lMo(:)./lTs(:)) / (delta*gamma); % F0/lTs to F0/lMo to Q1max/h;
 kP = kP / (delta*gamma); % F0/lTs to F0/lMo;
+dL = dL * gamma;
 
 parms.vmtc = vMT / lMo * gamma; % l0/s to h/s
 parms.act = a;
 parms.Noverlap = FMltilda;
 parms.no_tendon = 0;
+parms.dL = dL;
 
 % simulate biophysical dynamics
 X = [Non Q0 Q1 Q2 DRX];

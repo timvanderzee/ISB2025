@@ -111,8 +111,10 @@ for j = 1:length(modelnames)
             auxdata.AMP = AMPs;
         end
         
+        tic
         [tFW,sFW] = sim_movement(modelnames{j}, t0, tf, s0, input, osimModel, osimState, auxdata);
         fse = max(sFW(:,auxdata.NStates+1:auxdata.NStates+auxdata.NMuscles), 0);
+        toc
 
         % used the steady-state for next simulations
         auxdata.fse0 = fse(1,:);

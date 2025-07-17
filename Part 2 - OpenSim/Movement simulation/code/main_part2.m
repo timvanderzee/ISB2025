@@ -22,7 +22,7 @@ load('parms.mat','parms')
 
 % simulate standing balance
 if ishandle(1), close(1); end; figure(1)
-simulate_movement('standing_balance', {'reguluar'}, [], [], parms, mainfolder);
+simulate_movement('standing_balance', {'regular'}, [], [], parms, mainfolder);
 set(gcf,'units','normalized','position',[.2 .4 .6 .3])
 
 %% Assignment 1.2: visualize effect of rate parameters
@@ -52,7 +52,7 @@ w3 = 1; 	% weight for regularization
 w = [w1 w2 w3];
 
 % specify biophysical parameters to be fitted
-optparms = {'f', 'k11', 'k22', 'k21'};
+optparms = {'f', 'k11', 'k22', 'k21', 'JF'};
 
 if ishandle(3), close(3); end; figure(3)
 [newparms, out] = fit_model_parameters(opti, optparms, w, SRSdata, parms);
@@ -70,7 +70,7 @@ set(gcf,'units','normalized','position',[.4 .4 .2 .2])
 
 %% Assignment 3.1: simulate standing balance
 if ishandle(6), close(6); end; figure(6)
-simulate_movement('standing_balance', {'reguluar'}, [], [], newparms, mainfolder);
+simulate_movement('standing_balance', {'regular'}, [], [], newparms, mainfolder);
 set(gcf,'units','normalized','position',[.2 .2 .6 .3])
 
 %% Assignment 4.1: simulate pendulum test - typically developing (TD) child
@@ -90,7 +90,7 @@ phi_femur = -.25; % [rad]
 phi_knee = 0; % [rad]
 
 if ishandle(7), close(7); end; figure(7)
-FSE_TD = simulate_movement('pendulum_test', {'reguluar', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
+FSE_TD = simulate_movement('pendulum_test', {'regular', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
 set(gcf,'units','normalized','position',[.2 .4 .6 .4])
 
 %% Assignment 4.2: simulate pendulum test - child with cerebral palsy (CP)
@@ -99,7 +99,7 @@ cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\pendulum_test'])
 load('CP_data.mat','data')
 
 % specify baseline activation of all muscles
-act = 2e-2;
+act = 6e-2;
 
 % femur angle wrt horizontal (downward = negative). note: if changed from 
 % default value (-.25), need to modify .osim file (see Assignment 7)
@@ -107,10 +107,10 @@ phi_femur = -.25; % [rad]
 
 % initial knee angle (full extension = 0, flexion = negative). note: can be
 % changed from default value, without needing to modify .osim file
-phi_knee = 0; % [rad]
+phi_knee = -.3; % [rad]
 
 if ishandle(8), close(8); end; figure(8)
-FSE_CP = simulate_movement('pendulum_test', {'reguluar', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
+FSE_CP = simulate_movement('pendulum_test', {'regular', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
 set(gcf,'units','normalized','position',[.2 .2 .6 .4])
 
 %% Assignment 6: visualize first swing excursion and its change with premovement
@@ -119,19 +119,19 @@ color = get(gca,'colororder');
 
 % determine change in first swing excursion
 dFSE_CP = FSE_CP(:,2,:) - FSE_CP(:,1,:);
-dFSE_TD = FSE_TD(:,2,:) - FSE_TD(:,1,:);
+% dFSE_TD = FSE_TD(:,2,:) - FSE_TD(:,1,:);
 
 % data
 plot(FSE_CP(1,1,1), dFSE_CP(1,:,1), 'o', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5]); hold on
-plot(FSE_TD(1,1,1), dFSE_TD(1,:,1), 's', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5])
+% plot(FSE_TD(1,1,1), dFSE_TD(1,:,1), 's', 'color', [.5 .5 .5], 'markerfacecolor', [.5 .5 .5])
 
 % Hill-type model
 plot(FSE_CP(1,1,2), dFSE_CP(1,:,2), 'o', 'color', color(1,:), 'markerfacecolor', color(1,:)); hold on
-plot(FSE_TD(1,1,2), dFSE_TD(1,:,2), 's', 'color', color(1,:), 'markerfacecolor', color(1,:))
+% plot(FSE_TD(1,1,2), dFSE_TD(1,:,2), 's', 'color', color(1,:), 'markerfacecolor', color(1,:))
 
 % Biophysical model
 plot(FSE_CP(2,1,2), dFSE_CP(2,:,2),  'o', 'color', color(2,:), 'markerfacecolor', color(2,:)); hold on
-plot(FSE_TD(2,1,2), dFSE_TD(2,:,2),  's', 'color', color(2,:), 'markerfacecolor', color(2,:))
+% plot(FSE_TD(2,1,2), dFSE_TD(2,:,2),  's', 'color', color(2,:), 'markerfacecolor', color(2,:))
 
 % connecting lines
 plot([FSE_CP(1,1,1) FSE_TD(1,1,1)], [dFSE_CP(1,:,1) dFSE_TD(1,:,1)], '--', 'color', [.5 .5 .5])
