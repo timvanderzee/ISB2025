@@ -30,10 +30,7 @@ for m = 1:auxdata.NMuscles
 
         % Contractile element force
         FMce = max(fse./cos_alpha - Fpe, 0);
-
-        delta = 1.9207;
-
-        Q0 = FMce / delta;
+        Q0 = FMce / auxdata.parms.Fscale;
         x00(2) = Q0;
        
     end

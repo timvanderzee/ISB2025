@@ -5,7 +5,7 @@ k1 = [k11 k12];
 k2 = [k21 -k22];
 % w = 0.2;
 
-gamma = 100; % length scaling
+gamma = 108.3333; % length scaling
 
 IGef{1} = @(c,k)(c(1,:)*k(1).*exp(c(3,:)*k(2)^2/4-c(2,:)*k(2)));
 IGef{2} = @(c,k)(c(1,:)*k(1).*exp(c(3,:)*k(2)^2/4-c(2,:)*k(2))).*(c(2,:)-c(3,:)*k(2)/2);

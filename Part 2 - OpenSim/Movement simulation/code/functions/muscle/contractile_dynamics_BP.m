@@ -5,7 +5,7 @@ lMo = params(2);
 lTs = params(3);
 
 %% define parameters
-gamma = 100; % length scaling
+gamma = (.5*parms.s)/parms.h; % length scaling
 delta = parms.Fscale;
 
 %% simulate biophysical dynamics

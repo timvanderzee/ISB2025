@@ -52,7 +52,7 @@ w3 = 1; 	% weight for regularization
 w = [w1 w2 w3];
 
 % specify biophysical parameters to be fitted
-optparms = {'f', 'k11', 'k22', 'k21', 'JF'};
+optparms = {'f', 'k11', 'k22', 'k21'};
 
 if ishandle(3), close(3); end; figure(3)
 [newparms, out] = fit_model_parameters(opti, optparms, w, SRSdata, parms);
@@ -99,7 +99,7 @@ cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\pendulum_test'])
 load('CP_data.mat','data')
 
 % specify baseline activation of all muscles
-act = 6e-2;
+act = 2e-2;
 
 % femur angle wrt horizontal (downward = negative). note: if changed from 
 % default value (-.25), need to modify .osim file (see Assignment 7)
@@ -107,7 +107,7 @@ phi_femur = -.25; % [rad]
 
 % initial knee angle (full extension = 0, flexion = negative). note: can be
 % changed from default value, without needing to modify .osim file
-phi_knee = -.3; % [rad]
+phi_knee = 0; % [rad]
 
 if ishandle(8), close(8); end; figure(8)
 FSE_CP = simulate_movement('pendulum_test', {'reguluar', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
@@ -140,10 +140,8 @@ plot([FSE_CP(2,1,2) FSE_TD(2,1,2)], [dFSE_CP(2,:,2) dFSE_TD(2,:,2)], '--', 'colo
 
 xlabel('First swing excursion (deg)')
 ylabel('Change in first swing excursion (deg)')
-box off
 set(gca,'Xdir','reverse')
-
+box off
 legend('Data - CP', 'Data - TD', 'Hill - CP', 'Hill - TD', 'Biophysical - CP', 'Biophysical - TD', 'location', 'best')
 legend boxoff
-
 set(gcf,'units','normalized','position',[.3 .3 .3 .4])

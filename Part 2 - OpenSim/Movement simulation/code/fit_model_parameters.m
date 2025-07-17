@@ -18,8 +18,17 @@ for i = 1:length(allparms)
     eval([allparms{i}, ' = ', num2str(parms.(allparms{i})),';'])
 end
 
-lb = [1 1 0 1 1];
-ub = [2e3 2e3 5 1e3 200];
+% bounds on parameter values
+lb = ones(1, length(optparms));
+ub = 2e3 * ones(1, length(optparms));
+
+% exception for exponential coefficient
+for i = 1:length(optparms)
+    if strcmp(optparms{i}, 'k22') || strcmp(optparms{i}, 'k12')
+        lb(i) = 0;
+        ub(i) = 5;
+    end
+end
 
 for i = 1:length(optparms)
     eval([optparms{i}, '= opti.variable(1);'])
@@ -174,7 +183,7 @@ R.dQ1dt = sol.value(dQ1dt);
 R.dQ2dt = sol.value(dQ2dt); 
 R.F     = sol.value(Frel); 
 R.Fdot  = R.dQ0dt + R.dQ1dt;
-R.t = 0:dt:(N-1)*dt;
+R.t     = 0:dt:(N-1)*dt;
 
 %% Test the result
 % extract the parameters
