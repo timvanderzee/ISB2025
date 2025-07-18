@@ -6,12 +6,12 @@ alphao = params(4);
 
 lTtilda = fse/kT + 1;
 
-% lM = sqrt((lMo.*sin(alphao)).^2+(lMT-lTs.*lTtilda).^2); % [m]
-% cos_alpha = (lMT-lTs.*lTtilda)./lM;
+lM = sqrt((lMo.*sin(alphao)).^2+(lMT-lTs.*lTtilda).^2); % [m]
+cos_alpha = (lMT-lTs.*lTtilda)./lM;
 
 % ignoring pennation
-lM = (lMT-lTs.*lTtilda);
-cos_alpha = 1;
+% lM = (lMT-lTs.*lTtilda);
+% cos_alpha = 1;
 
 lMtilda = lM./lMo; % []
 

@@ -22,7 +22,7 @@ load('parms.mat','parms')
 
 % simulate standing balance
 if ishandle(1), close(1); end; figure(1)
-simulate_movement('standing_balance', {'reguluar'}, [], [], parms, mainfolder);
+simulate_movement('standing_balance', {'regular'}, [], [], parms, mainfolder);
 set(gcf,'units','normalized','position',[.2 .4 .6 .3])
 
 %% Assignment 1.2: visualize effect of rate parameters
@@ -52,7 +52,7 @@ w3 = 1; 	% weight for regularization
 w = [w1 w2 w3];
 
 % specify biophysical parameters to be fitted
-optparms = {'f', 'k11', 'k22', 'k21'};
+optparms = {'f', 'k11', 'k22', 'k21', 'JF'};
 
 if ishandle(3), close(3); end; figure(3)
 [newparms, out] = fit_model_parameters(opti, optparms, w, SRSdata, parms);
@@ -70,7 +70,7 @@ set(gcf,'units','normalized','position',[.4 .4 .2 .2])
 
 %% Assignment 3.1: simulate standing balance
 if ishandle(6), close(6); end; figure(6)
-simulate_movement('standing_balance', {'reguluar'}, [], [], newparms, mainfolder);
+simulate_movement('standing_balance', {'regular'}, [], [], newparms, mainfolder);
 set(gcf,'units','normalized','position',[.2 .2 .6 .3])
 
 %% Assignment 4.1: simulate pendulum test - typically developing (TD) child
@@ -90,7 +90,7 @@ phi_femur = -.25; % [rad]
 phi_knee = 0; % [rad]
 
 if ishandle(7), close(7); end; figure(7)
-FSE_TD = simulate_movement('pendulum_test', {'reguluar', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
+FSE_TD = simulate_movement('pendulum_test', {'regular', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
 set(gcf,'units','normalized','position',[.2 .4 .6 .4])
 
 %% Assignment 4.2: simulate pendulum test - child with cerebral palsy (CP)
@@ -110,7 +110,7 @@ phi_femur = -.25; % [rad]
 phi_knee = 0; % [rad]
 
 if ishandle(8), close(8); end; figure(8)
-FSE_CP = simulate_movement('pendulum_test', {'reguluar', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
+FSE_CP = simulate_movement('pendulum_test', {'regular', 'premovement'}, act, [phi_femur phi_knee], newparms, mainfolder, data);
 set(gcf,'units','normalized','position',[.2 .2 .6 .4])
 
 %% Assignment 6: visualize first swing excursion and its change with premovement
