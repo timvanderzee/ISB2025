@@ -52,7 +52,7 @@ w3 = 1; 	% weight for regularization
 w = [w1 w2 w3];
 
 % specify biophysical parameters to be fitted
-optparms = {'f', 'k11', 'k22', 'k21', 'JF'};
+optparms = {'f', 'k11', 'k22', 'k21'};
 
 if ishandle(3), close(3); end; figure(3)
 [newparms, out] = fit_model_parameters(opti, optparms, w, SRSdata, parms);
