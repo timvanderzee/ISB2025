@@ -53,15 +53,15 @@ ax.YAxis.Visible = 'off';
 ax.Box = 'off';
 
 fig.UserData.ax_protocol = subplot(5,10,6:8);
-title('protocol')
 plot(1,0,'.','markerSize',20);
+title('protocol')
 xlim([0 3]);
 set(fig.UserData.ax_protocol,'ButtonDownFcn', ...
     @(s,e)len_protocol_callback(s,e),...
     'HitTest','on');
 xticks(0:3)
 xticklabels({'shorten','lengthen', ...
-    sprintf('shorten cycle'),sprintf('lenthen cycle')})
+    sprintf('shorten cycle'),sprintf('lengthen cycle')})
 fig.UserData.ax_protocol.YAxis.Visible = 'off';
 
 ax = subplot(5,2,1);
@@ -72,9 +72,9 @@ plot(ax,[0:1, 3:6, 8],...
 xlim([-1 9])
 xticks([0:1, 3:6, 8])
 xticklabels({'f','w','k_{11}','k_{12}','k_{21}','k_{22}','pCa'});
-text(ax, 0, 1.3, 'attachment parms', 'fontSize', 12, 'HorizontalAlignment','center');
-text(ax, 4.5, 1.3, 'detachment parms', 'fontSize', 12, 'HorizontalAlignment','center');
-text(ax, 8, 1.3, 'activation', 'fontSize', 12, 'HorizontalAlignment','center');
+text(ax, 0, 1.3, 'attachment parms', 'fontSize', 10, 'HorizontalAlignment','center');
+text(ax, 4.5, 1.3, 'detachment parms', 'fontSize', 10, 'HorizontalAlignment','center');
+text(ax, 8, 1.3, 'activation', 'fontSize', 10, 'HorizontalAlignment','center');
 
 fig.UserData.ax_ffunc = subplot(5,2,3);
 plot(parms.xi, nan*parms.xi);
@@ -101,10 +101,11 @@ xlabel('time (s)')
 ylabel('\Delta length (ps)')
 
 fig.UserData.ax_F = subplot(5,2,[8,10]);
-plot(fig.UserData.t_total, fig.UserData.F_total, 'PickableParts', 'none')
+hxb = plot(fig.UserData.t_total, fig.UserData.F_total, 'PickableParts', 'none');
 hold on
 plot([0.1 0.1], [0 max(fig.UserData.F_total)*3], 'PickableParts', 'none');
-plot(fig.UserData.t_total, fig.UserData.hillF_total, 'PickableParts', 'none')
+hhill = plot(fig.UserData.t_total, fig.UserData.hillF_total, 'PickableParts', 'none');
+legend([hxb hhill], 'XB', 'Hill', 'Location', 'northeast')
 xlabel('time (s)')
 ylabel('force (F_0)')
 
