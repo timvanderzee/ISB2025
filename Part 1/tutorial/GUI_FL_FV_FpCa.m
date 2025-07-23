@@ -25,7 +25,7 @@ fig = figure;
 fig.UserData.parms = parms;
 parm_range = [100, 1, 30, 3, 30, 3];
 
-ax = subplot(4,3,4);
+ax = subplot(5,3,7);
 
 fig.UserData.ax_parm = ax;
 plot(ax,[0:1, 3:6],...
@@ -38,12 +38,12 @@ text(ax, 0, 1.3, 'attachment', 'fontSize', 10, 'HorizontalAlignment','center');
 text(ax, 4.5, 1.3, 'detachment', 'fontSize', 10, 'HorizontalAlignment','center');
 
 
-fig.UserData.ax_ffunc = subplot(4,3,7);
+fig.UserData.ax_ffunc = subplot(5,3,10);
 plot(parms.xi, nan*parms.xi);
 xlabel('\Delta x')
 ylabel('attachment rate (f)')
 
-fig.UserData.ax_gfunc = subplot(4,3,10);
+fig.UserData.ax_gfunc = subplot(5,3,13);
 plot(parms.xi, nan*parms.xi);
 xlabel('\Delta x')
 ylabel('detachment rate (g)')
@@ -54,8 +54,7 @@ set(fig.UserData.ax_parm,'ButtonDownFcn', ...
 dummyE.IntersectionPoint = [-2,0];
 update_parms(fig.UserData.ax_parm,dummyE,parm_range);
 
-
-ax = subplot(4,3,1);
+ax = subplot(5,3,4);
 fig.UserData.ax_run = ax;
 set(fig.UserData.ax_run,'ButtonDownFcn', ...
     @(s,e)run_sim_callback(s,e),...
@@ -67,15 +66,35 @@ ax.XAxis.Visible = 'off';
 ax.YAxis.Visible = 'off';
 ax.Box = 'off';
 
-
+ax = subplot(5,3,1);
+fig.UserData.ax_save = ax;
+set(fig.UserData.ax_save,'ButtonDownFcn', ...
+    @(s,e)save_callback(s,e),...
+    'HitTest','on');
+fig.UserData.saveTextHandle = text(0.5, 0.5, 'nothing to save yet',...
+    'HorizontalAlignment','center','PickableParts','none');
+xlim([0 1]);
+ax.XAxis.Visible = 'off';
+ax.YAxis.Visible = 'off';
+ax.Box = 'off';
 
 %%
+function [] = save_callback(src,~)
+fig = src.Parent;
+if(isfield(fig.UserData, 'hill_properties'))
+    hill_properties = fig.UserData.hill_properties;
+    uisave('hill_properties');
+end
+end
+
 function [] = run_sim_callback(src,~)
 fig = src.Parent;
 set(fig.UserData.statusHandle, 'string', 'running - please wait');
+set(fig.UserData.saveTextHandle, 'string', 'running - please wait');
 pause(0.01);
 sim_flfvfpca(fig,fig.UserData.parms);
 set(fig.UserData.statusHandle, 'string', 'click here to RUN');
+set(fig.UserData.saveTextHandle, 'string', 'click to SAVE hill properties');
 end
 
 function [] = sim_flfvfpca(fig,parms)
@@ -194,11 +213,7 @@ for cond_itr = 1:3 % << pick which protocol you want to run
 
 end
 
-if(save_hill_properties)
-    save(sprintf('hill_properties_pCa_%d', ref_pCa*10), "hill_properties");
-end
-
-
+fig.UserData.hill_properties = hill_properties;
 
 end
 

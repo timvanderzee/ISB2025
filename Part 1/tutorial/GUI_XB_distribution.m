@@ -6,7 +6,7 @@ load('protocol.mat')
 warning('on')
 
 half_s_len_norm = parms.s/2/parms.h;
-nbins = 500;
+nbins = 600;
 pCa = 4.5;
 Ca = 10^(-pCa+6);
 
@@ -32,15 +32,17 @@ parms0 = parms;
 fig = figure;
 
 fig.UserData.parms = parms;
-
 fig.UserData.protocol_duration = [0.05,0.1,0.1,0.1,0.1]; % should be integer multiplication of dt
 fig.UserData.protocol_v = [0, -10, 10, 10, -10];
 fig.UserData.protocol_pCa = [9 [1 1 1 1]*parms.pCa_ran];
 
+load('hill_properties_pCa_45.mat');
+fig.UserData.hill_properties = hill_properties;
+
 sim_XB(fig, model,parms);
 parm_range = [100, 1, 30, 3, 30, 3, 4.5];
 
-ax = subplot(5,10,9:10);
+ax = subplot(5,10,10);
 fig.UserData.ax_run = ax;
 set(fig.UserData.ax_run,'ButtonDownFcn', ...
     @(s,e)run_sim_callback(s,e,model),...
@@ -51,6 +53,20 @@ xlim([0 1]);
 ax.XAxis.Visible = 'off';
 ax.YAxis.Visible = 'off';
 ax.Box = 'off';
+
+
+ax = subplot(5,10,9);
+fig.UserData.ax_save = ax;
+set(fig.UserData.ax_save,'ButtonDownFcn', ...
+    @(s,e)load_callback(s,e),...
+    'HitTest','on');
+fig.UserData.loadTextHandle = text(0.5, 0.5, 'load Hill',...
+    'HorizontalAlignment','center','PickableParts','none');
+xlim([0 1]);
+ax.XAxis.Visible = 'off';
+ax.YAxis.Visible = 'off';
+ax.Box = 'off';
+
 
 fig.UserData.ax_protocol = subplot(5,10,6:8);
 plot(1,0,'.','markerSize',20);
@@ -129,7 +145,6 @@ set(fig.UserData.ax_parm,'ButtonDownFcn', ...
     @(s,e)update_parms(s,e,parm_range),...
     'HitTest','on');
 
-
 dummyE.IntersectionPoint = [1 -100];
 len_protocol_callback(fig.UserData.ax_len, dummyE);
 
@@ -143,6 +158,15 @@ linkaxes([fig.UserData.ax_len, fig.UserData.ax_F, fig.UserData.ax_pCa],'x');
 run_sim_callback(fig.UserData.ax_run, [], model);
 
 %% 
+function [] = load_callback(src,~)
+fig = src.Parent;
+uiopen('load');
+if(exist('hill_properties'))
+    fig.UserData.hill_properties = hill_properties;
+    set(fig.UserData.ax_F.Children(1), 'ydata', fig.UserData.hillF_total*nan);
+end
+end
+
 function [] = update_parms(src,eventData, parm_range)
 fig = src.Parent;
 
@@ -247,7 +271,7 @@ sim_XB(fig,model,fig.UserData.parms);
 dummyE.IntersectionPoint = [10 0];
 update_time(fig.UserData.ax_len,dummyE)
 
-set(fig.UserData.statusHandle, 'string', 'click here to RUN');
+set(fig.UserData.statusHandle, 'string', 'RUN');
 end
 
 %%
@@ -346,7 +370,7 @@ fig.UserData.v_total = v_total;
 fig.UserData.t_protocol = t_protocol;
 fig.UserData.pCa_protocol = pCa_protocol;
 
-sim_Hill(fig,load('hill_properties_pCa_45.mat').hill_properties,...
+sim_Hill(fig,fig.UserData.hill_properties,...
     parms);
 end
 
