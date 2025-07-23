@@ -24,7 +24,7 @@ hill_properties = struct();
 
 ref_pCa = 4.5; % << pCa during F-L, F-v simulation 
 
-for cond_itr = 1 % << pick which protocol you want to run 
+for cond_itr = 1:3 % << pick which protocol you want to run 
     % 1: F-L, 2: F-v, 3: F-pCa
     figure;
 
