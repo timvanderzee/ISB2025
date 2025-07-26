@@ -66,12 +66,12 @@ You will simulate a clinical test of spasticity used to characterize joint-hyper
 
 Task: Run the Section titled “Assignment 2.4.1: simulate pendulum test - typically developing (TD) child”. A figure will appear with two subplots:
 *	Left: data from a typically developing child
-  -	Solid: with pre-movement 
-  - Dashed: without pre-movement 
-•	Right: simulation results. All muscle models were given the same constant activation level, specified by the “act” variable. Four different simulations were performed:
-  - Like for the data, line style (dashed and solid) indicates whether a pre-movement was performed. In addition, colors indicate the type of muscle model used:
-    - Blue: Hill-type model with default OpenSim parameters 
-    - Red: Biophysical model with parameters obtained in Assignment 2.2. 
+    - Solid: with pre-movement 
+    - Dashed: without pre-movement
+     
+* Right: simulation results. All muscle models were given the same constant activation level, specified by the “act” variable. Four different simulations were performed. Like for the data, line style (dashed and solid) indicates whether a pre-movement was performed. In addition, colors indicate the type of muscle model used:
+  - Blue: Hill-type model with default OpenSim parameters 
+  - Red: Biophysical model with parameters obtained in Assignment 2.2. 
 
 ![picture](Fig2-4.png)
 
