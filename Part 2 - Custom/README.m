@@ -1,12 +1,10 @@
-# Part 1 - Muscle models #
-In this part of the workshop, you will run a biophysical muscle model based on cross-bridge dynamics for a simple muscle fiber model. 
-You will see the effect of cross-bridge model parameters, protocols, activation on force development, and will compare it to phenomenological (Hill-type) muscle model.  
+# Part 2 - Dynamics simulation using muscle models #
+In this part of the workshop, you will run how to simulate a dynamics model with a biophysical muscle model based on cross-bridge dynamics.  
 
 **Learning Objectives**
 At the end of this tutorial, you should be able to:
-- Simulate force output from biophysical muscle model under varying length, velocity, and activation conditions
-- Understand the effect of cross-bridge properties on the steady-state and transient force generation properties of a muscle
-- Compare and contrast force-generating properties of a biophysical and Hill-type muscle model
+- Simulate a one degree-of-freedom model with one muscle to study knee pendulum test
+- Simulate a one degree-of-freedom model with one muscles to study standing posture control under perturbation 
 
 **Assignment 2.1: Knee pendulum test simulation demonstrates history-dependence of the biophysical model**
 - Code: Part 2-Custom/kneeTest.m
