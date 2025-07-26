@@ -30,7 +30,7 @@ Question: The resulting movement differs quite a lot between simulations with Hi
 
 **Assignment 2.2: Fit model parameters on force-velocity and short-range stiffness**
 
-The main reason for the discrepancy between Hill-type and biophysical models (see Assignment 2.1.1), is that the biophysical parameters were based on data from skinned rat soleus muscle fibers (at room temperature, see Part 1), while Hill-type model parameters are assumed to represent human muscle in vivo. You will therefore re-fit biophysical model parameters such that the biophysical model reproduces the Hill-type force-velocity relation in steady state, while reproducing history-dependent short-range stiffness reductions in dynamic conditions. You can select specific model parameters that are to be fitted (optparms), as well as a weight vector (w) that specifies the weighting of force-velocity and short-range stiffness error terms. The fitting is performed using direct collocation, minimizing the force-velocity and short-range stiffness errors while imposing model dynamics as equality constraints. 
+The biophysical parameters were based on data from skinned rat soleus muscle fibers (at room temperature, see Part 1) and might therefore not fully represent how human muscles behave in vivo (explaining part of the discrepancy between Hill-type and biophysical models you observed in Assignment 2.1.1). In contrast, Hill-type model parameters are assumed to represent the force-length and force-velocity relationship of human muscle in vivo. You will therefore re-fit biophysical model parameters such that the biophysical model reproduces the Hill-type force-velocity relation in steady state, while reproducing history-dependent short-range stiffness reductions in dynamic conditions. You can select specific model parameters that are to be fitted (optparms), as well as a weight vector (w) that specifies the weighting of force-velocity and short-range stiffness error terms. The fitting is performed using direct collocation, minimizing the force-velocity and short-range stiffness errors while imposing model dynamics as equality constraints. 
 
 Tasks
 -	Run the Section titled “Assignment 2.2.1: fit model parameters” (using default w and optparms). This will run a function that fits the specified parameters. A figure will appear that indicates imposed lengths at the cross-bridge level and the output force trajectories, both as a function of time. 
@@ -38,7 +38,7 @@ Tasks
 
 Optional tasks: 
 -	Run the Section titled “Assignment 2.2.3: compare the rate functions”. This will generate a figure of the rate functions before and after fitting parameters. 
--	Explore how changing the weight vector w affects the ability to fit force-velocity versus short-range stiffness properties. After changing the weight vector, re-run the Section titled “Assignment 2.2.1: fit model parameters”. 
+-	Explore how changing the weight vector w affects the fit of the force-velocity curve versus relative short-range stiffness. After changing the weight vector, re-run the Section titled “Assignment 2.2.1: fit model parameters”. 
 
 Question: Given the default selection of parameters (i.e. f, k11, k22, k21), is it possible to simultaneously fit force-velocity and short-range stiffness curves?
 
