@@ -31,7 +31,7 @@ parms0 = parms;
 % if User saved their own Hill properties at the end of FL_FV_FpCa.m, they
 % can load it here.
 load('hill_properties_pCa_45.mat'); 
-fig.UserData.hill_properties = hill_properties;
+hill_p = hill_properties;
 
 %% Define protocol to simulate. 
 
@@ -93,6 +93,12 @@ for p_itr = 1:length(protocol_v)
     curr_time = t_sim(end);
 end
 
+% calculate force using Hill-type model
+l_total = x_total(:,end);
+hillF_total = ppval(hill_p.FL_spline, l_total/half_s_len_norm).*...
+    ppval(hill_p.FV_spline, -v_total/half_s_len_norm).*...
+    ppval(hill_p.FPca_spline, pCa_total);
+
 %% plot length and activation protocol, and simulated XB force
 figure
 subplot(3,1,1)
@@ -105,6 +111,9 @@ subplot(3,1,3)
 plot(t_total, F_total)
 xlabel('time')
 ylabel('Force')
+hold on
+plot(t_total, hillF_total)
+legend('XB', 'Hill')
 
 %% plot XB distributions 
 figure 

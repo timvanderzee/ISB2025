@@ -1,24 +1,24 @@
 %% load parameters and set up simulations 
 addpath(genpath([pwd,'/../..']))
 
-warning('off')
-load('parms.mat')
-load('protocol.mat')
-warning('on')
-
-parms.forcible_detachment = 0;
-parms.kse = 0;
-parms.kpe = 0;
-parms.no_tendon = 1;
-odeopt = odeset('maxstep',1e-2);
+% warning('off')
+% load('parms.mat')
+% load('protocol.mat')
+% warning('on')
+% 
+% parms.forcible_detachment = 0;
+% parms.kse = 0;
+% parms.kpe = 0;
+% parms.no_tendon = 1;
+% odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
-nbins = 500;
+% nbins = 500;
+% 
+% parms.act = 1;
+% parms.cosa = 1;
+% parms.Noverlap = 1;
 
-parms.act = 1;
-parms.cosa = 1;
-parms.Noverlap = 1;
-
-save_hill_properties = 0; 
+save_hill_properties = 1; 
 % if set to be 1, it will prompt to save Hill properties at the end
 
 %% Run F-l, F-v, F-pCa protocols and save the outcome as splines.

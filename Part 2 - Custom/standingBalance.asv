@@ -11,7 +11,8 @@ half_s_len_norm = parms.s/2/parms.h;
 nbins = 500;
 parms.forcible_detachment = 0;
 parms.kse = 0;
-parms.pse = 0;
+parms.kse = 0;
+
 parms.no_tendon = 1;
 parms.act = 1;
 parms.cosa = 1;
