@@ -2,6 +2,8 @@
 In this part of the workshop, you will run a biophysical muscle model based on cross-bridge dynamics for a simple muscle fiber model. 
 You will see the effect of cross-bridge model parameters, length changes, and activation on force development. You will then compare the force response from the biophysical muscle model to the force response from a phenomenological (Hill-type) muscle model that is derived from the biophysical model.  
 
+The model consists of:
+
 **Learning Objectives**
 At the end of this tutorial, you should be able to:
 - Simulate force output from biophysical muscle model under varying length, velocity, and activation conditions
@@ -10,7 +12,14 @@ At the end of this tutorial, you should be able to:
 
 **Assignment 1.0: Preparation**
   -	Go to ISB2025\Part 1\tutorial and open the script called ‘GUI_XB_n_Hill.m’
-  -	Run the code (F5 on Windows)
+  -	Run the code (F5 on Windows) to open the GUI windon
+
+INSERT GUI SCREENSHOT
+
+The panel in the upper right allows you to set the values for parameters that change the rate functions for crossbridge attachment (f,w) and detachment (k11, k12, k21, k22). Although the model also contains states for cooperativity, these parameters cannot be modified within the GUI.
+
+If you would like to simulate the biophysical muscle model outside of the GUI, please see the Alternate Preparation section at the end of the this document.
+
 
 **Assignment 1.1: Effect of cross-bridge rate functions on cross-bridge distribution and force development (at fixed velocity and activation)**
    While running the GUI (‘GUI_XB_n_Hill.m’), 
@@ -29,7 +38,7 @@ At the end of this tutorial, you should be able to:
   - Compare cross-bridge and Hill-type forces.
   - Try different protocols and compare forces. 
 
-**Alternative way**
+**Alternative 1.0: Preparation**
 If you like, you can simulate these muscle models without GUI and edit the code directly. 
   - *XB_n_Hill.m* allows you to set up attachment/detachment parameters, change activation and simulation protocols. 
   - *FL_FV_FpCa.m* allows you to set up attachment/detachment parameters and simulate stretches to generate a force-length, force-velocity and force-pCa curves. You can save these curves and load into *XB_n_Hill.m* to simulate muscle force based on Hill-type muscle model you generated.  
