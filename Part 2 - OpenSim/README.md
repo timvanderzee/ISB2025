@@ -102,7 +102,8 @@ Question: Did the history dependence of the biophysical model increase? If so, w
 
 You can also visualize the output of movement simulations with biophysical models in OpenSim.
 
-![picture](Fig2-7.png)
+![picture](Fig2-7a.png)
+![picture](Fig2-7b.png)
 
 *Figure 2.7: OpenSim visualization of pendulum test and standing balance simulations.*
 
