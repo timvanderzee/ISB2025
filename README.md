@@ -22,3 +22,9 @@ This code requires the following:
 **Contact**
 
 tim.vanderzee@kuleuven.be
+
+Part 1: hansol.ryu@gatech.edu, surabhi.n.simha@emory.edu
+Part 2 OpenSim: tim.vanderzee@kuleuven.be
+Part 2 Custom: hansol.ryu@gatech.edu
+
+
