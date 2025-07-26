@@ -14,7 +14,7 @@ At the end of this tutorial, you should be able to:
   -	Go to ISB2025\Part 1\tutorial and open the script called ‘GUI_XB_n_Hill.m’
   -	Run the code (F5 on Windows) to open the GUI windon
 
-INSERT GUI SCREENSHOT
+<img width="1718" height="892" alt="GUIscreenshot1" src="https://github.com/user-attachments/assets/ce7c5514-7f83-4317-a790-bb5dd40c4078" />
 
 The panel in the upper right allows you to set the values for parameters that change the rate functions for crossbridge attachment (f,w) and detachment (k11, k12, k21, k22). Although the model also contains states for cooperativity, these parameters cannot be modified within the GUI.
 
