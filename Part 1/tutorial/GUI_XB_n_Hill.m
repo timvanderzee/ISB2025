@@ -22,7 +22,7 @@ parms.xi0 = linspace(-10,10,nbins);
 parms.xi = parms.xi0;
 parms.nbins = nbins;
 parms.xss = zeros(1,parms.nbins + 4);
-parms.xss(end-2) = 0;%0.0909;
+parms.xss(end-2) = 0.0909;
 parms.pCa_ran = 4.5;
 
 model = @fiber_dynamics;
@@ -32,9 +32,9 @@ parms0 = parms;
 fig = figure;
 
 fig.UserData.parms = parms;
-fig.UserData.protocol_duration = [0.05,0.1,0.1,0.1,0.1]; % should be integer multiplication of dt
-fig.UserData.protocol_v = [0, -10, 10, 10, -10];
-fig.UserData.protocol_pCa = [9 [1 1 1 1]*parms.pCa_ran];
+fig.UserData.protocol_duration = [0.05,0.1,0.1,0.1,0.1,0.1]; % should be integer multiplication of dt
+fig.UserData.protocol_v = [0, 0,-10, 10, 10, -10];
+fig.UserData.protocol_pCa = [9 [1 1 1 1 1]*parms.pCa_ran];
 
 load('hill_properties_pCa_45.mat');
 fig.UserData.hill_properties = hill_properties;
@@ -102,7 +102,7 @@ xlabel('\Delta x')
 ylabel('detachment rate (g)')
 
 fig.UserData.ax_pCa = subplot(5,3,8);
-plot(fig.UserData.t_protocol, fig.UserData.pCa_protocol, 'PickableParts', 'none');
+plot(fig.UserData.plot_t_protocol, fig.UserData.plot_pCa_protocol, 'PickableParts', 'none');
 hold on
 plot([0.1 0.1], [4 9.5], 'PickableParts', 'none');
 xlabel('time (s)')
@@ -272,22 +272,21 @@ fig = src.Parent;
 coords = eventData.IntersectionPoint;
 x = coords(1);
 
-fig.UserData.protocol_duration = [0.05, 0.1, 0.1, 0.1,0.1]; % should be integer multiplication of dt
-fig.UserData.protocol_v = [0, 0, 50, 0, 0];
-fig.UserData.protocol_pCa = [9 [1 1 1 1]*fig.UserData.parms.pCa_ran];
+fig.UserData.protocol_v = [0, 0, 0, 50, 0, 0];
+fig.UserData.protocol_pCa = [9 [1 1 1 1 1]*fig.UserData.parms.pCa_ran];
 
 if(x<0.5)
     set(src.Children(1),'XData',0);
-    fig.UserData.protocol_v = [0, 0, -50, 0, 0];
+    fig.UserData.protocol_v = [0, 0, 0, -50, 0, 0];
 elseif(x<1.5) 
     set(src.Children(1),'XData',1);
-    fig.UserData.protocol_v = [0, 0, 50, 0, 0];
+    fig.UserData.protocol_v = [0, 0, 0, 50, 0, 0];
 elseif(x<2.5)
     set(src.Children(1),'XData',2);
-    fig.UserData.protocol_v = [0, -50, 50, -50, 50];
+    fig.UserData.protocol_v = [0, 0, -50, 50, -50, 50];
 else
     set(src.Children(1),'XData',3);
-    fig.UserData.protocol_v = [0, 50, -50, 50, -50];
+    fig.UserData.protocol_v = [0, 0, 50, -50, 50, -50];
 end
 
 if(coords(2)>-10)
@@ -322,14 +321,14 @@ v_total = nan(size(t_total));
 F_total = nan(size(t_total));
 pCa_total = nan(size(t_total));
 
-t_protocol = nan(length(protocol_pCa)*2, 1);
-pCa_protocol = nan(length(protocol_pCa)*2, 1);
+plot_t_protocol = nan(length(protocol_pCa)*2, 1);
+plot_pCa_protocol = nan(length(protocol_pCa)*2, 1);
 
 curr_idx = 1;
 curr_time = 0;
 for p_itr = 1:length(protocol_v)
-    t_protocol((-1:0)+p_itr*2) = [curr_time, curr_time+protocol_duration(p_itr)];
-    pCa_protocol((-1:0)+p_itr*2) = protocol_pCa(p_itr);
+    plot_t_protocol((-1:0)+p_itr*2) = [curr_time, curr_time+protocol_duration(p_itr)];
+    plot_pCa_protocol((-1:0)+p_itr*2) = protocol_pCa(p_itr);
 
     parms.vmtc = protocol_v(p_itr);
     Ca = 10.^(-protocol_pCa(p_itr)+6);
@@ -358,8 +357,8 @@ fig.UserData.F_total = F_total;
 fig.UserData.pCa_total = pCa_total;
 fig.UserData.v_total = v_total;
 
-fig.UserData.t_protocol = t_protocol;
-fig.UserData.pCa_protocol = pCa_protocol;
+fig.UserData.plot_t_protocol = plot_t_protocol;
+fig.UserData.plot_pCa_protocol = plot_pCa_protocol;
 
 sim_Hill(fig,fig.UserData.hill_properties,...
     parms);
@@ -509,7 +508,7 @@ fig.UserData.hillF_total = ppval(hill_properties.FL_spline, ...
     l_total/half_s_len_norm).*...
     ppval(hill_properties.FV_spline, -v_total/half_s_len_norm).*...
     ppval(hill_properties.FPca_spline, pCa_total);
-set(fig.UserData.ax_F.Children(1), 'ydata', fig.UserData.hillF_total);
+set(fig.UserData.ax_F.Children(1), 'xdata', fig.UserData.t_total, 'ydata', fig.UserData.hillF_total);
 
 set(fig.UserData.hillHandle, 'string', 'generate Hill');
 

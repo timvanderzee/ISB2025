@@ -22,7 +22,7 @@ parms.xi0 = linspace(-10,10,nbins);
 parms.xi = parms.xi0;
 parms.nbins = nbins;
 parms.xss = zeros(1,parms.nbins + 4);
-parms.xss(end-2) = 0;%0.0909;
+parms.xss(end-2) = 0.0909;
 parms.pCa_ran = 4.5;
 
 model = @fiber_dynamics;

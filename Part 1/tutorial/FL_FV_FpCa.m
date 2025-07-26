@@ -104,21 +104,26 @@ for cond_itr = 1:3 % << pick which protocol you want to run
     end
 
     subplot(2,2,[2,4])
+    
     if(cond_itr==1) % F-L
         plot(l0/half_s_len_norm, F0);
         xlabel('\Delta length (l_{opt})')
         ylabel('F (F_0)')
+        title('F-l')
         hill_properties.FL_spline = spline(l0/half_s_len_norm, F0);
     elseif(cond_itr==2) % F-v
-        plot(l0/half_s_len_norm*10, F0);
+        plot(l0/half_s_len_norm/0.05, F0);
         xlabel('velocity (l_{opt}/s)')
         ylabel('F (F_0)')
-        hill_properties.FV_spline = spline(l0/half_s_len_norm*10, F0);
+        title('F-v')
+        hill_properties.FV_spline = spline(l0/half_s_len_norm/0.05, F0/F0(abs(l0)<0.0001));
     else % F-pCa
         plot(pCa_list, F0);
         xlabel('pCa')
         ylabel('F (F_0)')
-        hill_properties.FPca_spline = spline(pCa_list, F0);
+        title('F-pCa')
+        xlim([4.5 9])
+        hill_properties.FPca_spline = spline(pCa_list, F0/F0(1));
     end
     subplot(2,2,1)
     ylabel('\Delta length (l_{opt})')
@@ -129,6 +134,6 @@ for cond_itr = 1:3 % << pick which protocol you want to run
 end
 
 if(save_hill_properties)
-    save(sprintf('hill_properties_pCa_%d', ref_pCa*10), "hill_properties");
+    uisave('hill_properties');
 end
 
