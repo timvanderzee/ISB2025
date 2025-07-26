@@ -497,7 +497,7 @@ set(fig.UserData.ax_gfunc, 'ylim', [0 6e5], 'xlim', [min(parms.xi0) max(parms.xi
 pCa_temp = get(fig.UserData.ax_pCa.Children(2), 'yData');
 pCa_temp(3:end) = fig.UserData.parms.pCa_ran;
 set(fig.UserData.ax_pCa.Children(2), 'yData', pCa_temp);
-fig.UserData.protocol_pCa = pCa_temp;
+fig.UserData.protocol_pCa = [9 [1 1 1 1 1]*fig.UserData.parms.pCa_ran];
 end
 
 %% Callback to update XB distribution subplot based on where user clicks. 
