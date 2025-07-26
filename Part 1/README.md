@@ -1,20 +1,31 @@
 # Part 1 - Muscle models #
-In this part of the workshop, you will run a biophysical muscle model based on cross-bridge dynamics for a simple muscle fiber model. 
-You will see the effect of cross-bridge model parameters, length changes, and activation on force development. You will then compare the force response from the biophysical muscle model to the force response from a phenomenological (Hill-type) muscle model that is derived from the biophysical model.  
+In this part of the workshop, you will run a biophysical muscle model that is based on cross-bridge dynamics to simulate force from a muscle fiber.
 
-The model consists of:
-
-**Learning Objectives**
-At the end of this tutorial, you should be able to:
-- Simulate force output from biophysical muscle model under varying length, velocity, and activation conditions
-- Understand the effect of cross-bridge parameters on the steady-state and transient force generation properties of a muscle
+## **Learning Objectives**  
+At the end of this tutorial, you should be able to:  
+- Simulate force output from biophysical muscle model under varying length, velocity, and activation conditions  
+- Understand the effect of cross-bridge parameters on the steady-state and transient force generation properties of a muscle  
 - Compare and contrast force-generating properties of a biophysical and Hill-type muscle model
 
-**Assignment 1.0: Preparation**
-  -	Go to ISB2025\Part 1\tutorial and open the script called ‘GUI_XB_n_Hill.m’
-  -	Run the code (F5 on Windows) to open the GUI windon
+## Muscle Model
+The model consists of:  
+1) a contractile element that simulates muscle active force from crossbridge dynamics  
+2) elastic elements, in series and in parallel with the contractile element, that simulate muscle passive force
 
-<img width="1718" height="892" alt="GUIscreenshot1" src="https://github.com/user-attachments/assets/ce7c5514-7f83-4317-a790-bb5dd40c4078" />
+### **Contractile element:**  
+![Alt text](images/xbridgeModel.png)
+
+1. Concentration of calcium ions (pCa) activate actin sites and make them available for crossbridge binding. Attached corssbirdges can further increase the available actin sites through the process of coopertativity (Campbell et al. 2014).  
+2. Crossbridges cycle between detached and attached states governed by attachment rate f(∆x) and detachement rate g(∆x), where ∆x is the length of crossbridge relative to its resting length.  
+3. Myosin heads (equvivalent to detached crossbridges) can also enter and leave a 'super-relaxed' state where they cannot attach to actin to form crossbridges. This is govered by entering rate function f<sub>SRX</sub> (muscle force) and leaving rate function g <sub> SRX </sub> (muscle force), where high muscle force can recruit more myosins from super relaxed state to be available for crossbridge attachment.
+
+## **Assignment 1.0: Start muscle model**
+1. Go to `ISB2025\Part 1\tutorial` and open the script called `GUI_XB_n_Hill.m`
+2. Run the code (F5 on Windows, F5 or Fn+F5 on mac). This will open a GUI as shown below
+3. Click at different time points on the force time series (bottom right) to see what the crossbridge distribution (bottom left) is at any given time.
+4. Can you intuit how the crossbridge distribution at a given time gives the force (blue line, bottom right) at that time?
+
+![Alt text](images/first_gui_view.png)
 
 The panel in the upper right allows you to set the values for parameters that change the rate functions for crossbridge attachment (f,w) and detachment (k11, k12, k21, k22). Although the model also contains states for cooperativity, these parameters cannot be modified within the GUI.
 
