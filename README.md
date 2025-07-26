@@ -17,7 +17,7 @@ This code requires the following:
 **Getting started**
 
 - To get started, download or clone this repository.
-- Next, click on a folder (e.g. Part 1, Part 2 - OpenSim) and follow the instructions shown there
+- Next, click on a folder (e.g. Part 1, Part 2 - OpenSim) and follow the instructions shown in README.md
 
 **Contact**
 
