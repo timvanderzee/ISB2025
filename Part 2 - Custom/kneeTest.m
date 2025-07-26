@@ -8,37 +8,38 @@ load('protocol.mat')
 warning('on')
 
 parms.forcible_detachment = 0;
-parms.kse = parms.kse*0.25;
+% parms.kse = parms.kse*0.25;
 parms.no_tendon = 1;
 
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
 
+% parms.f = parms.f*0.5;
+parms.JF = parms.JF*2;
 parms.k11 = parms.k11 * 0.15;
-parms.k12 = parms.k12 * 0.4;
+parms.k12 = parms.k12 * 0.3;
 parms.k21 = parms.k21 * 0.22;
-parms.k22 = parms.k22 * 0.4;
+parms.k22 = parms.k22 * 0.3;
 
-nbins = 500;
+nbins = 800;
 parms.nbins = nbins;
 parms.xss = zeros(1,parms.nbins + 4);
 parms.xss(end-2) = 0.0909;
 parms.xss(end-1) = -40;
 parms.xss(end) = -40;
-parms.xi0 = linspace(10,50,nbins);
+parms.xi0 = linspace(10,60,nbins);
 parms.xi = parms.xi0;
 parms0 = parms;
 
-%% run sumulation for 2 pCa conditions x 2 pre-move conditions
+%% run sumulation isometric and pre-move conditions
 model = @fiber_dynamics;
 dt = 0.005;
 odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
 
 fig = figure;
-pCa = 6.8; % <<-- change it to try different activation conditions
-% 4.5 is maximum, 9 is minimum activation
+pCa = 7.2; % <<-- change here to try different activation conditions
 
 Ca = 10^(-pCa+6);
 fig.UserData.parms = parms;
@@ -95,7 +96,7 @@ xlim([-1 10])
 
 ax1 = subplot(3,1,1);
 ylabel('angle (deg)'), xlabel('time (s)')
-fig.UserData.A_instance = plot([0,0], [-180 20]);
+fig.UserData.A_instance = plot([0,0], [-120 20]);
 set(ax1,'ButtonDownFcn', ...
     @(s,e)update_time(s,e), 'HitTest','on')
 
@@ -136,7 +137,7 @@ parms.vmtc = -X(2)*10;
 F_ext = -9.81*sin(X(1))*3.5 - 0.8*X(2); 
 
 % mass dynamics % 
-Xd = [X(2); (F_ext+F_mus*300); Xmusd];
+Xd = [X(2); (F_ext+F_mus*150); Xmusd];
 end
 
 

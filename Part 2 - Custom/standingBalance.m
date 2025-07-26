@@ -46,7 +46,6 @@ temp_t = -1:0.001:1;
 temp_acc = zeros(size(temp_t));
 
 perturb_num = 10;
-
 temp_acc( (0:perturb_num)+1000) = -cos((0:perturb_num)*2*pi/perturb_num)+1;
 temp_acc( (0:perturb_num)+1500) = cos((0:perturb_num)*2*pi/perturb_num)-1;
 cart_acc_spline = spline(temp_t,temp_acc*50);
@@ -61,7 +60,7 @@ for muscle_itr = 0:1
             [0, 0], ... initial condition
             odeopt);
     else % simulation with a muscle pair 
-        pCa = 6.8; % <<- baseline activation 
+        pCa = 6.8; % <<- change here to try different baseline activation 
         Ca = 10^(-pCa+6);
         num_Mstate = length(parms.xss);
 
@@ -98,7 +97,7 @@ for muscle_itr = 0:1
 end
 
 linkaxes(get(gcf,'children'), 'x')
-xlabel('force (s)')
+xlabel('time (s)')
 xlim([-0.1 0.6])
 
 %% differential equation with two muscles 
