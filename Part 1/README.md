@@ -1,11 +1,11 @@
 # Part 1 - Muscle models #
 In this part of the workshop, you will run a biophysical muscle model based on cross-bridge dynamics for a simple muscle fiber model. 
-You will see the effect of cross-bridge model parameters, protocols, activation on force development, and will compare it to phenomenological (Hill-type) muscle model.  
+You will see the effect of cross-bridge model parameters, length changes, and activation on force development. You will then compare the force response from the biophysical muscle model to the force response from a phenomenological (Hill-type) muscle model that is derived from the biophysical model.  
 
 **Learning Objectives**
 At the end of this tutorial, you should be able to:
 - Simulate force output from biophysical muscle model under varying length, velocity, and activation conditions
-- Understand the effect of cross-bridge properties on the steady-state and transient force generation properties of a muscle
+- Understand the effect of cross-bridge parameters on the steady-state and transient force generation properties of a muscle
 - Compare and contrast force-generating properties of a biophysical and Hill-type muscle model
 
 **Assignment 1.0: Preparation**
@@ -15,7 +15,7 @@ At the end of this tutorial, you should be able to:
 **Assignment 1.1: Effect of cross-bridge rate functions on cross-bridge distribution and force development (at fixed velocity and activation)**
    While running the GUI (‘GUI_XB_n_Hill.m’), 
   - Click on the force time series (bottom right) to visualize the crossbridge distribution (bottom left) underlying the force at that moment in time.
-  - Change the attachment and detachment rate parameters and calcium concentration (activation) by clicking on the upper left plot. Re-run the simulation to see how crossbridge distribution and force development are affected.  
+  - Change the attachment and detachment rate parameters and calcium concentration (activation) by clicking on the upper left plot. Re-run the simulation to see how crossbridge distribution and force development are affected.
 
 **Assignment 1.2: Effect of muscle length change on cross-bridge distributions and force generation (at fixed velocity and activation)**
    While running the GUI (‘GUI_XB_n_Hill.m’), 
