@@ -1,5 +1,4 @@
-% clear; clc; close all
-
+%% Initialize simulation 
 addpath(genpath([pwd,'/..']))
 warning('off')
 load('parms.mat')
@@ -40,8 +39,9 @@ parms2 = parms;
 parms1.vRatio = -60;
 parms2.vRatio = 60;
 
-%%
 model = @fiber_dynamics;
+
+%% define cart perturbation protocol 
 temp_t = -1:0.001:1;
 temp_acc = zeros(size(temp_t));
 
@@ -51,16 +51,17 @@ temp_acc( (0:perturb_num)+1000) = -cos((0:perturb_num)*2*pi/perturb_num)+1;
 temp_acc( (0:perturb_num)+1500) = cos((0:perturb_num)*2*pi/perturb_num)-1;
 cart_acc_spline = spline(temp_t,temp_acc*50);
 
+%% run simulation 
 figure; hold on
 for muscle_itr = 0:1
 
-    if(muscle_itr==0)
+    if(muscle_itr==0) % free fall - no muscle 
         [t_sim,x_sim] = ode45(@(t,x)dMassStates(t,x,cart_acc_spline), ...
             [-1:0.001:0.6], ... simulation time
             [0, 0], ... initial condition
             odeopt);
-    else
-        pCa = 6.8;
+    else % simulation with a muscle pair 
+        pCa = 6.8; % <<- baseline activation 
         Ca = 10^(-pCa+6);
         num_Mstate = length(parms.xss);
 
@@ -70,6 +71,7 @@ for muscle_itr = 0:1
             [0, 0, parms1.xss, parms2.xss], ... initial condition
             odeopt);
 
+        % calculate force 
         F_sim = nan(height(x_sim),2);
         for i = 1:height(x_sim)
             parms1.vmtc = x_sim(i,2)*parms1.vRatio;
@@ -96,9 +98,10 @@ for muscle_itr = 0:1
 end
 
 linkaxes(get(gcf,'children'), 'x')
+xlabel('force (s)')
 xlim([-0.1 0.6])
-%%
 
+%% differential equation with two muscles 
 function Xd = dAllStates(t,X, muscle_model, parms1, parms2, ...
     Ca1, Ca2, num_Mstate, cart_acc_spline)
 % X(1): mass position, X(2): mass velocity, 
@@ -116,6 +119,7 @@ Xd = [Xmassd+[0; (F_mus1-F_mus2)*200]; ...
     Xmusd1; Xmusd2]; 
 end
 
+%% differential equation for the dybnamics of the mass 
 function Md = dMassStates(t,X, cart_acc_spline)
 cart_acc = ppval(cart_acc_spline,t);                              
 acc_gravity = +9.81*sin(X(1));
