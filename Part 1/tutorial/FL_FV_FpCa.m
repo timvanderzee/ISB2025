@@ -1,25 +1,28 @@
 %% load parameters and set up simulations 
+
+% load parameters % 
 addpath(genpath([pwd,'/../..']))
+warning('off')
+load('parms.mat')
+load('protocol.mat')
+warning('on')
 
-% warning('off')
-% load('parms.mat')
-% load('protocol.mat')
-% warning('on')
-% 
-% parms.forcible_detachment = 0;
-% parms.kse = 0;
-% parms.kpe = 0;
-% parms.no_tendon = 1;
-% odeopt = odeset('maxstep',1e-2);
+% You can un-comment this part to remove elastic components % 
+% parms.forcible_detachment = 0; 
+% parms.kse = 0; % series elastic element
+% parms.kpe = 0; % parallel elastic element
+% parms.no_tendon = 1; % tendon
+
+odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
-% nbins = 500;
-% 
-% parms.act = 1;
-% parms.cosa = 1;
-% parms.Noverlap = 1;
+nbins = 500;
 
-save_hill_properties = 1; 
-% if set to be 1, it will prompt to save Hill properties at the end
+parms.act = 1;
+parms.cosa = 1;
+parms.Noverlap = 1;
+
+save_hill_properties = 1; % if set to be 1, 
+% it will prompt to save Hill properties at the end
 
 %% Run F-l, F-v, F-pCa protocols and save the outcome as splines.
 hill_properties = struct();
@@ -31,16 +34,18 @@ for cond_itr = 1:3 %  1: F-L, 2: F-v, 3: F-pCa
     if(cond_itr==1) % F-L
         l0 = [-0.5:0.1:0.5] *half_s_len_norm;
     elseif(cond_itr==2) % F-v
-        l0 = [-1:0.2:1] *half_s_len_norm / 20;
+        l0 = [-1:0.25:2] *half_s_len_norm / 20;
     else % F-pCa
         pCa_list = [4.5,5,5.5:0.1:6.5,7:0.5:9];
         l0 = zeros(size(pCa_list));
     end
 
     % subplot to monitor time-length 
-    subplot(2,2,1, 'colorOrder', winter(length(l0))); hold on
+    subplot(3,2,1, 'colorOrder', winter(length(l0))); hold on
+    % subplot to monitor time-length
+    subplot(3,2,3, 'colorOrder', winter(length(l0))); hold on
     % subplot to monitor time-force 
-    subplot(2,2,3, 'colorOrder', winter(length(l0))); hold on
+    subplot(3,2,5, 'colorOrder', winter(length(l0))); hold on
 
     F0 = nan(size(l0));
 
@@ -100,12 +105,17 @@ for cond_itr = 1:3 %  1: F-L, 2: F-v, 3: F-pCa
         end
 
         % plot time-length
-        subplot(2,2,1)
+        subplot(3,2,1)
         plot(t, x(:,end)/half_s_len_norm)
         hold on
 
+        % plot time-length
+        subplot(3,2,3)
+        plot(t, x(:,end-1)/half_s_len_norm)
+        hold on
+
         % plot time-force
-        subplot(2,2,3)
+        subplot(3,2,5)
         plot(t,F)
         hold on
         pause(0.1)
@@ -113,17 +123,17 @@ for cond_itr = 1:3 %  1: F-L, 2: F-v, 3: F-pCa
     end
 
     % plot outcome F-l, F-v, F-pCa curves obtained from simulations 
-    subplot(2,2,[2,4])
+    subplot(3,2,[2:2:6])
     
     if(cond_itr==1) % F-L
         plot(l0/half_s_len_norm, F0);
-        xlabel('\Delta length (l_{opt})')
+        xlabel('\Delta l_{HS} (l_{opt})')
         ylabel('F (F_0)')
         title('F-l')
         hill_properties.FL_spline = spline(l0/half_s_len_norm, F0);
     elseif(cond_itr==2) % F-v
         plot(l0/half_s_len_norm/0.05, F0);
-        xlabel('velocity (l_{opt}/s)')
+        xlabel('v_{HS} (l_{opt}/s)')
         ylabel('F (F_0)')
         title('F-v')
         hill_properties.FV_spline = spline(l0/half_s_len_norm/0.05, F0/F0(abs(l0)<0.0001));
@@ -137,11 +147,18 @@ for cond_itr = 1:3 %  1: F-L, 2: F-v, 3: F-pCa
     end
 
     % label subplots 
-    subplot(2,2,1)
-    ylabel('\Delta length (l_{opt})')
-    subplot(2,2,3)
+    ax1 = subplot(3,2,1);
+    ylabel('\Delta CE length (l_{opt})')
+    ax2 = subplot(3,2,3);
+    ylabel('\Delta HS length (l_{opt})')
+    ax3 = subplot(3,2,5);
     ylabel('F (F_0)')
     xlabel('time (s)')
+    if(cond_itr == 2)
+        linkaxes([ax1, ax2, ax3],'x');
+        xlim([3, 3.1])
+        plot(ones(size(F0))*3.05, F0, '.', 'markerSize', 10);
+    end
 end
 
 % if needed, save hill-properties (can be loaded into other codes)

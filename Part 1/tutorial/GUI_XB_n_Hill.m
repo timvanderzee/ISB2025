@@ -7,24 +7,28 @@ load('protocol.mat')
 warning('on')
 
 half_s_len_norm = parms.s/2/parms.h;
-nbins = 600;
+nbins = 500;
 pCa = 4.5;
 Ca = 10^(-pCa+6);
 
-% parms.forcible_detachment = 0;
-% parms.kse = 0;
-% parms.kpe = 0;
-% parms.no_tendon = 1;
+
+% You can un-comment this part to remove elastic components % 
+% parms.forcible_detachment = 0; 
+% parms.kse = 0; % series elastic element
+% parms.kpe = 0; % parallel elastic element
+% parms.no_tendon = 1; % tendon
+
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
 
-parms.xi0 = linspace(-10,10,nbins);
-parms.xi = parms.xi0;
-parms.nbins = nbins;
-parms.xss = zeros(1,parms.nbins + 4);
-parms.xss(end-2) = 0.0909;
-parms.pCa_ran = 4.5;
+% set up cross-bridge parameters % 
+parms.xi0 = linspace(-15,15,nbins); % range of bins - initial value
+parms.xi = parms.xi0;  % range of bins
+parms.nbins = nbins; % number of bins 
+parms.xss = zeros(1,parms.nbins + 4); % XB state
+parms.xss(end-2) = 0.0909; % 
+parms.pCa_ran = 4.5; % activation level 
 
 model = @fiber_dynamics;
 parms0 = parms;
@@ -35,10 +39,10 @@ fig = figure;
 % Protocol data will be passed as fig.UserData between subplots.
 % We start making figures using a protocol. 
 fig.UserData.parms = parms;
-fig.UserData.protocol_duration = [0.05,0.1,0.1,0.1,0.1,0.1]; % should be integer multiplication of dt=0.001
+fig.UserData.protocol_duration = [0.05,0.3,0.1,0.1,0.1,0.1]; % should be integer multiplication of dt=0.001
 fig.UserData.protocol_v = [0, 0,-10, 10, 10, -10];
 fig.UserData.protocol_pCa = [9 [1 1 1 1 1]*parms.pCa_ran];
-load('hill_properties_pCa_45.mat');
+load('hill_properties_default.mat');
 fig.UserData.hill_properties = hill_properties;
 sim_XB(fig, model,parms);
 
@@ -46,17 +50,19 @@ sim_XB(fig, model,parms);
 parm_range = [100, 1, 30, 3, 30, 3, 4.5];
 
 % run button - if clicked, GUI will run XB and Hill simulation 
-ax = subplot(5,18,11:12);
+ax = subplot(5,36,22:23);
 fig.UserData.ax_run = ax;
 set(fig.UserData.ax_run,'ButtonDownFcn', ...
     @(s,e)run_sim_callback(s,e,model),...
     'HitTest','on');
 fig.UserData.statusHandle = text(0.5, 0.5, 'RUN',...
     'HorizontalAlignment','center','PickableParts','none');
+disableDefaultInteractivity(ax);
 xlim([0 1]);
 ax.XAxis.Visible = 'off';
 ax.YAxis.Visible = 'off';
 ax.Box = 'off';
+ax.Toolbar.Visible = 'off';
 
 % generate Hill button - if clicked, GUI will run F-l, F-v, F-pCa 
 % simulation and update Hill type model properties. 
@@ -67,23 +73,29 @@ set(fig.UserData.ax_hill,'ButtonDownFcn', ...
     'HitTest','on');
 fig.UserData.hillHandle = text(0.5, 0.5, 'generate Hill',...
     'HorizontalAlignment','center','PickableParts','none');
+disableDefaultInteractivity(ax);
 xlim([0 1]);
 ax.XAxis.Visible = 'off';
 ax.YAxis.Visible = 'off';
+ax.Toolbar.Visible = 'off';
 ax.Box = 'off';
 
 % GUI to chose stretch/shorten protocol
-fig.UserData.ax_protocol = subplot(5,9,[4,5]);
+ax = subplot(5,9,[4,5]);
+fig.UserData.ax_protocol = ax;
+disableDefaultInteractivity(ax);
+ax.Toolbar.Visible = 'off';
 plot(1,0,'.','markerSize',20);
 title('protocol')
 xlim([0 3]);
-set(fig.UserData.ax_protocol,'ButtonDownFcn', ...
+set(ax,'ButtonDownFcn', ...
     @(s,e)len_protocol_callback(s,e),...
     'HitTest','on');
 xticks(0:3)
 xticklabels({'shorten','lengthen', ...
     sprintf('s cycle'),sprintf('l cycle')})
-fig.UserData.ax_protocol.YAxis.Visible = 'off';
+ax.YAxis.Visible = 'off';
+ax.Toolbar.Visible = 'off';
 
 % GUI to adjust attachment/detachment parameters 
 ax = subplot(5,3,1);
@@ -97,6 +109,8 @@ xticklabels({'f','w','k_{11}','k_{12}','k_{21}','k_{22}','pCa'});
 text(ax, 0, 1.3, 'attachment parms', 'fontSize', 10, 'HorizontalAlignment','center');
 text(ax, 4.5, 1.3, 'detachment parms', 'fontSize', 10, 'HorizontalAlignment','center');
 text(ax, 8, 1.3, 'activation', 'fontSize', 10, 'HorizontalAlignment','center');
+ax.Toolbar.Visible = 'off';
+disableDefaultInteractivity(ax);
 
 % subplot showing attachment function based on selected parameters
 fig.UserData.ax_ffunc = subplot(5,3,4);
@@ -291,13 +305,14 @@ ref_pCa = 4.5; % << pCa during F-L, F-v simulation
 
 % variable to store hill properties 
 hill_properties = struct();
+parms0 = parms;
 
 for cond_itr = 1:3 % 1: F-L, 2: F-v, 3: F-pCa
    
     if(cond_itr==1) % F-L
         l0 = (-0.5:0.1:0.5) *half_s_len_norm;
     elseif(cond_itr==2) % F-v
-        l0 = (-1:0.2:1) *half_s_len_norm / 20;
+        l0 = (-1:0.25:2) *half_s_len_norm / 20;
     else % F-pCa
         pCa_list = [4.5,5,5.5:0.1:6.5,7:0.5:9];
         l0 = zeros(size(pCa_list));
@@ -314,7 +329,8 @@ for cond_itr = 1:3 % 1: F-L, 2: F-v, 3: F-pCa
     F0 = nan(size(l0));
 
     % run the simulation 
-    for k=1:length(l0)
+    for k=1:length(l0)        
+        parms = parms0;
         model = @fiber_dynamics;
 
         % activation protocol 
@@ -363,7 +379,7 @@ for cond_itr = 1:3 % 1: F-L, 2: F-v, 3: F-pCa
 
         % plot time-length
         subplot(6,6,cond_itr*12-1-6)
-        plot(t, x(:,end)/half_s_len_norm)
+        plot(t, x(:,end-1)/half_s_len_norm)
         hold on
 
         % plot time-force
@@ -376,31 +392,29 @@ for cond_itr = 1:3 % 1: F-L, 2: F-v, 3: F-pCa
 
     % plot F-L, F-v, F-pCa curves obtained from simulations and store 
     % the curves as splines 
-    subplot(13,6,(-18:6:0)+cond_itr*24+6)
+    temp_ax = subplot(13,6,(-18:6:0)+cond_itr*24+6);
+    set(temp_ax,'xaxisLocation','top')
     if(cond_itr==1) % F-L
         plot(l0/half_s_len_norm, F0);
-        xlabel('\Delta length (l_{opt})')
+        xlabel('\Delta L_{HS} (l_{opt})', 'position', [0.55 0.1 0], 'HorizontalAlignment', 'left')
         ylabel('F (F_0)')
-        title('F-l')
         hill_properties.FL_spline = spline(l0/half_s_len_norm, F0);
     elseif(cond_itr==2) % F-v
         plot(l0/half_s_len_norm/0.05, F0);
-        xlabel('velocity (l_{opt}/s)')
+        xlabel('v_{HS} (l_{opt}/s)', 'position', [2.1 0.1 0], 'HorizontalAlignment', 'left')
         ylabel('F (F_0)')
-        title('F-v')
         hill_properties.FV_spline = spline(l0/half_s_len_norm/0.05, F0/F0(abs(l0)<0.0001));
     else % F-pCa
         plot(pCa_list, F0);
-        xlabel('pCa')
+        xlabel('pCa', 'position', [9.5 0.1 0], 'HorizontalAlignment', 'left')
         ylabel('F (F_0)')
-        title('F-pCa')
         xlim([4.5 9])
         hill_properties.FPca_spline = spline(pCa_list, F0/F0(1));
     end
 
     % label subplots 
     ax1 = subplot(6,6,cond_itr*12-1-6);
-    ylabel('\Delta length (l_{opt})')
+    ylabel('\Delta l_{HS} (l_{opt})')
     ax2 = subplot(6,6,cond_itr*12-1);
     ylabel('F (F_0)')
     xlabel('time (s)')
