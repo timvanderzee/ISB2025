@@ -16,7 +16,6 @@ You will see two trajectories of the pendulum -- one starting from the isrometri
 ![Alt text](images/Knee05.png)
 - Bonus: Change baseline activation and run the code again. Try pCa = 6.7, 6.9, 7.2, 8
 
-**Assignment 2.2: Standing balance simulation with agonist-antagonist muscle pair**
+**For interested Users: Standing balance simulation with agonist-antagonist muscle pair**
 - Code: Part 2-Custom/standingBalance.m
 - Run the code (F5 on Windows or Fn+F5 on Mac)
-- Bonus: Change baseline activation and run the code again.
