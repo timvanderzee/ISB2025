@@ -8,10 +8,10 @@ warning('on')
 odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
 nbins = 500;
-parms.forcible_detachment = 0;
-parms.kse = 0;
-parms.pse = 0;
-parms.no_tendon = 1;
+% parms.forcible_detachment = 0;
+% parms.kse = 0;
+% parms.pse = 0;
+% parms.no_tendon = 1;
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
@@ -99,6 +99,16 @@ end
 linkaxes(get(gcf,'children'), 'x')
 xlabel('time (s)')
 xlim([-0.1 0.6])
+
+subplot(3,1,1)
+ylabel('angle (deg)')
+
+subplot(3,1,2)
+ylabel('muscle force (A.U.)')
+
+subplot(3,1,3)
+ylabel('muscle length')
+xlabel('time (s)')
 
 %% differential equation with two muscles 
 function Xd = dAllStates(t,X, muscle_model, parms1, parms2, ...
