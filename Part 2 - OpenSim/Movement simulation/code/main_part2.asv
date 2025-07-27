@@ -18,7 +18,6 @@ import casadi.*;
 %% Assignment 2.1.1: simulate standing balance
 % load some default parameters to start with
 %cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\common'])
-cd([mainfolder, [filesep 'Part 2 - OpenSim' filesep 'Movement simulation' filesep 'input' filesep 'common'] ])
 
 warning('off')
 load('parms.mat','parms')
