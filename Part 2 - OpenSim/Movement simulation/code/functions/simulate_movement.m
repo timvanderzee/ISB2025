@@ -13,7 +13,8 @@ auxdata.NMuscles = M;
 auxdata.parms = parms;
 
 %% OpenSim
-cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\', stype])
+%cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\input\', stype])
+cd([mainfolder, [filesep 'Part 2 - OpenSim' filesep 'Movement simulation' filesep 'input' filesep] , stype])
 
 % Import the OpenSim modeling classes
 import org.opensim.modeling.*
@@ -166,11 +167,15 @@ for j = 1:length(modelnames)
             
         end
         % write to sto file
-        if ~isfolder([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
-            mkdir([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+        %if ~isfolder([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+        if ~isfolder([mainfolder, [filesep 'Part 2 - OpenSim' filesep 'Movement simulation' filesep 'output' filesep] , stype])
+    
+            %mkdir([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+            mkdir([mainfolder, [filesep 'Part 2 - OpenSim' filesep 'Movement simulation' filesep 'output' filesep] , stype])
         end
-        cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
-
+        %cd([mainfolder, '\Part 2 - OpenSim\Movement simulation\output\', stype])
+        cd([mainfolder, [filesep 'Part 2 - OpenSim' filesep 'Movement simulation' filesep 'output' filesep] , stype])
+        
         if strcmp(stype, 'pendulum_test')
             if ~isfolder(['a=',num2str(act)])
                 mkdir(['a=',num2str(act)])
