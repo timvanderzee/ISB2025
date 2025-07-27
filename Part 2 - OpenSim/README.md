@@ -45,6 +45,11 @@ In this part of the tutorial, you will modify select model parameters such to re
 You will run a simulations of the initial response to a perturbation of standing balance, either driven by Hill-type or biophysical muscle models.
 Standing balance is perturbed by a translation of the support surface. We assume that muscle activations are constant during the initial response (50 to 100 ms) due to large neuromuscular delays. In contrast to published simulations (https://doi.org/10.1016/j.jbiomech.2017.02.008), this simulation uses biophysical muscle models. These biophysical models have cross-bridge dynamics alongside cooperative dynamics for actin and myosin activation, described previously (https://doi.org/10.1016/j.bpj.2018.07.006). You will initially use biophysical model parameters that were fitted on data from skinned rat soleus muscle fibers (see Part 1), combined with force-length and elastic element parameters from OpenSim Hill-type models. 
 
+To simulate standing balance, you'll use an OpenSim model with 4 degrees of freedom and 9 muscles. The model file can be found here: `ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim`. In this file, the muscles have been replaced by path actuators. This allows us to simulate muscle dynamics in MATLAB, apply the tendon force to the model, and simulate skeletal dynamics in OpenSim. 
+
+![picture](images/Fig2-7b.png)
+*Standing balance model.*
+
 **Task:** Run the Section titled `Assignment 2.1.1: simulate standing balance`. The following figure will appear:
 
 ![picture](images/Fig2-1.jpg)
@@ -88,6 +93,11 @@ You will simulate a clinical test of spasticity used to characterize joint-hyper
 ![picture](images/Fig2-3.jpg)
 
 *Figure 2.3. Experimental pendulum test results.*
+
+To simulate the pendulum test, you'll use the leg39 OpenSim model. By welding joints, the number of degrees of freedom has been reduced to just 1 (knee angle). The movement of the patella is included, but dependent on knee angle. The model has 8 muscles. The model file can be found here: `ISB2025\Part 2 - OpenSim\Movement simulation\input\pendulum_test\leg39_path_actuators.osim`. In this file, the muscles have been replaced by path actuators. This allows us to simulate muscle dynamics in MATLAB, apply the tendon force to the model, and simulate skeletal dynamics in OpenSim. 
+
+![picture](images/Fig2-7a.png)
+*Pendulum test model.*
 
 **Task:** Run the Section titled `Assignment 2.4.1: simulate pendulum test - typically developing (TD) child`. A figure will appear with two subplots:
 *	Left: data from a typically developing child
