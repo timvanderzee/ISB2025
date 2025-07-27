@@ -19,7 +19,7 @@ The model consists of:
 2. Crossbridges cycle between detached and attached states governed by attachment rate f(∆x) and detachement rate g(∆x), where ∆x is the length of crossbridge relative to its resting length.  
 3. Myosin heads (equvivalent to detached crossbridges) can also enter and leave a 'super-relaxed' state where they cannot attach to actin to form crossbridges. This is govered by entering rate function f<sub>SRX</sub> (muscle force) and leaving rate function g <sub> SRX </sub> (muscle force), where high muscle force can recruit more myosins from super relaxed state to be available for crossbridge attachment.
 
-The default model parameter values have been selected to reproduce the movement history-dependent and activation-dependent muscle fiber stretch responses of Horslen et al. JEB 2023.
+The default model parameter values have been selected to reproduce the movement history-dependent and activation-dependent muscle fiber stretch responses of Horslen et al. JEB 2023. [doi](https://doi.org/10.1242/jeb.245456)
 
 ## **Assignment 1.0: Run pre-set muscle model**
 1. Go to `ISB2025\Part 1\tutorial` and open the script called `GUI_XB_n_Hill.m`
