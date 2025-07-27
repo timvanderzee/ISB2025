@@ -12,7 +12,8 @@ Part 1 and Part 2 - Custom requires the following:
 - MATLAB (license required)- can be downloaded from: www.mathworks.com
 
 Part 2 - OpenSim code requires the following:
-- MATLAB (license required)- can be downloaded from: www.mathworks.com
+- MATLAB (license required)- can be downloaded from: www.mathworks.com </br>
+  Most platforms require Matlab 2018b or greater for Casadi. Apple Silicon requires Matlab 2023b or greater.
 - OpenSim 4.5 (open/free) - can be downloaded from: https://simtk.org/projects/opensim/ </br>
   On Mac you may need to go to Settings > Privacy & Security > allow apps from unidentified developers </br>
   Be sure to run OpenSim to create your OpenSim working folder before moving on to the next step.
