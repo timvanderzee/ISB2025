@@ -23,7 +23,7 @@ The model consists of:
 1. Go to `ISB2025\Part 1\tutorial` and open the script called `GUI_XB_n_Hill.m`
 2. Run the code (F5 on Windows, F5 or Fn+F5 on mac). This will open a GUI as shown below
 ![Alt text](images/first_gui_view.png)
-3. Click at different time points on the force time series (bottom right) to see what the crossbridge distribution (bottom left) is at any given time.
+3. Click at different time points on the force time series (bottom right) to see what the crossbridge distribution (bottom left) is at any given time.  
 ![Alt text](images/xbridge vs time view.png)
 4. Can you intuit how the crossbridge distribution at a given time gives the force (blue line, bottom right) at that time? Note that muscle active force is given by:  
 	F = k<sub>cb</sub> · ∆x  
