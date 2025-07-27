@@ -867,3 +867,66 @@
 [2025-07-27 11:56:22.055] [warning] Couldn't find file 'talus.vtp'.
 [2025-07-27 11:56:22.056] [warning] Couldn't find file 'foot.vtp'.
 [2025-07-27 11:56:22.056] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-27 12:02:25.797] [info] Updating Model file from 30000 to latest format...
+[2025-07-27 12:02:25.802] [info] Loaded model gait4dof9musc.osim-scaled from file SCP_gait4dof9musc.osim
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'tibia_l.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'femur_l.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-27 12:02:25.802] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-27 12:02:25.803] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-27 12:02:25.803] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-27 12:02:25.814] [info] Updating Model file from 30000 to latest format...
+[2025-07-27 12:02:25.825] [info] Loaded model gait10dof18musc.osim-scaled from file SCP_gait10dof18musc.osim
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'femur.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'tibia.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'fibula.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-27 12:02:25.825] [warning] Couldn't find file 'l_femur.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'l_tibia.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'l_fibula.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'l_talus.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'l_foot.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'l_bofoot.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'hat_spine.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'hat_jaw.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'hat_skull.vtp'.
+[2025-07-27 12:02:25.826] [warning] Couldn't find file 'hat_ribs.vtp'.
+[2025-07-27 12:02:25.826] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-27 12:02:25.827] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-27 12:03:20.140] [info] Loaded model leg39 from file leg39_path_actuators.osim
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-27 12:03:20.140] [warning] Couldn't find file 'bofoot.vtp'.
+[2025-07-27 12:03:20.142] [info] Updating Model file from 40000 to latest format...
+[2025-07-27 12:03:20.144] [info] Loaded model leg39 from file leg39_welded.osim
+[2025-07-27 12:03:20.144] [warning] Couldn't find file 'sacrum.vtp'.
+[2025-07-27 12:03:20.144] [warning] Couldn't find file 'pelvis.vtp'.
+[2025-07-27 12:03:20.144] [warning] Couldn't find file 'l_pelvis.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'femur_r.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'tibia_r.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'fibula_R.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'pat.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'talus.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'foot.vtp'.
+[2025-07-27 12:03:20.145] [warning] Couldn't find file 'bofoot.vtp'.
