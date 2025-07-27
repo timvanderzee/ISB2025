@@ -696,3 +696,8 @@
 [2025-07-26 07:55:30.388] [warning] Couldn't find file 'hat_ribs.vtp'.
 [2025-07-26 07:55:30.388] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
 [2025-07-26 07:55:30.389] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-27 11:19:17.894] [info] Updating Model file from 30000 to latest format...
+[2025-07-27 11:19:17.904] [info] Loaded model gait4dof9musc.osim-scaled from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\standing_balance\SCP_gait4dof9musc.osim
+[2025-07-27 11:19:18.041] [info] ControllerSet 'Controllers' was renamed and is being reset to 'controllerset'.
+[2025-07-27 11:19:18.042] [info] ComponentSet 'MiscComponents' was renamed and is being reset to 'componentset'.
+[2025-07-27 11:23:53.063] [info] Loaded model leg39 from file C:\Users\timvd\Documents\ISB2025\Part 2 - OpenSim\Movement simulation\input\pendulum_test\leg39_path_actuators.osim
