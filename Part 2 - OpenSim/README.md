@@ -25,7 +25,7 @@ Because these parallel tissues are in parallel with both the biophysical cross-b
 
 *Figure 2.0. Biophysical model geometry for simulating whole muscle*
 
-In this part of the tutorial, you will perform movement simulations with both Hill-type and biophysical models. '
+In this part of the tutorial, you will perform movement simulations with both Hill-type and biophysical models.
 Both types of models use parallel and tendon elements with identical properties and parameter values, previously used for whole muscle.
 The difference between Hill-type and biophysical models therefore exclusively resides in the contractile element:
 - Hill-type model: contractile element is described by a force-velocity relation
