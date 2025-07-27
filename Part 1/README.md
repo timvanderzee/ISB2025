@@ -38,7 +38,7 @@ The model consists of:
 ![Alt text](images/rate_func_parms.png)  
 5. This GUI only allows you to change the values for parameters that change the attachment (f,w) and detachment (k11, k12, k21, k22) rates. Although the model also contains states for cooperativity, these parameters cannot be modified within the GUI. If you would like to simulate the biophysical muscle model outside of the GUI, please see the Alternate Preparation section at the end of the this document.
 6. Click RUN to simulate how the crossbridge distributions change and generate force using the new paramters.
-![Alt text](images/rate_func_on_force.png)
+![Alt text](images/rate_func_force.png)
 7. Click at different time points on the force time series to see what the crossbridge distribution is at any given time and how it affects the force at each given time.
 8. Can you intuit how the rate functions affect the crossbridge distribution at steady-state and during stretch?
 
