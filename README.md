@@ -1,4 +1,4 @@
-<img width="346" height="38" alt="image" src="https://github.com/user-attachments/assets/f4e0170b-f3c8-46ea-9782-3a576682aa1b" /># ISB2025: Workshop "Biophysical muscle models for musculoskeletal simulation"
+# ISB2025: Workshop "Biophysical muscle models for musculoskeletal simulation"
 Authors: Lena Ting, Surabhi Simha, Hansol Ryu, Tim van der Zee, Friedl De Groote.
 
 **Synopsis**
