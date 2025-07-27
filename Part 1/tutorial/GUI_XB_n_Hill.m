@@ -11,10 +11,10 @@ nbins = 600;
 pCa = 4.5;
 Ca = 10^(-pCa+6);
 
-parms.forcible_detachment = 0;
-parms.kse = 0;
-parms.kpe = 0;
-parms.no_tendon = 1;
+% parms.forcible_detachment = 0;
+% parms.kse = 0;
+% parms.kpe = 0;
+% parms.no_tendon = 1;
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
