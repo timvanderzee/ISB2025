@@ -14,24 +14,24 @@ At the end of this tutorial, you should be able to:
 ## Introduction ##
 
 In this part of the tutorial, you'll scale up the biophysical model of a single muscle fiber (Part 1) to a whole muscle. 
-Here, we assume length uniformity, i.e. that all fibers have the same length. Note: this assumption is typically also made in Hill-type models.
-The model of a single fiber already had elastic elements for myofilament compliance in series (S) and in parallel (P), see Fig. 2.0 below. 
-But whole muscle has addition elastic tissues that are absent in skinned fibers. 
+Here, we assume fiber length uniformity, i.e. that all fibers within the muscle have the same length. Note: this assumption is typically also made in Hill-type models.
+The model of a single fiber already had elastic elements for myofilament compliance in series (S) and in parallel (P) with the cross-bridges (XB), see Fig. 2.0 below. 
+But whole muscle has additional elastic tissues that are absent in skinned muscle fibers. 
 In line with Hill-type models, we include a tendon element T that is oriented at an angle alpha with respect to the contractile machinery (see Fig 2.0, below). 
-We also include a parallel elasticity representing aponeuroses and connective tissues in the muscle (e.g. endomysium). 
-Because these parallel tissues are in parallel with both the biophysical dynamics and the series compliance within the fiber, they can be lumped into a single parallel element P. 
+We also include parallel elasticity representing aponeuroses and connective tissues in the muscle (e.g. endomysium). 
+Because these parallel tissues are in parallel with both the biophysical cross-bridge dynamics (XB) and the series compliance (S) within the fiber, they can be lumped into a single parallel element (P). 
 
 ![picture](images/Fig2-0.jpg)
 
 *Figure 2.0. Biophysical model geometry for simulating whole muscle*
 
-In the tutorial, you will perform simulations with both Hill-type and biophysical models. '
-Both types of models will use parallel and tendon elements with identical properties and parameter values, previously used for whole muscle.
-The difference between Hill-type and biophysical models therefore resides in the contractile element:
-- Hill-type model: contractile element is described by force-velocity relation
-- Biophysical model: contractile element is described by biophysical cross-bridge dynamics, in series with an in-series elastic element S (see Part 1).
+In this part of the tutorial, you will perform movement simulations with both Hill-type and biophysical models. '
+Both types of models use parallel and tendon elements with identical properties and parameter values, previously used for whole muscle.
+The difference between Hill-type and biophysical models therefore exclusively resides in the contractile element:
+- Hill-type model: contractile element is described by a force-velocity relation
+- Biophysical model: contractile element is described by biophysical cross-bridge dynamics (XB), in series with an in-series elastic element (S) (see Part 1).
 
-The biophysical model initially uses the same parameters as determined for skinned muscle fibers (Part 1). 
+The biophysical model initially uses the same parameter values as determined for skinned muscle fibers (Part 1). 
 In this part of the tutorial, you will modify select model parameters such to reproduce the force-velocity relation of human muscle in vivo.
 
 ## Assignment 2.0: Preparation ##
@@ -42,7 +42,8 @@ In this part of the tutorial, you will modify select model parameters such to re
   
 ## Assignment 2.1: Simulate standing balance (default parameters) ##
 
-You will run a simulation of the initial response to a perturbation of standing balance. Standing balance is perturbed by a translation of the support surface. We assume that muscle activations are constant during the initial response (50 to 100 ms) due to large neuromuscular delays. In contrast to published simulations (https://doi.org/10.1016/j.jbiomech.2017.02.008), this simulation uses biophysical muscle models. These biophysical models have cross-bridge dynamics alongside cooperative dynamics for actin and myosin activation, described previously (https://doi.org/10.1016/j.bpj.2018.07.006). You will initially use biophysical model parameters that were fitted on data from skinned rat soleus muscle fibers (see Part 1), combined with force-length and elastic element parameters from OpenSim Hill-type models. 
+You will run a simulations of the initial response to a perturbation of standing balance, either driven by Hill-type or biophysical muscle models.
+Standing balance is perturbed by a translation of the support surface. We assume that muscle activations are constant during the initial response (50 to 100 ms) due to large neuromuscular delays. In contrast to published simulations (https://doi.org/10.1016/j.jbiomech.2017.02.008), this simulation uses biophysical muscle models. These biophysical models have cross-bridge dynamics alongside cooperative dynamics for actin and myosin activation, described previously (https://doi.org/10.1016/j.bpj.2018.07.006). You will initially use biophysical model parameters that were fitted on data from skinned rat soleus muscle fibers (see Part 1), combined with force-length and elastic element parameters from OpenSim Hill-type models. 
 
 **Task:** Run the Section titled `Assignment 2.1.1: simulate standing balance`. The following figure will appear:
 
