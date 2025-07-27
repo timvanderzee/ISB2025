@@ -140,9 +140,8 @@ To simulate the pendulum test, you'll use the leg39 OpenSim model. By welding jo
 You can also visualize the output of movement simulations with biophysical models in OpenSim.
 
 ![picture](images/Fig2-7a.gif)
-![picture](images/Fig2-7b.png)
 
-*Figure 2.7: OpenSim visualization of pendulum test and standing balance simulations.*
+*Figure 2.7: OpenSim visualization of pendulum test simulation*
 
 **Tasks:** Visualize the simulation of the pendulum test. To do this:
 -	Open OpenSim (preferably version 4.5)
