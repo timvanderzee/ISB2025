@@ -56,13 +56,13 @@ The default model parameter values have been selected to reproduce the movement 
 
 ## **Assignment 1.3: Characterize steady-state properties of the muscle fiber: force-velocity**
 1. Click `Generate Hill` to run the protocol that simulates stretches to generate a force-length and force-velocity curve based on your crossbridge rate function parameters.
-2. This runs a set of simulations where the muscle is held steady at different lengths.  
+2. This runs a set of simulations where the muscle is held steady at different lengths. The code generates time series of half-sarcomere (HS) length and force.  
 ![Alt text](images/FL_time_series.png)  
-3. It plots the force at time 2s against length at 2s to generate a Hill-type force-length curve.  
+3. It plots the force at time 2s against half-sarcomere (HS) length at 2s to generate a Hill-type force-length curve. 
 ![Alt text](images/FL.png)
-4. This also runs a set of simulations where muscle is stretched or shotened at a constant velocity.  
+4. This also runs a set of simulations where muscle is stretched or shotened at a constant velocity. The code generates time series of half-sarcomere (HS) length and force. 
 ![Alt text](images/FV_time_series.png)
-5. It plots the force at resting length against the velocity to generate a Hill-type force velocity curve.  
+5. It plots the force at resting length against the half-sarcomere (HS) velocity to generate a Hill-type force velocity curve. Force value when each half-sarcomere passes the same length of 0 is used to generate force-velocity curve.  
 ![Alt text](images/FV.png)
 6. Now run differnt protocols to see how the biophysical model and Hill-type model forces compare.
 7. Change the rate function parameters and repeat.
