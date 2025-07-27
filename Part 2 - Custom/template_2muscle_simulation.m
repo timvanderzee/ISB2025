@@ -10,14 +10,23 @@ odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
 nbins = 500;
 parms.forcible_detachment = 0;
-parms.kse = parms.kse*0.25;
-parms.no_tendon = 1;
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
 
+% approximation model %
 parms.xss = zeros(1,7);
-parms.xss(end-2) = 0.0909;
+parms.n_func = @(xi,Q,eps)Q(1)...
+    ./(sqrt(2*pi)*(sqrt(max(Q(3)/Q(1)-(Q(2)/Q(1))^2,eps))))*...
+    exp(-((xi-(Q(2)/max(Q(1),eps))).^2)...
+    /(2*(sqrt(max(Q(3)/Q(1)-(Q(2)/Q(1))^2,eps)))^2));
+ 
+% discrete bin model -- can be used instead of "approximation model" % 
+% nbins = 500;
+% parms.nbins = nbins;
+% parms.xss = zeros(1,parms.nbins + 4);
+% parms.xi0 = linspace(-20,20,nbins);
+% parms.xi = parms.xi0;
 
 % have two identital muscles as agonist-antagonist pair 
 parms1 = parms;
