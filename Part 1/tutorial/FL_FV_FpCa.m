@@ -1,4 +1,7 @@
 %% load parameters and set up simulations 
+%
+% Simulate force-length, force-velocity, force-pCa curves and save them %
+% Code by Hansol X. Ryu (hansol.ryu@gatech.edu) for ISB 2025 tutorial % 
 
 % load parameters % 
 addpath(genpath([pwd,'/../..']))

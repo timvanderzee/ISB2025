@@ -1,4 +1,8 @@
-%% initialize - load parameters and set up 
+%% initialize - load parameters and set up %%
+%
+% GUI to test cross bridge model and Hill-type model for simple protocols 
+% Code by Hansol X. Ryu (hansol.ryu@gatech.edu) for ISB 2025 tutorial % 
+
 clear;
 addpath(genpath([pwd,'/../..']))
 warning('off')

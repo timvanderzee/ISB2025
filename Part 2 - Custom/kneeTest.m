@@ -1,4 +1,8 @@
 %% initialize simulation parameters 
+% 
+% GUI to test knee pendulum model using a biopysical model
+% Code by Hansol X. Ryu (hansol.ryu@gatech.edu) for ISB 2025 tutorial % 
+
 clear; clc; 
 
 addpath(genpath([pwd,'/..']))
