@@ -12,13 +12,13 @@ Part 1 and Part 2 - Custom requires the following:
 - MATLAB (license required)- can be downloaded from: www.mathworks.com
 
 Part 2 - OpenSim code requires the following:
-- MATLAB (license required)- can be downloaded from: www.mathworks.com </br>
-  Most platforms require Matlab 2018b or greater for Casadi. Apple Silicon requires Matlab 2023b or greater.
+- MATLAB (license required)- can be downloaded from: www.mathworks.com
 - OpenSim 4.5 (open/free) - can be downloaded from: https://simtk.org/projects/opensim/ </br>
   On Mac you may need to go to Settings > Privacy & Security > allow apps from unidentified developers </br>
   Be sure to run OpenSim to create your OpenSim working folder before moving on to the next step.
 - MATLAB – OpenSim API (open/free) - follow the steps described here: https://opensimconfluence.atlassian.net/wiki/spaces/OpenSim/pages/53089380/Scripting+with+Matlab
-- Casadi (open/free) – can be downloaded from: https://web.casadi.org/get/. Make sure that the Casadi is added to your MATLAB path. In MATLAB go to Home->Set Path->Add with Subfolders ... and navigate to and select the casadi folder (e.g. casadi-windows-matlabR2016a-v3.5.5)
+- Casadi (open/free) – can be downloaded from: https://web.casadi.org/get/. Make sure that the Casadi is added to your MATLAB path. In MATLAB go to Home->Set Path->Add with Subfolders ... and navigate to and select the casadi folder (e.g. casadi-windows-matlabR2016a-v3.5.5) </br>
+Note that casadi for Apple Silicon running R2023b version does not work, please use the 2018b version.
 
 **Getting started**
 
