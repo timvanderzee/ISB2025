@@ -1,18 +1,18 @@
 # Part 2 - Dynamics simulation using muscle models #
-In this part of the workshop, you will run how to simulate a dynamics model with a biophysical muscle model based on cross-bridge dynamics.  
+In this part of the workshop, you will simulate a biophysical muscle model that is based on cross-bridge dynamics to create joint torques about the base of a single link pendulum.
 
 **Learning Objectives**
 At the end of this tutorial, you should be able to:
-- Simulate a one degree-of-freedom model with one muscle to study knee pendulum test
-- Simulate a one degree-of-freedom model with one muscles to study standing posture control under perturbation 
+- Simulate a horizontal pendulum actuated by one muscle as a simple conceptual model of the motion of the lower leg about the knee joint when dropped against gravity to demonstrate the role of history-dependent  muscle stiffness on movement.
+- Simulate an inverted pendulum with an agonist-antagonist muscle pair as a simple conceptual model of upright trunk under perturbation to demonstrate the role of muscle short-range stiffness on stability.
 
-**Assignment 2.1: Knee pendulum test simulation demonstrates history-dependence of the biophysical model**
+**Assignment 2.1: Pendulum test simulation demonstrates history-dependence of the biophysical model**
 - Code: Part 2-Custom/kneeTest.m
-- Run the code (F5 on Windows)
+- Run the code (F5 on Windows or Fn+F5 on Mac)
 - Click on the force time series (middle row) to visualize the crossbridge distribution (bottom left) underlying the force at that moment in time. Observe the difference between isometric vs. pre-movement conditions. 
 - Bonus: Change baseline activation and run the code again. Try pCa = 6.7, 6.9, 7.2, 8
 
 **Assignment 2.2: Standing balance simulation with agonist-antagonist muscle pair**
 - Code: Part 2-Custom/standingBalance.m
-- Run the code (F5 on Windows)
+- Run the code (F5 on Windows or Fn+F5 on Mac)
 - Bonus: Change baseline activation and run the code again.

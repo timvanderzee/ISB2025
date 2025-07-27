@@ -22,7 +22,7 @@ You will run a simulation of the initial response to a perturbation of standing 
 
 Task: Run the Section titled “Assignment 2.1.1: simulate standing balance”. The following figure will appear:
 
-![picture](Fig2-1.png)
+![picture](images/Fig2-1.jpg)
 
 *Figure 2.1. Standing balance simulation. Blue: simulation with Hill-type models, using OpenSim parameters for human movement. Red: simulation with Biophysical models, using the parameters as in Part 1.*
 
@@ -30,7 +30,7 @@ Question: The resulting movement differs quite a lot between simulations with Hi
 
 **Assignment 2.2: Fit model parameters on force-velocity and short-range stiffness**
 
-The main reason for the discrepancy between Hill-type and biophysical models (see Assignment 2.1.1), is that the biophysical parameters were based on data from skinned rat soleus muscle fibers (at room temperature, see Part 1), while Hill-type model parameters are assumed to represent human muscle in vivo. You will therefore re-fit biophysical model parameters such that the biophysical model reproduces the Hill-type force-velocity relation in steady state, while reproducing history-dependent short-range stiffness reductions in dynamic conditions. You can select specific model parameters that are to be fitted (optparms), as well as a weight vector (w) that specifies the weighting of force-velocity and short-range stiffness error terms. The fitting is performed using direct collocation, minimizing the force-velocity and short-range stiffness errors while imposing model dynamics as equality constraints. 
+The biophysical parameters were based on data from skinned rat soleus muscle fibers (at room temperature, see Part 1) and might therefore not fully represent how human muscles behave in vivo (explaining part of the discrepancy between Hill-type and biophysical models you observed in Assignment 2.1.1). In contrast, Hill-type model parameters are assumed to represent the force-length and force-velocity relationship of human muscle in vivo. You will therefore re-fit biophysical model parameters such that the biophysical model reproduces the Hill-type force-velocity relation in steady state, while reproducing history-dependent short-range stiffness reductions in dynamic conditions. You can select specific model parameters that are to be fitted (optparms), as well as a weight vector (w) that specifies the weighting of force-velocity and short-range stiffness error terms. The fitting is performed using direct collocation, minimizing the force-velocity and short-range stiffness errors while imposing model dynamics as equality constraints. 
 
 Tasks
 -	Run the Section titled “Assignment 2.2.1: fit model parameters” (using default w and optparms). This will run a function that fits the specified parameters. A figure will appear that indicates imposed lengths at the cross-bridge level and the output force trajectories, both as a function of time. 
@@ -38,7 +38,7 @@ Tasks
 
 Optional tasks: 
 -	Run the Section titled “Assignment 2.2.3: compare the rate functions”. This will generate a figure of the rate functions before and after fitting parameters. 
--	Explore how changing the weight vector w affects the ability to fit force-velocity versus short-range stiffness properties. After changing the weight vector, re-run the Section titled “Assignment 2.2.1: fit model parameters”. 
+-	Explore how changing the weight vector w affects the fit of the force-velocity curve versus relative short-range stiffness. After changing the weight vector, re-run the Section titled “Assignment 2.2.1: fit model parameters”. 
 
 Question: Given the default selection of parameters (i.e. f, k11, k22, k21), is it possible to simultaneously fit force-velocity and short-range stiffness curves?
 
@@ -52,7 +52,7 @@ This is the same as Assignment 1, except for using the parameter values obtained
 
 Task: Run the Section titled “Assignment 2.3.1: simulate standing balance”. If all went well, the movements for simulations with Hill-type versus biophysical models should now be very similar (see Figure 2.2, below). If not, please ask for instructions. 
 
-![picture](Fig2-2.png)
+![picture](images/Fig2-2.jpg)
 
 *Figure 2.2. Standing balance simulation. Blue: simulation with Hill-type models, using OpenSim parameters for human movement. Red: simulation with biophysical models, using the parameter values obtained during Assignment 2.2.*
 
@@ -60,7 +60,7 @@ Task: Run the Section titled “Assignment 2.3.1: simulate standing balance”. 
 
 You will simulate a clinical test of spasticity used to characterize joint-hyper resistance in cerebral palsy (CP). During the pendulum test, the patient is asked to relax while the examiner drops the leg from the horizontal position. The knee joint trajectory is recorded. The first swing excursion is decreased in individuals with spasticity. Pre-movement of the lower leg before dropping it has been shown to increase the first swing excursion. This can be captured in simulation when modeling movement history-dependent short-range stiffness. In contrast to published simulations (https://doi.org/10.1109/TNSRE.2024.3381739), this simulation will use biophysical muscle models. The figure below shows experimental data of the pendulum test for a typically developing (TD) child and a child with CP, either without (dashed line) or with pre-movement (solid line). The first swing excursion (FSE) is typically larger if there was pre-movement, particularly in children with CP. 
 
-![picture](Fig2-3.png)
+![picture](images/Fig2-3.jpg)
 
 *Figure 2.3. Experimental pendulum test results.*
 
@@ -73,7 +73,7 @@ Task: Run the Section titled “Assignment 2.4.1: simulate pendulum test - typic
   - Blue: Hill-type model with default OpenSim parameters 
   - Red: Biophysical model with parameters obtained in Assignment 2.2. 
 
-![picture](Fig2-4.png)
+![picture](images/Fig2-4.jpg)
 
 *Figure 2.4: Pendulum test simulation. Left: experimental data for a typical example of a typically developing child, either with pre-movement (solid line) or without pre-movement (dashed line). Right: model simulation using default values of muscle activation and knee angle, either with Hill-type (blue lines) or biophysical model (red lines) and either with pre-movement (solid lines) or without pre-movement (dashed lines).*
 
@@ -81,7 +81,7 @@ Question: For each muscle model (i.e. Hill-type and biophysical), compare simula
 
 Task: Run the Section titled “Assignment 2.4.2: simulate pendulum test - child with cerebral palsy (CP)”. The same figure will appear as before, but this time with data from a child with cerebral palsy. 
 
-![picture](Fig2-5.png)
+![picture](images/Fig2-5.jpg)
 
 *Figure 2.5: Pendulum test simulation. Left: experimental data for a typical example of a child with cerebral palsy, either with pre-movement (solid line) or without pre-movement (dashed line). Right: model simulation using default values of muscle activation and knee angle, either with Hill-type (blue lines) or biophysical model (red lines) and either with pre-movement (solid lines) or without pre-movement (dashed lines).*
 
@@ -91,7 +91,7 @@ Task: The difference between CP and TD may in part be due to differences in init
 -	Change the initial knee angle (phi_knee) from 0 to -0.3 rad.
 -	Re-run the Section titled “Assignment 2.4.2: simulate pendulum test - child with cerebral palsy (CP)”. The following figure should appear:
 
-![picture](Fig2-6.png)
+![picture](images/Fig2-6.jpg)
 
 *Figure 2.6: Pendulum test simulation. Left: experimental data for a typical example of a child with cerebral palsy, either with pre-movement (solid line) or without pre-movement (dashed line). Right: model simulation using adjusted values of muscle activation and knee angle, either with Hill-type (blue lines) or biophysical model (red lines) and either with pre-movement (solid lines) or without pre-movement (dashed lines).*
 
@@ -102,8 +102,8 @@ Question: Did the history dependence of the biophysical model increase? If so, w
 
 You can also visualize the output of movement simulations with biophysical models in OpenSim.
 
-![picture](Fig2-7a.png)
-![picture](Fig2-7b.png)
+![picture](images/Fig2-7a.gif)
+![picture](images/Fig2-7b.png)
 
 *Figure 2.7: OpenSim visualization of pendulum test and standing balance simulations.*
 
@@ -127,7 +127,7 @@ Children with CP typically show both a small FSE and a larger increase in FSE wi
 
 Task: Run the Section titled: “Assignment 2.6: visualize first swing excursion and its change with pre-movement”. A figure will appear that shows the change in FSE with pre-movement versus the FSE without pre-movement for the data, Hill-type and biophysical models. The figure should look similar to Figure 2.8, shown below. If it does not, please ask for help.
 
-![picture](Fig2-8.png)
+![picture](images/Fig2-8.jpg)
 
 *Figure 2.8: Relation between change in first swing excursion and first swing excursion. Typical example data (grey), Hill-type model (blue) and biophysical model (red) for either a child with cerebral palsy (CP, circles) or a typically developing child (TD, squares). Dashed lines connect the data points to help see trends.*
 

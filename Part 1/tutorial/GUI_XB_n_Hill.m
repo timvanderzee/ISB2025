@@ -11,6 +11,7 @@ nbins = 500;
 pCa = 4.5;
 Ca = 10^(-pCa+6);
 
+
 % You can un-comment this part to remove elastic components % 
 % parms.forcible_detachment = 0; 
 % parms.kse = 0; % series elastic element
