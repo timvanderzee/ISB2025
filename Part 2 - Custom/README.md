@@ -4,7 +4,7 @@ In this part of the workshop, you will simulate a biophysical muscle model that 
 **Learning Objectives**
 At the end of this tutorial, you should be able to:
 - Simulate a horizontal pendulum actuated by one muscle as a simple conceptual model of the motion of the lower leg about the knee joint when dropped against gravity to demonstrate the role of history-dependent  muscle stiffness on movement.
-- Simulate an inverted pendulum with an agonist-antagonist muscle pair as a simple conceptual model of upright trunk under perturbation to demonstrate the role of muscle short-range stiffness on stability.
+- (optional) Simulate an inverted pendulum with an agonist-antagonist muscle pair as a simple conceptual model of upright trunk under perturbation to demonstrate the role of muscle short-range stiffness on stability.
 
 **Assignment 2.1: Pendulum test simulation demonstrates history-dependence of the biophysical model**
 - Code: Part 2-Custom/kneeTest.m
@@ -16,6 +16,6 @@ You will see two trajectories of the pendulum -- one starting from the isrometri
 ![Alt text](images/Knee05.png)
 - Bonus: Change baseline activation and run the code again. Try pCa = 6.7, 6.9, 7.2, 8
 
-**For interested Users: Standing balance simulation with agonist-antagonist muscle pair**
+**(optional) For interested Users: Standing balance simulation with agonist-antagonist muscle pair**
 - Code: Part 2-Custom/standingBalance.m
 - Run the code (F5 on Windows or Fn+F5 on Mac)
