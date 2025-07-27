@@ -35,7 +35,7 @@ odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
 
 fig = figure;
-pCa = 9; % <<-- change here to try different activation conditions
+pCa = 6.8; % <<-- change here to try different activation conditions
 % 6.5, 6.8, 7.5, 9
 
 Ca = 10^(-pCa+6);
@@ -73,11 +73,11 @@ for k=1:2
         [~,F_sim2(kk)] = model(t_sim2(kk), x_sim2(kk,3:end)', parms, Ca);
     end
 
-    subplot(3,1,1)
+    subplot(3,2,1)
     hold on
     plot([t_sim1;t_sim2], [x_sim1(:,1);x_sim2(:,1)]*180/pi-90, 'LineWidth', 3-k)
 
-    subplot(3,1,2)
+    subplot(3,2,3)
     hold on
     plot([t_sim1;t_sim2], [F_sim1(:,1);F_sim2(:,1)], 'LineWidth', 3-k)
 
@@ -94,18 +94,18 @@ end
 xlim([-1 10])
 
 x_temp = [fig.UserData.x_total_iso(:,1); fig.UserData.x_total_pre(:,1)]*180/pi-90;
-ax1 = subplot(3,1,1);
+ax1 = subplot(3,2,1);
 ylabel('angle (deg)'), xlabel('time (s)')
-fig.UserData.A_instance = plot([0,0], [-120 20]);
+fig.UserData.A_instance = plot([0,0], [-300 300]);
 set(ax1,'ButtonDownFcn', ...
     @(s,e)update_time(s,e), 'HitTest','on')
 ylim([min(x_temp)-5 max(x_temp)+5]);
 
 F_temp = [fig.UserData.F_total_iso(:,1); fig.UserData.F_total_pre(:,1)];
-ax2 = subplot(3,1,2);
+ax2 = subplot(3,2,3);
 ylabel('force'), xlabel('time (s)')
 hold on
-fig.UserData.F_instance = plot([0,0], [0 0.2]);
+fig.UserData.F_instance = plot([0,0], [-2 2]);
 set(ax2,'ButtonDownFcn', ...
     @(s,e)update_time(s,e), 'HitTest','on')
 ylim([0 max(F_temp)]);
@@ -113,13 +113,33 @@ ylim([0 max(F_temp)]);
 linkaxes([ax1, ax2],'x');
 xlim([-1 10])
 
-fig.UserData.ax_dist = subplot(3,1,3);
+ax = subplot(1,2,2);
+hold on
+fig.UserData.leg_handle_iso = plot([0,0], [0 0], ...
+    'LineWidth', 4.2);
+fig.UserData.leg_handle_pre = plot([0,0], [0 0], ...
+    'LineWidth', 4);
+plot([-1 0], [0 0], 'lineWidth', 8, 'color', [1 1 1]*0.3);
+fill([-pi:0.01:pi, pi:-0.01:-pi, -pi]/pi/2-0.5, ...
+    [sech(-pi:0.01:pi) -sech(pi:-0.01:-pi) sech(-pi)]*0.06+0.03, [1 .3 .5],...
+    'LineStyle','none') 
+
+axis equal
+xlim([-1.1 1.1])
+ylim([-2 2])
+ax.XAxis.Visible = 'off';
+ax.YAxis.Visible = 'off';
+
+fig.UserData.ax_dist = subplot(3,2,5);
 fig.UserData.iso_dist = plot(nan,nan);
 hold on
 fig.UserData.pre_dist = plot(nan,nan);
 xlabel('\Delta x')
 ylabel('distribution of bound XB');
 legend('isometric', 'pre-move')
+
+dummyE.IntersectionPoint = [0 -100];
+update_time(fig.UserData.ax_dist, dummyE);
 
 %% differential equation for prescribed movement 
 function Xd = dAllStates_prescribed(t, X, muscle_model, parms, Ca, prescribed_a)
@@ -167,5 +187,10 @@ set(fig.UserData.F_instance, 'xdata', [1 1]*t_total(idx))
 set(fig.UserData.A_instance, 'xdata', [1 1]*t_total(idx))
 
 set(fig.UserData.ax_dist, 'ylim', [0 max(max(x_total_iso(:,4:end-3)))], 'xlim', [-10 10]);
+
+set(fig.UserData.leg_handle_iso, 'xdata', [0 sin(x_total_iso(idx,1))], ...
+    'ydata', [0 -cos(x_total_iso(idx,1))])
+set(fig.UserData.leg_handle_pre, 'xdata', [0 sin(x_total_pre(idx,1))], ...
+    'ydata', [0 -cos(x_total_pre(idx,1))])
 
 end
