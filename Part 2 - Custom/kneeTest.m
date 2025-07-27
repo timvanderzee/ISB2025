@@ -7,10 +7,6 @@ load('parms.mat')
 load('protocol.mat')
 warning('on')
 
-parms.forcible_detachment = 0;
-% parms.kse = parms.kse*0.25;
-parms.no_tendon = 1;
-
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
@@ -39,7 +35,8 @@ odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
 
 fig = figure;
-pCa = 7.2; % <<-- change here to try different activation conditions
+pCa = 9; % <<-- change here to try different activation conditions
+% 6.5, 6.8, 7.5, 9
 
 Ca = 10^(-pCa+6);
 fig.UserData.parms = parms;
@@ -87,25 +84,31 @@ for k=1:2
     if k==1
         fig.UserData.x_total_iso = [x_sim1;x_sim2];
         fig.UserData.t_total_iso = [t_sim1;t_sim2];
+        fig.UserData.F_total_iso = [F_sim1;F_sim2];
     else 
         fig.UserData.x_total_pre = [x_sim1;x_sim2];
         fig.UserData.t_total_pre = [t_sim1;t_sim2];
+        fig.UserData.F_total_pre = [F_sim1;F_sim2];
     end
 end
 xlim([-1 10])
 
+x_temp = [fig.UserData.x_total_iso(:,1); fig.UserData.x_total_pre(:,1)]*180/pi-90;
 ax1 = subplot(3,1,1);
 ylabel('angle (deg)'), xlabel('time (s)')
 fig.UserData.A_instance = plot([0,0], [-120 20]);
 set(ax1,'ButtonDownFcn', ...
     @(s,e)update_time(s,e), 'HitTest','on')
+ylim([min(x_temp)-5 max(x_temp)+5]);
 
+F_temp = [fig.UserData.F_total_iso(:,1); fig.UserData.F_total_pre(:,1)];
 ax2 = subplot(3,1,2);
 ylabel('force'), xlabel('time (s)')
 hold on
 fig.UserData.F_instance = plot([0,0], [0 0.2]);
 set(ax2,'ButtonDownFcn', ...
     @(s,e)update_time(s,e), 'HitTest','on')
+ylim([0 max(F_temp)]);
 
 linkaxes([ax1, ax2],'x');
 xlim([-1 10])

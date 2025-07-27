@@ -10,10 +10,10 @@ half_s_len_norm = parms.s/2/parms.h;
 nbins = 600;
 odeopt = odeset('maxstep',1e-2);
 
-parms.forcible_detachment = 0;
-parms.kse = 0;
-parms.kpe = 0;
-parms.no_tendon = 1;
+% parms.forcible_detachment = 0;
+% parms.kse = 0;
+% parms.kpe = 0;
+% parms.no_tendon = 1;
 parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
@@ -30,19 +30,19 @@ parms0 = parms;
 
 % if User saved their own Hill properties at the end of FL_FV_FpCa.m, they
 % can load it here.
-load('hill_properties_pCa_45.mat'); 
+load('hill_properties_default.mat'); 
 hill_p = hill_properties;
 
 %% Define protocol to simulate. 
 
 % make sure that duration, velocity, pCa all has same number of elements. 
-protocol_duration = [0.05, 0.1, 0.1, 0.1, 0.1,0.1]; % should be integer multiplication of dt
+protocol_duration = [0.05, 0.3, 0.1, 0.1, 0.1,0.1]; % should be integer multiplication of dt
 protocol_pCa = [9 [1 1 1 1 1]*activation_pCa];
 
-protocol_v = [0, 0,  0, 50, 0, 0]; % lengthening
+% protocol_v = [0, 0,  0, 50, 0, 0]; % lengthening
 % protocol_v = [0, 0, 0, -50, 0, 0]; % shortening
 % protocol_v = [0, 0, -50, 50, -50, 50]; % shortening cycle
-% protocol_v = [0, 0, 50, -50, 50, -50]; % lengthening cycle
+protocol_v = [0, 0, 50, -50, 50, -50]; % lengthening cycle
 
 %% Run simulation 
 x0 = parms.xss;
@@ -101,13 +101,16 @@ hillF_total = ppval(hill_p.FL_spline, l_total/half_s_len_norm).*...
 
 %% plot length and activation protocol, and simulated XB force
 figure
-subplot(3,1,1)
+subplot(4,1,1)
 plot(plot_t_protocol, plot_pCa_protocol)
 ylabel('pCa')
-subplot(3,1,2)
+subplot(4,1,2)
+plot(t_total, x_total(:,end-1))
+ylabel('MTU length')
+subplot(4,1,3)
 plot(t_total, x_total(:,end))
-ylabel('length')
-subplot(3,1,3)
+ylabel('CE length')
+subplot(4,1,4)
 plot(t_total, F_total)
 xlabel('time')
 ylabel('Force')
