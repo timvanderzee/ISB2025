@@ -11,13 +11,14 @@ parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
 
-% parms.f = parms.f*0.5;
-parms.JF = parms.JF*2;
+% We adjusted some parameters to demonstrate history dependence clearly % 
+parms.JF = parms.JF*2; 
 parms.k11 = parms.k11 * 0.15;
 parms.k12 = parms.k12 * 0.3;
 parms.k21 = parms.k21 * 0.22;
 parms.k22 = parms.k22 * 0.3;
 
+% cross-bridge state initialization % 
 nbins = 800;
 parms.nbins = nbins;
 parms.xss = zeros(1,parms.nbins + 4);
@@ -36,10 +37,11 @@ half_s_len_norm = parms.s/2/parms.h;
 
 fig = figure;
 pCa = 6.8; % <<-- change here to try different activation conditions
-% 6.5, 6.8, 7.5, 9
-
+% try 6.5, 6.8, 7.5, 9
 Ca = 10^(-pCa+6);
 fig.UserData.parms = parms;
+
+% Run isometric vs. pre-movement conditions 
 for k=1:2
     parms = parms0;
     x0 = parms.xss;
@@ -51,9 +53,11 @@ for k=1:2
         temp_t = -1:0.001:0;
         prescribed_a = spline(temp_t,-cos(temp_t/1*pi*2)*pi^2/2*pi*2); 
     end
+
     % run differential equation solver to get XB distributions
     [t_sim1,x_sim1] = ode15s(@(t,x)dAllStates_prescribed(t,x,model,parms,Ca,prescribed_a), ...
         (-1:dt:0),[pi/2, 0, x0],odeopt);    
+
     % calculate XB force
     F_sim1 = nan(height(x_sim1),1);
     for kk = 1:height(x_sim1)
@@ -61,7 +65,7 @@ for k=1:2
         [~,F_sim1(kk)] = model(t_sim1(kk), x_sim1(kk,3:end)', parms, Ca);
     end
 
-    x0 = x_sim1(end,:); % << limb state at onset of drop
+    x0 = x_sim1(end,:); % << limb state at onset of the drop
 
     % run knee drop simulation
     [t_sim2,x_sim2] = ode15s(@(t,x)dAllStates(t,x,model,parms,Ca), ...
@@ -73,14 +77,17 @@ for k=1:2
         [~,F_sim2(kk)] = model(t_sim2(kk), x_sim2(kk,3:end)', parms, Ca);
     end
 
+    % plot results : angle %
     subplot(3,2,1)
     hold on
     plot([t_sim1;t_sim2], [x_sim1(:,1);x_sim2(:,1)]*180/pi-90, 'LineWidth', 3-k)
 
+    % plot results : force %
     subplot(3,2,3)
     hold on
     plot([t_sim1;t_sim2], [F_sim1(:,1);F_sim2(:,1)], 'LineWidth', 3-k)
 
+    % save results for GUI %
     if k==1
         fig.UserData.x_total_iso = [x_sim1;x_sim2];
         fig.UserData.t_total_iso = [t_sim1;t_sim2];
@@ -93,6 +100,7 @@ for k=1:2
 end
 xlim([-1 10])
 
+%% label figures, set up GUI to select time %% 
 x_temp = [fig.UserData.x_total_iso(:,1); fig.UserData.x_total_pre(:,1)]*180/pi-90;
 ax1 = subplot(3,2,1);
 ylabel('angle (deg)'), xlabel('time (s)')
@@ -163,7 +171,7 @@ F_ext = -9.81*sin(X(1))*3.5 - 0.8*X(2);
 Xd = [X(2); (F_ext+F_mus*150); Xmusd];
 end
 
-
+%% GUI callback to update distribution and diagram %%
 function [] = update_time(src,eventData)
 % load current simulation result that is shown in the figure
 fig = src.Parent;
@@ -188,9 +196,9 @@ set(fig.UserData.A_instance, 'xdata', [1 1]*t_total(idx))
 
 set(fig.UserData.ax_dist, 'ylim', [0 max(max(x_total_iso(:,4:end-3)))], 'xlim', [-10 10]);
 
+% update diagram knee angles % 
 set(fig.UserData.leg_handle_iso, 'xdata', [0 sin(x_total_iso(idx,1))], ...
     'ydata', [0 -cos(x_total_iso(idx,1))])
 set(fig.UserData.leg_handle_pre, 'xdata', [0 sin(x_total_pre(idx,1))], ...
     'ydata', [0 -cos(x_total_pre(idx,1))])
-
 end
