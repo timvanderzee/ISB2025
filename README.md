@@ -49,6 +49,6 @@ Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H.
 
 We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in : 
 Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
-contraction. Math. Biosci. 55, 89–114.
+contraction. Math. Biosci. 55, 89–114. (https://doi.org/10.1016/0025-5564(81)90014-6)
  
 
