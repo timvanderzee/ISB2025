@@ -44,26 +44,26 @@ If you find this work helpful in your research please cite this repository and t
 
 The structure of a two- four-state cross-bridge model to reproduce history dependence in biophysical muscle spindle models was presented in:
 
-(2-state) Blum, K.P., Horslen, B., Campbell K.S., Nardelli P., Cope T.C., Ting L.H.* (2020) Diverse and complex muscle spindle firing properties emerge from multiscale muscle mechanics.  Elife, Dec 28;9:e55177. doi: 10.7554/eLife.55177. ( https://doi.org/10.7554/eLife.55177)
+• (2-state) Blum, K.P., Horslen, B., Campbell K.S., Nardelli P., Cope T.C., Ting L.H.* (2020) Diverse and complex muscle spindle firing properties emerge from multiscale muscle mechanics.  Elife, Dec 28;9:e55177. doi: 10.7554/eLife.55177. ( https://doi.org/10.7554/eLife.55177)
 
-(4-state) Simha, S.N., Ting, L.H. (2024) Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch. Journal of Experimental Physiology, Jan;109(1):112-124. doi: 10.1113/EP090767. (https://doi.org/10.1113/EP090767)
+• (4-state) Simha, S.N., Ting, L.H. (2024) Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch. Journal of Experimental Physiology, Jan;109(1):112-124. doi: 10.1113/EP090767. (https://doi.org/10.1113/EP090767)
  
 The parameters of the cross-bridge model presented here have been optimized to fit history-dependence muscle fiber data described in:
-Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H. (2023) History-dependent muscle resistance to stretch remains high after small, posturally-relevant pre-movements. Journal of Experimental Biology, Sept 15;226(18):jeb245456. doi: 10.1242/jeb.245456. (https://doi.org/10.1242/jeb.245456)
+• Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H. (2023) History-dependent muscle resistance to stretch remains high after small, posturally-relevant pre-movements. Journal of Experimental Biology, Sept 15;226(18):jeb245456. doi: 10.1242/jeb.245456. (https://doi.org/10.1242/jeb.245456)
 
 We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in : 
-Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
+• Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
 contraction. Math. Biosci. 55, 89–114. (https://doi.org/10.1016/0025-5564(81)90014-6)
 
 The perturbed standing balance models are based on:
-De Groote, F., Allen, J. L., Ting, L. H.* (2017) Contribution of muscle short-range stiffness to initial changes in joint kinetics and kinematics during perturbations to standing balance: A simulation study. Journal of Biomechanics, Apr 11;55, 71-77. (https://doi.org/10.1016/j.jbiomech.2017.02.008)
+• De Groote, F., Allen, J. L., Ting, L. H.* (2017) Contribution of muscle short-range stiffness to initial changes in joint kinetics and kinematics during perturbations to standing balance: A simulation study. Journal of Biomechanics, Apr 11;55, 71-77. (https://doi.org/10.1016/j.jbiomech.2017.02.008)
 
 The pendulum test models of joint hyper-resistance (spasiticity) in cerebral palsy are based on:
-De Groote, F., Blum, K.P., Horslen, B.C., Ting, L.H.* (2018) Interaction between muscle tone, short-range stiffness and increased sensory feedback gains explains key kinematic features of the pendulum test in spastic cerebral palsy: A simulation study. PLoS ONE, Oct 18;13(10):e0205763. (https://doi.org/10.1371/journal.pone.0205763)
+• De Groote, F., Blum, K.P., Horslen, B.C., Ting, L.H.* (2018) Interaction between muscle tone, short-range stiffness and increased sensory feedback gains explains key kinematic features of the pendulum test in spastic cerebral palsy: A simulation study. PLoS ONE, Oct 18;13(10):e0205763. (https://doi.org/10.1371/journal.pone.0205763)
 
-Willaert, J., Desloovere, K., Van Campenhout, A.C.., Ting, L.H., De Groote, F. (2020) Movement history influences pendulum test kinematics in children with spastic cerebral palsy. Frontiers in Bioengineering and Biotechnology, Aug 7;8:920. (https://doi.org/10.3389/fbioe.2020.00920)
+• Willaert, J., Desloovere, K., Van Campenhout, A.C.., Ting, L.H., De Groote, F. (2020) Movement history influences pendulum test kinematics in children with spastic cerebral palsy. Frontiers in Bioengineering and Biotechnology, Aug 7;8:920. (https://doi.org/10.3389/fbioe.2020.00920)
 
-Willaert, J., Desloovere, K., Van Campenhout, A., Ting L.H., De Groote, F. (2024) Identification of neural and non-neural origins of joint hyper-resistance based on a novel neuromechanical model. IEEE Trans Neural Syst Rehabil Eng. 2024:32:1435-1444. (http://doi.org/10.1109/TNSRE.2024.3381739)
+• Willaert, J., Desloovere, K., Van Campenhout, A., Ting L.H., De Groote, F. (2024) Identification of neural and non-neural origins of joint hyper-resistance based on a novel neuromechanical model. IEEE Trans Neural Syst Rehabil Eng. 2024:32:1435-1444. (http://doi.org/10.1109/TNSRE.2024.3381739)
 
 
 
