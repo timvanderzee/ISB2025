@@ -42,7 +42,8 @@ This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of pro
 
 If you find this work helpful in your research please cite this repository and the following papers (can be found in /literature) as relevant: 
 
-The structure of a two- four-state cross-bridge model to reproduce history dependence in biophysical muscle spindle models was presented in: 
+The structure of a two- four-state cross-bridge model to reproduce history dependence in biophysical muscle spindle models was presented in:
+
 (2-state) Blum, K.P., Horslen, B., Campbell K.S., Nardelli P., Cope T.C., Ting L.H.* (2020) Diverse and complex muscle spindle firing properties emerge from multiscale muscle mechanics.  Elife, Dec 28;9:e55177. doi: 10.7554/eLife.55177. ( https://doi.org/10.7554/eLife.55177)
 
 (4-state) Simha, S.N., Ting, L.H. (2024) Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch. Journal of Experimental Physiology, Jan;109(1):112-124. doi: 10.1113/EP090767. (https://doi.org/10.1113/EP090767)
