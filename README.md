@@ -29,9 +29,9 @@ Note that casadi for Apple Silicon running R2023b version does not work, please 
 
 tim.vanderzee@kuleuven.be
 
-Part 1: hansol.ryu@gatech.edu, surabhi.n.simha@emory.edu
-Part 2 OpenSim: tim.vanderzee@kuleuven.be
-Part 2 Custom: hansol.ryu@gatech.edu
+Part 1: hansol.ryu@gatech.edu, surabhi.n.simha@emory.edu  </br>
+Part 2 OpenSim: tim.vanderzee@kuleuven.be  </br>
+Part 2 Custom: hansol.ryu@gatech.edu  </br>
 
 _______________________________________
 **Acknowledgements**
