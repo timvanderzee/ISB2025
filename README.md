@@ -33,4 +33,11 @@ Part 1: hansol.ryu@gatech.edu, surabhi.n.simha@emory.edu
 Part 2 OpenSim: tim.vanderzee@kuleuven.be
 Part 2 Custom: hansol.ryu@gatech.edu
 
+**Acknowledgements** </br></br>
+This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of proprioceptive encoding to reveal mechanisms of impaired sensorimotor controland an NIH Supplement to Support Enhancement of Software Tools for Open Science (NIH R01 HD90642-S1) </br>
+
+**Citing this work** </br></br>
+If you find this work helpful in your research please cite this repository and the following papers as relevant: 
+The structure of the four-state model presented was used to reproduce history dependence in a biophysical muscle spindle model as presented in Simha and Ting 2023 </b>Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch </b> (https://doi.org/10.1113/EP090767)
+ 
 
