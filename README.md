@@ -48,17 +48,17 @@ The structure of a two- four-state cross-bridge model to reproduce history depen
 
 • (4-state) Simha, S.N., Ting, L.H. (2024) Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch. Journal of Experimental Physiology, Jan;109(1):112-124. doi: 10.1113/EP090767. (https://doi.org/10.1113/EP090767)
  
-The parameters of the cross-bridge model presented here have been optimized to fit history-dependence muscle fiber data described in:
+The parameters of the cross-bridge model presented here have been optimized to fit history-dependence muscle fiber data described in: </br>
 • Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H. (2023) History-dependent muscle resistance to stretch remains high after small, posturally-relevant pre-movements. Journal of Experimental Biology, Sept 15;226(18):jeb245456. doi: 10.1242/jeb.245456. (https://doi.org/10.1242/jeb.245456)
 
-We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in : 
+We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in :  </br>
 • Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
 contraction. Math. Biosci. 55, 89–114. (https://doi.org/10.1016/0025-5564(81)90014-6)
 
-The perturbed standing balance models are based on:
+The perturbed standing balance models are based on:  </br>
 • De Groote, F., Allen, J. L., Ting, L. H.* (2017) Contribution of muscle short-range stiffness to initial changes in joint kinetics and kinematics during perturbations to standing balance: A simulation study. Journal of Biomechanics, Apr 11;55, 71-77. (https://doi.org/10.1016/j.jbiomech.2017.02.008)
 
-The pendulum test models of joint hyper-resistance (spasiticity) in cerebral palsy are based on:
+The pendulum test models of joint hyper-resistance (spasiticity) in cerebral palsy are based on:  </br>
 • De Groote, F., Blum, K.P., Horslen, B.C., Ting, L.H.* (2018) Interaction between muscle tone, short-range stiffness and increased sensory feedback gains explains key kinematic features of the pendulum test in spastic cerebral palsy: A simulation study. PLoS ONE, Oct 18;13(10):e0205763. (https://doi.org/10.1371/journal.pone.0205763)
 
 • Willaert, J., Desloovere, K., Van Campenhout, A.C.., Ting, L.H., De Groote, F. (2020) Movement history influences pendulum test kinematics in children with spastic cerebral palsy. Frontiers in Bioengineering and Biotechnology, Aug 7;8:920. (https://doi.org/10.3389/fbioe.2020.00920)
