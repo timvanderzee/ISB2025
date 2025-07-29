@@ -54,5 +54,16 @@ Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H.
 We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in : 
 Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
 contraction. Math. Biosci. 55, 89–114. (https://doi.org/10.1016/0025-5564(81)90014-6)
- 
+
+The perturbed standing balance models are based on:
+De Groote, F., Allen, J. L., Ting, L. H.* (2017) Contribution of muscle short-range stiffness to initial changes in joint kinetics and kinematics during perturbations to standing balance: A simulation study. Journal of Biomechanics, Apr 11;55, 71-77. (https://doi.org/10.1016/j.jbiomech.2017.02.008)
+
+The pendulum test models of joint hyper-resistance (spasiticity) in cerebral palsy are based on:
+De Groote, F., Blum, K.P., Horslen, B.C., Ting, L.H.* (2018) Interaction between muscle tone, short-range stiffness and increased sensory feedback gains explains key kinematic features of the pendulum test in spastic cerebral palsy: A simulation study. PLoS ONE, Oct 18;13(10):e0205763. (https://doi.org/10.1371/journal.pone.0205763)
+
+Willaert, J., Desloovere, K., Van Campenhout, A.C.., Ting, L.H., De Groote, F. (2020) Movement history influences pendulum test kinematics in children with spastic cerebral palsy. Frontiers in Bioengineering and Biotechnology, Aug 7;8:920. (https://doi.org/10.3389/fbioe.2020.00920)
+
+Willaert, J., Desloovere, K., Van Campenhout, A., Ting L.H., De Groote, F. (2024) Identification of neural and non-neural origins of joint hyper-resistance based on a novel neuromechanical model. IEEE Trans Neural Syst Rehabil Eng. 2024:32:1435-1444. (http://doi.org/10.1109/TNSRE.2024.3381739)
+
+
 
