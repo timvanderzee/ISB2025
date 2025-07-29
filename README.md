@@ -33,11 +33,22 @@ Part 1: hansol.ryu@gatech.edu, surabhi.n.simha@emory.edu
 Part 2 OpenSim: tim.vanderzee@kuleuven.be
 Part 2 Custom: hansol.ryu@gatech.edu
 
-**Acknowledgements** </br></br>
+**Acknowledgements**
+
 This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of proprioceptive encoding to reveal mechanisms of impaired sensorimotor controland an NIH Supplement to Support Enhancement of Software Tools for Open Science (NIH R01 HD90642-S1) </br>
 
-**Citing this work** </br></br>
+**Citing this work**
+
 If you find this work helpful in your research please cite this repository and the following papers as relevant: 
-The structure of the four-state model presented was used to reproduce history dependence in a biophysical muscle spindle model as presented in Simha and Ting 2023 </b>Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch </b> (https://doi.org/10.1113/EP090767)
+
+The structure of the four-state cross-bridge model reproduces history dependence in a biophysical muscle spindle model presented in: 
+Simha, S.N., Ting, L.H. (2024) Intrafusal cross-bridge dynamics shape history-dependent muscle spindle responses to stretch. Journal of Experimental Physiology, Jan;109(1):112-124. doi: 10.1113/EP090767. (https://doi.org/10.1113/EP090767)
+ 
+The parameters of the cross-bridge model presented here have been optimized to fit history-dependence muscle fiber data described in:
+Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H. (2023) History-dependent muscle resistance to stretch remains high after small, posturally-relevant pre-movements. Journal of Experimental Biology, Sept 15;226(18):jeb245456. doi: 10.1242/jeb.245456. (https://doi.org/10.1242/jeb.245456)
+
+We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in : 
+Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
+contraction. Math. Biosci. 55, 89–114.
  
 
