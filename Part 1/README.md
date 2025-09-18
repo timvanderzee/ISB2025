@@ -1,5 +1,6 @@
 # Part 1 - Muscle models #
 In this part of the workshop, you will run a biophysical muscle model that is based on cross-bridge dynamics to simulate force from a muscle fiber.
+A video explaining how the model works can be found here: https://youtu.be/GZESN9A6SXc
 
 ## **Learning Objectives**  
 At the end of this tutorial, you should be able to:  
