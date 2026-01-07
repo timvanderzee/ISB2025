@@ -36,7 +36,7 @@ Part 2 Custom: hansol.ryu@gatech.edu  </br>
 _______________________________________
 **Acknowledgements**
 
-This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of proprioceptive encoding to reveal mechanisms of impaired sensorimotor controland an NIH Supplement to Support Enhancement of Software Tools for Open Science (NIH R01 HD90642-S1)
+This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of proprioceptive encoding to reveal mechanisms of impaired sensorimotor controland an NIH Supplement to Support Enhancement of Software Tools for Open Science (NIH R01 HD90642-S1). Tim van der Zee was supported by the Marie Skłodowska-Curie Actions postdoctoral fellowship (HORIZON-MSCA-2024-PF-01-01) awarded by the European Research Executive Agency (project name: WalkEnergy, project number: 101210712).  
 
 **Citing this work**
 
@@ -50,6 +50,13 @@ The structure of a two- four-state cross-bridge model to reproduce history depen
  
 The parameters of the cross-bridge model presented here have been optimized to fit history-dependence muscle fiber data described in: </br>
 • Horslen, B.C., Milburn, G.N., Simha, S.N., Blum K.P., Campbell, K.S., Ting, L.H. (2023) History-dependent muscle resistance to stretch remains high after small, posturally-relevant pre-movements. Journal of Experimental Biology, Sept 15;226(18):jeb245456. doi: 10.1242/jeb.245456. (https://doi.org/10.1242/jeb.245456)
+
+The biophysical cross-bridge models presented here are described in: </br>
+• van der Zee, T.J., Simha, S.N., Milburn, G.N., Campbell, K.S., Ting, L.H. & De Groote, F. (2025). Biophysical model for predicting muscle short-range stiffness during movement. bioRxiv. ( https://doi.org/10.1101/2025.10.31.685881).
+
+The interface of cross-bridge dynamics and series elastic elements was as described in :  </br>
+• van der Zee, T. J., Wong, J. D. & Kuo, A. D. (2025). On the rate-limiting dynamics of force development in muscle. J Exp. Biol. 227, jeb247436. 
+(https://doi.org/10.1242/jeb.247436)
 
 We also present a version of the four-state model using a Gaussian approximation of the cross-bridge distribution as described in :  </br>
 • Zahalak, G. I.  (1981).   A   distribution-moment   approximation   for   kinetic   theories   of   muscular
