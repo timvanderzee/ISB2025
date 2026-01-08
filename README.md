@@ -36,7 +36,7 @@ Part 2 Custom: hansol.ryu@gatech.edu  </br>
 _______________________________________
 **Acknowledgements**
 
-This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of proprioceptive encoding to reveal mechanisms of impaired sensorimotor controland an NIH Supplement to Support Enhancement of Software Tools for Open Science (NIH R01 HD90642-S1). Tim van der Zee was supported by the Marie Skłodowska-Curie Actions postdoctoral fellowship (HORIZON-MSCA-2024-PF-01-01) awarded by the European Research Executive Agency (project name: WalkEnergy, project number: 101210712).  
+This work was funded in part by an NIH R01 R01 HD90642 Multi-scale models of proprioceptive encoding to reveal mechanisms of impaired sensorimotor controland an NIH Supplement to Support Enhancement of Software Tools for Open Science (NIH R01 HD90642-S1). Tim van der Zee was supported by the Marie Skłodowska-Curie Actions postdoctoral fellowship (HORIZON-MSCA-2024-PF-01-01) awarded by the European Research Executive Agency (https://cordis.europa.eu/project/id/101210712).  
 
 **Citing this work**
 
