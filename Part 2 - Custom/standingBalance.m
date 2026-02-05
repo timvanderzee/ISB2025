@@ -127,7 +127,7 @@ Xd = [Xmassd+[0; (F_mus1-F_mus2)*200]; ...
 end
 
 %% differential equation for the dybnamics of the mass 
-function Md = dMassStates(t,X, cart_acc_spline)
+function Md = dMassStates(t,X,cart_acc_spline)
 cart_acc = ppval(cart_acc_spline,t);                              
 acc_gravity = +9.81*sin(X(1));
 Md = [X(2); acc_gravity+cart_acc*cos(X(1))];

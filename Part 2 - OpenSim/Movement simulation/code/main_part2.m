@@ -11,6 +11,7 @@ cd ..
 cd ..
 mainfolder = cd;
 addpath(genpath(mainfolder));
+load("C:\Users\hryu30\D\postdoc\2MuscleModeling\ISB2025\Part 2 - OpenSim\Movement simulation\input\common/thix_data.mat", 'SRSdata')
 
 % Import casadi libraries
 import casadi.*; 

@@ -6,7 +6,7 @@
 % load parameters % 
 addpath(genpath([pwd,'/../..']))
 warning('off')
-load('parms.mat')
+% load('parms_biophysical_full_regular_v2.mat')
 load('protocol.mat')
 warning('on')
 
@@ -14,7 +14,7 @@ warning('on')
 % parms.forcible_detachment = 0; 
 % parms.kse = 0; % series elastic element
 % parms.kpe = 0; % parallel elastic element
-% parms.no_tendon = 1; % tendon
+parms.no_tendon = 0; % tendon
 
 odeopt = odeset('maxstep',1e-2);
 half_s_len_norm = parms.s/2/parms.h;
@@ -24,14 +24,14 @@ parms.act = 1;
 parms.cosa = 1;
 parms.Noverlap = 1;
 
-save_hill_properties = 1; % if set to be 1, 
+save_hill_properties = 0; % if set to be 1, 
 % it will prompt to save Hill properties at the end
 
 %% Run F-l, F-v, F-pCa protocols and save the outcome as splines.
 hill_properties = struct();
 ref_pCa = 4.5; % << pCa during F-L, F-v simulation 
 
-for cond_itr = 1:3 %  1: F-L, 2: F-v, 3: F-pCa
+for cond_itr = 3 %  1: F-L, 2: F-v, 3: F-pCa
     figure;
 
     if(cond_itr==1) % F-L

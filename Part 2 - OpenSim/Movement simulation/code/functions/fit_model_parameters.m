@@ -192,7 +192,8 @@ for i = 1:length(optparms)
 end
 
 % run a forward simulation
-osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 max(toc)], x0(end,:), xp0, odeopt);
+osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), ...
+    [0 max(toc)], x0(end,:), xp0, odeopt);
 t = osol.x;
 x = osol.y;
 F = x(1,:) + x(2,:);
@@ -200,6 +201,7 @@ F = x(1,:) + x(2,:);
 Fdot = xdot(1,:) + xdot(2,:);
 
 %% Visualize
+figure
 subplot(311)
 plot(R.t, vts, 'linewidth',1.5); hold on
 ylabel('Velocity')
@@ -235,6 +237,11 @@ subplot(313)
 plot(t, Fdot*2,':','color',color(1,:))
 
 set(gcf,'units','normalized','position', [.1 .1 .4 .8])
+
+%%
+figure
+
+
 
 %% output
 out.v = vts(idF);

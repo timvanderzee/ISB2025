@@ -3,6 +3,12 @@ function[error] = fiber_dynamics_implicit_no_tendon(t,y,yp, parms)
 % Get velocity
 vMtilda = interp1(parms.ti, parms.vts, t);
 
+if numel(parms.Cas) == 1
+    Ca = parms.Cas;
+else
+    Ca = interp1(parms.ti, parms.Cas, t);
+end
+
 Q0 = y(1);
 Q1 = y(2);
 Q2 = y(3);
@@ -16,7 +22,7 @@ dNondt = yp(4);
 dDRXdt = yp(5);
 
 % Thin filament
-[error_thin, ~] = ThinEquilibrium(parms.Ca, Q0, Non, dNondt, parms.kon, parms.koff, parms.koop, parms.act * parms.Noverlap);
+[error_thin, ~] = ThinEquilibrium(Ca, Q0, Non, dNondt, parms.kon, parms.koff, parms.koop, parms.act * parms.Noverlap);
 
 % Thick filament
 k = 100;

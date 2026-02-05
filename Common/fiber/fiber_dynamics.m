@@ -23,9 +23,17 @@ FXB = parms.ps * Q0 + Q1; % assuming normalized power stroke = 1
 Non = max(Non, eps); % prevent division by 0 
 
 % get geometry
-dLS = parms.Lse_func(FXB, parms); % SE length-force
-kS = parms.kse_func(dLS, parms); % in-series with XBs
-kT = 1000; % high stiffness, because no tendon
+if(parms.kse==0)
+    kS = 0;
+else
+    dLS = parms.Lse_func(FXB, parms); % SE length-force
+    kS = parms.kse_func(dLS, parms); % in-series with XBs
+end
+
+if isfield(parms, 'kT'), kT = parms.kT; 
+else, kT = 1000; % high stiffness, because no tendon
+end
+
 kP = parms.kpe; % parallel stiffness
 cos_a = 1;
 

@@ -1,0 +1,383 @@
+
+addpath(genpath([pwd,'/../..']))
+addpath("../Part 2 - OpenSim\Movement simulation\code\functions")
+warning('off')
+load('protocol.mat')
+load('../Part 2 - OpenSim\Movement simulation\input\common/parms.mat')
+warning('on')
+
+addpath('C:\Users\hryu30\D\postdoc\0Common/casadi-3.7.2-windows64-matlab2018b')
+import casadi.*
+
+%% extra isometric contractions to fit F-pCa curve
+
+load("../Part 2 - OpenSim\Movement simulation\input\common/thix_data.mat", 'SRSdata')
+load('extra_pCa_Data')
+
+% make an average array of F-pCa curve out of multiple measures 
+pCa_data = unique(pCa_Data.pCa);
+F_pCa_data_avg = nan(size(pCa_data));
+for k=1:length(pCa_data)
+    F_pCa_data_avg(k) = mean(pCa_Data.Frel( abs(pCa_Data.pCa-pCa_data(k))<0.001));
+end
+
+% specify biophysical parameters to be fitted
+optparms = {'f', 'k11', 'k22', 'k21'};
+
+% setup for optimization 
+w4 = 10;    % extra weight for fitting force-pCa
+
+% --- select F-pCa values used for fitting --- %
+
+% step 1 sanity check: reproducing Tim's optimization 
+% pCa_list = []; % << sanity check -- same as Tim's 
+% w4 = 0; 
+
+% step 2 adding isometric contractions without changing pCa
+% pCa_list = [6 6 6]; % << extra isometric contractions without changing pCa
+% w4 = 10;
+ 
+% step 3 Trying a small pCa change... doesn't converge well
+% pCa_list = [-0.2 0.2]+6; % << now test for a little change in pCa
+% w4 = 10;
+
+% step 4 adding more optimization parameters (it helps, but still not there)
+% pCa_list = [-0.2 0.2]+6; % << same as step 3
+% w4 = 10;
+% optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
+
+% step 5 adding more pCa conditions to fit mid-range pCas
+pCa_list = [4.5:0.5:7, 9]; % << what I wanted to have 
+w4 = 10;
+optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
+
+
+% -- interpolate to get target F values for given pCa -- % 
+Frel_pCa = interp1(pCa_data, F_pCa_data_avg, pCa_list ) ...
+    / interp1(pCa_data, F_pCa_data_avg, 6);
+Frel_pCa = [Frel_pCa 1]; % one extra condition of pCa = 6 is always included
+
+%% Assignment 2.2.1: fit model parameters
+
+% initialise opti structure
+opti = casadi.Opti(); 
+
+% define weigth vector
+w1 = 10;    % weight for fitting force-velocity
+w2 = 10;    % weight for fitting short-range stiffness
+w3 = 1; 	% weight for regularization
+w = [w1 w2 w3 w4];
+
+%% setup for F-v and SRS fitting 
+
+% define desired force-velocity properties
+vmax = 5; % maximal shortening velocity [L0/s]
+
+% define desired SRS properties
+RT = 0.1; % recovery time (s)
+V_rel = 0.5; % relative velocity at which SRS is evaluated (relative to vmax) 
+SRS_rel = interp1(SRSdata.xm, SRSdata.ym, RT); % relative SRS compared to no pre-movement (-) for the above recovery time
+
+% V_rel = 0.5;
+% RT = SRSdata.xm(1:4);
+% SRS_rel = SRSdata.ym(1:4);
+
+%% parameters
+parms.Fscale = 2;
+
+% parameters
+allparms = {'f','k11','k12','k21','k22','JF','koop','J1','J2'};
+
+for i = 1:length(allparms)
+    eval([allparms{i}, ' = ', num2str(parms.(allparms{i})),';'])
+end
+
+% bounds on parameter values
+lb = ones(1, length(optparms));
+ub = 2e3 * ones(1, length(optparms));
+
+% exception for exponential coefficient
+for i = 1:length(optparms)
+    if strcmp(optparms{i}, 'k22') || strcmp(optparms{i}, 'k12')
+        lb(i) = 0;
+        ub(i) = 5;
+    end
+end
+
+for i = 1:length(optparms)
+    eval([optparms{i}, '= opti.variable(1);'])
+    eval(['opti.subject_to(',num2str(lb(i)), '<', optparms{i}, '<', num2str(ub(i)),');']);
+    eval(['opti.set_initial(',optparms{i},',', num2str(parms.(optparms{i})),');']);
+end
+
+%% design velocity input vector
+% this is for testing both force-velocity and history-dependent properties
+N = 1000*1; % number of nodes 
+[vts, Fts, t_oc, idF, idFd, idpCa, Cas] = my_design_length_input_vector(vmax, RT, V_rel, pCa_list, N);
+dt = mean(diff(t_oc));
+
+%% obtain initial guess
+% intial guess is obtained through running a forward simulation with the
+% first, simulate an isometric contraction
+parms.vts = [0 0];
+parms.ti = [0 1];
+parms.Cas = [1 1];
+
+x0 = 1e-3 * ones(5,1);
+xp0 = zeros(size(x0));
+odeopt = odeset('maxstep', 1e-3);
+[~, x0] = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 1], x0, xp0, odeopt);
+
+% next, simulate response to specified velocity input vector
+parms.vts = vts;
+parms.ti = t_oc;
+parms.Cas = Cas;
+
+sol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 max(t_oc)], x0(end,:), xp0, odeopt);
+[~,xdot] = deval(sol, sol.x);
+
+% interpolate solution to time nodes
+Q0i     = interp1(sol.x, sol.y(1,:), t_oc); % zero-order moment
+Q1i     = interp1(sol.x, sol.y(2,:), t_oc); % first-order moment
+Q2i     = interp1(sol.x, sol.y(3,:), t_oc); % second-order moment
+Noni    = interp1(sol.x, sol.y(4,:), t_oc); % thin filament activation
+DRXi    = interp1(sol.x, sol.y(5,:), t_oc); % thick filament activation
+
+dQ0dti  = interp1(sol.x, xdot(1,:), t_oc); % zero-order moment time derivative
+dQ1dti  = interp1(sol.x, xdot(2,:), t_oc); % first-order moment time derivative
+dQ2dti  = interp1(sol.x, xdot(3,:), t_oc); % second-order moment time derivative
+dNondti = interp1(sol.x, xdot(4,:), t_oc); % thin filament activation time derivative
+dDRXdti = interp1(sol.x, xdot(5,:), t_oc); % thick filament activation time derivative
+
+%% Fit cross-bridge rates using direct collocation
+% define opti states (defined as above)
+Q0  = opti.variable(1,N);
+Q1  = opti.variable(1,N); 
+Q2  = opti.variable(1,N); 
+Non = opti.variable(1,N);
+DRX = opti.variable(1,N);
+
+% define extra variables
+p  = opti.variable(1,N); % mean strain of the distribution
+q  = opti.variable(1,N); % standard deviation strain of the distribution
+  
+% (Slack) controls (defined as above)
+dQ0dt  = opti.variable(1,N);
+dQ1dt  = opti.variable(1,N); 
+dQ2dt  = opti.variable(1,N); 
+dNondt = opti.variable(1,N); 
+dDRXdt = opti.variable(1,N); 
+
+% Inequality constraints
+opti.subject_to(Q0 >= 0);
+opti.subject_to(Q1 >= -Q0);
+opti.subject_to(q >= 0);
+opti.subject_to(Non >= 0);
+opti.subject_to(Non <= 1);
+opti.subject_to(DRX >= 0);
+opti.subject_to(DRX <= 1);
+
+% Extra constraints
+opti.subject_to(Q1 - Q0 .* p == 0);
+opti.subject_to(Q2 - Q0 .* (p.^2 + q) == 0);
+
+% Set initial guess states based on forward simulation results
+opti.set_initial(Q0, Q0i);
+opti.set_initial(Q1, Q1i);
+opti.set_initial(Q2, Q2i);
+opti.set_initial(Non, Noni);
+opti.set_initial(DRX, DRXi);
+opti.set_initial(p, Q1i./Q0i);
+opti.set_initial(q, Q2i./Q0i - (Q1i./Q0i).^2);
+opti.set_initial(dQ0dt, dQ0dti);
+opti.set_initial(dQ1dt, dQ1dti);
+opti.set_initial(dQ2dt, dQ2dti);
+opti.set_initial(dNondt, dNondti);
+opti.set_initial(dDRXdt, dDRXdti);
+
+%% dynamics constraints
+F = Q0 + Q1; % cross-bridge force
+
+k = 20;
+Nonc = log(1+exp(Non*k))/k;
+DRXc = log(1+exp(DRX*k))/k;
+Q0c = log(1+exp(Q0*k))/k;
+Fc = log(1+exp(F*k))/k;
+
+error = [];
+error_thin  = ThinEquilibrium(Cas, Q0c, Nonc, dNondt, parms.kon, parms.koff, koop, parms.Noverlap); % thin filament dynamics     
+error_thick = ThickEquilibrium(Fc, DRXc, dDRXdt, J1, J2, JF, parms.Noverlap); % thick filament dynamics
+error1      = MuscleEquilibrium(Q0c, p, q, dQ0dt, dQ1dt, dQ2dt, f, parms.w, k11, k12, k21, k22,  Nonc, vts, DRXc); % cross-bridge dynamics
+error       = [error; error_thin(:); error_thick(:); error1(:)];
+opti.subject_to(error == 0);
+
+%% derivative constraints
+opti.subject_to((dNondt(1:N-1) + dNondt(2:N))*dt/2 + Non(1:N-1) == Non(2:N));
+opti.subject_to((dDRXdt(1:N-1) + dDRXdt(2:N))*dt/2 + DRX(1:N-1) == DRX(2:N));
+opti.subject_to((dQ0dt(1:N-1) + dQ0dt(2:N))*dt/2 + Q0(1:N-1) == Q0(2:N));
+opti.subject_to((dQ1dt(1:N-1) + dQ1dt(2:N))*dt/2 + Q1(1:N-1) == Q1(2:N));
+opti.subject_to((dQ2dt(1:N-1) + dQ2dt(2:N))*dt/2 + Q2(1:N-1) == Q2(2:N));
+
+%% cost
+Frel = F * 2;
+% Frel = F ./ Cas;
+Freldot = dQ0dt + dQ1dt;
+
+% cost function
+J = 0;
+J = J + w(1) * sum((Frel(idF) - Fts(idF)).^2); % force-velocity fitting
+J = J + w(2) * sum((SRS_rel(1) - Freldot(idFd(2))/Freldot(idFd(1))).^2); % history-dependence fitting
+J = J + w(3) * (sum(dQ0dt(1).^2) + sum(dQ1dt(1).^2) + sum(dQ2dt(1).^2)); % regularization term
+J = J + w(4) * sum((Frel_pCa - Fts(idpCa)).^2);
+figure
+
+opti.minimize(J); 
+
+%% Solve problem
+% options for IPOPT
+options.ipopt.tol = 1*10^(-6);          
+options.ipopt.linear_solver = 'mumps';
+% opti.solver('ipopt',options);
+
+% Solve the OCP
+p_opts = struct('expand',true);
+s_opts = struct('max_iter', 500);
+opti.solver('ipopt',p_opts,s_opts);
+
+% visualize 
+opti.callback(@(i) plot(t_oc, [Fts; opti.debug.value(Frel)]))
+
+try
+    sol = opti.solve();  
+catch
+    sol = opti.debug();
+end
+
+%% Extract the result
+R.Q0    = sol.value(Q0); 
+R.Q1    = sol.value(Q1); 
+R.Q2    = sol.value(Q2); 
+R.dQ0dt = sol.value(dQ0dt); 
+R.dQ1dt = sol.value(dQ1dt); 
+R.dQ2dt = sol.value(dQ2dt); 
+R.F     = sol.value(Frel); 
+R.Fdot  = R.dQ0dt + R.dQ1dt;
+R.t     = 0:dt:(N-1)*dt;
+
+%% Test the result
+% extract the parameters
+for i = 1:length(optparms)
+    parms.(optparms{i}) = eval(['sol.value(',optparms{i},');']);
+end
+
+% run a forward simulation
+osol = ode15i(@(t,y,yp) fiber_dynamics_implicit_no_tendon(t,y,yp, parms), [0 max(t_oc)], x0(end,:), xp0, odeopt);
+t = osol.x;
+x = osol.y;
+F = x(1,:) + x(2,:);
+[~,xdot] = deval(osol, t);
+Fdot = xdot(1,:) + xdot(2,:);
+
+%% Visualize
+subplot(411)
+plot(R.t, vts, 'linewidth',1.5); hold on
+ylabel('Velocity')
+title('Velocity')
+
+subplot(412)
+plot(R.t, -log10(Cas)+6, 'linewidth',1.5); hold on
+ylabel('Ca')
+title('pCa')
+
+
+subplot(413)
+plot(R.t, R.F, 'linewidth',1.5); hold on
+h1 = plot(R.t(idF), Fts(idF), '.', 'markersize',10); 
+ylabel('Force')
+title('Force')
+h2 = plot(R.t(idpCa), Frel_pCa, '.', 'markersize',10); 
+plot(t, F*2,':','color',color(1,:))
+
+legend([h1, h2], {'F-v', 'F-pCa'})
+
+subplot(414);
+plot(R.t, R.Fdot, 'linewidth',1.5);
+ylabel('Force-rate')
+title('Force-rate')
+hold on
+plot(t, Fdot*2,':','color',color(1,:))
+h1 = plot(R.t(idFd), R.Fdot(idFd), '.', 'markerSize', 10);
+legend(h1, 'SRS')
+
+for i = 1:4
+    subplot(4,1,i); 
+    hold on
+    box off
+    xlabel('Time (s)')
+    xlim([0 max(t_oc)])
+end
+
+color = get(gca,'colororder');
+
+%% output
+out.v = vts(idF);
+out.F = R.F(idF);
+out.SRS = R.Fdot(idFd(2))/R.Fdot(idFd(1));
+out.Ft = Fts(idF);
+
+
+%% design contractions 
+function [vts, Fts, toc, out_idF, out_idFd, out_idpCa, Cas] = my_design_length_input_vector(vmax, RT, V_rel, pCa_list, N)
+
+%% Design velocity vector
+vt = [0 -.2 0 .2 0 -.4 0 .4 0 -.6 0 .6 0 -.8 0 .8 ...
+    zeros(1,length(pCa_list)) ...
+    0 V_rel -V_rel 0 V_rel] * vmax;
+ca = ones(size(vt));
+
+% for velocity part, we just need to evaluate until evaluation time
+idv = 1:16;
+
+ts = .2 * ones(size(vt));
+for i = 1:length(idv)
+    ts(idv(i)) = .12 / max(abs(vt(idv(i))), .6);
+end
+
+idS = (length(vt)-4):length(vt);
+ts(idS) = [.3 .1 .1 RT .1];
+Ts = [0 cumsum(ts)];
+toc = linspace(0,sum(ts),N);
+
+% velocity vector
+vts = zeros(1,N);
+
+idCa = 16+(1:length(pCa_list));
+Cas = ones(size(vts));
+ca(idCa) = 10.^(-pCa_list+6);
+
+for i = 1:(length(Ts)-1)
+    id = (toc > Ts(i)) & (toc <= Ts(i+1));
+    vts(id) = vt(i);
+    Cas(id) = ca(i);
+end
+
+% F - v, SRS evaluation indices
+out_idF = nan(1, length(idv)+1);
+out_idF(1) = find(toc < Ts(2), 1, 'last');
+for i = 1:length(idv)
+    out_idF(i+1) = find(toc < Ts(idv(i)+1), 1, 'last');
+end
+out_idFd = [find(toc > Ts(end-4),1); find(toc > Ts(end-1),1)];
+
+% F - pCa evaluation index
+out_idpCa = nan(1, length(idCa)+1);
+for i=1:length(idCa)
+    out_idpCa(i) = find(toc<Ts(idCa(i)+1), 1, 'last' );
+end
+out_idpCa(end) = find(toc<Ts(end-4), 1, 'last'); % one right before SRS pre-contraction
+
+%% get the target force
+d = [ -0.3183   -8.1492   -0.3741    0.8856];
+Fts = d(1) * log((d(2)*vts/vmax + d(3)) + sqrt((d(2)*vts/vmax + d(3)).^2 + 1)) + d(4);
+
+end
