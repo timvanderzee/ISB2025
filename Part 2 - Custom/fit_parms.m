@@ -6,7 +6,7 @@ load('protocol.mat')
 load('../Part 2 - OpenSim\Movement simulation\input\common/parms.mat')
 warning('on')
 
-addpath('C:\Users\hryu30\D\postdoc\0Common/casadi-3.7.2-windows64-matlab2018b')
+addpath('../../../0Common/casadi-3.7.2-windows64-matlab2018b')
 import casadi.*
 
 %% extra isometric contractions to fit F-pCa curve
@@ -30,8 +30,8 @@ w4 = 10;    % extra weight for fitting force-pCa
 % --- select F-pCa values used for fitting --- %
 
 % step 1 sanity check: reproducing Tim's optimization 
-% pCa_list = []; % << sanity check -- same as Tim's 
-% w4 = 0; 
+% pCa_list = [];    % << sanity check -- same as Tim's 
+% w4 = 0;           % << sanity check -- same as Tim's 
 
 % step 2 adding isometric contractions without changing pCa
 % pCa_list = [6 6 6]; % << extra isometric contractions without changing pCa
@@ -42,14 +42,14 @@ w4 = 10;    % extra weight for fitting force-pCa
 % w4 = 10;
 
 % step 4 adding more optimization parameters (it helps, but still not there)
-% pCa_list = [-0.2 0.2]+6; % << same as step 3
-% w4 = 10;
-% optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
-
-% step 5 adding more pCa conditions to fit mid-range pCas
-pCa_list = [4.5:0.5:7, 9]; % << what I wanted to have 
+pCa_list = [-0.2 0.2]+6; % << same as step 3
 w4 = 10;
 optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
+
+% % step 5 adding more pCa conditions to fit mid-range pCas
+% pCa_list = [4.5:0.5:7, 9]; % << what I wanted to have 
+% w4 = 10;
+% optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
 
 
 % -- interpolate to get target F values for given pCa -- % 
@@ -296,6 +296,7 @@ h1 = plot(R.t(idF), Fts(idF), '.', 'markersize',10);
 ylabel('Force')
 title('Force')
 h2 = plot(R.t(idpCa), Frel_pCa, '.', 'markersize',10); 
+color = get(gca,'colororder');
 plot(t, F*2,':','color',color(1,:))
 
 legend([h1, h2], {'F-v', 'F-pCa'})
@@ -317,7 +318,6 @@ for i = 1:4
     xlim([0 max(t_oc)])
 end
 
-color = get(gca,'colororder');
 
 %% output
 out.v = vts(idF);
