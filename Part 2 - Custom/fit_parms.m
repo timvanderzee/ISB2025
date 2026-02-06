@@ -25,7 +25,7 @@ end
 optparms = {'f', 'k11', 'k22', 'k21'};
 
 % setup for optimization 
-w4 = 10;    % extra weight for fitting force-pCa
+% w4 = 10;    % extra weight for fitting force-pCa
 
 % --- select F-pCa values used for fitting --- %
 
@@ -48,8 +48,8 @@ w4 = 10;    % extra weight for fitting force-pCa
 
 % step 5 adding more pCa conditions to fit mid-range pCas
 pCa_list = [4.5:0.5:7, 9]; % << what I wanted to have 
-w4 = 10;
-optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
+w4 = 0;
+% optparms = {'f', 'k11', 'k22', 'k21', 'J1', 'J2'};
 
 
 % -- interpolate to get target F values for given pCa -- % 
@@ -228,7 +228,7 @@ J = 0;
 J = J + w(1) * sum((Frel(idF) - Fts(idF)).^2); % force-velocity fitting
 J = J + w(2) * sum((SRS_rel(1) - Freldot(idFd(2))/Freldot(idFd(1))).^2); % history-dependence fitting
 J = J + w(3) * (sum(dQ0dt(1).^2) + sum(dQ1dt(1).^2) + sum(dQ2dt(1).^2)); % regularization term
-J = J + w(4) * sum((Frel_pCa - Fts(idpCa)).^2);
+J = J + w(4) * sum((Frel_pCa - Frel(idpCa)).^2);
 figure
 
 opti.minimize(J); 
