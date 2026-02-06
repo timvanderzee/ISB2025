@@ -6,7 +6,7 @@ load('protocol.mat')
 load('../Part 2 - OpenSim\Movement simulation\input\common/parms.mat')
 warning('on')
 
-addpath('C:\Users\hryu30\D\postdoc\0Common/casadi-3.7.2-windows64-matlab2018b')
+addpath('../../../0Common/casadi-3.7.2-windows64-matlab2018b')
 import casadi.*
 
 %% extra isometric contractions to fit F-pCa curve
@@ -30,8 +30,8 @@ optparms = {'f', 'k11', 'k22', 'k21'};
 % --- select F-pCa values used for fitting --- %
 
 % step 1 sanity check: reproducing Tim's optimization 
-% pCa_list = []; % << sanity check -- same as Tim's 
-% w4 = 0; 
+% pCa_list = [];    % << sanity check -- same as Tim's 
+% w4 = 0;           % << sanity check -- same as Tim's 
 
 % step 2 adding isometric contractions without changing pCa
 % pCa_list = [6 6 6]; % << extra isometric contractions without changing pCa
@@ -296,6 +296,7 @@ h1 = plot(R.t(idF), Fts(idF), '.', 'markersize',10);
 ylabel('Force')
 title('Force')
 h2 = plot(R.t(idpCa), Frel_pCa, '.', 'markersize',10); 
+color = get(gca,'colororder');
 plot(t, F*2,':','color',color(1,:))
 
 legend([h1, h2], {'F-v', 'F-pCa'})
@@ -317,7 +318,6 @@ for i = 1:4
     xlim([0 max(t_oc)])
 end
 
-color = get(gca,'colororder');
 
 %% output
 out.v = vts(idF);
